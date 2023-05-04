@@ -14,7 +14,7 @@ public class AuthService {
     private final UserService userService;
     private final TokenManager tokenManager;
     // todo 재발급 토큰 관리
-    public TokenDto signIn(String email, String password) {
+    public TokenDto signIn(String email, String password) { //로그인
         // 1. email, password로 검증
         userService.validatePassword(email, password);
 

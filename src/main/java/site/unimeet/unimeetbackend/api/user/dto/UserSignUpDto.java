@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.domain.user.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class UserSignUpDto {
 
@@ -23,7 +24,7 @@ public class UserSignUpDto {
         @Length(min = 4, max = 20, message = "비밀번호는 4~20자 사이여야 합니다")
         private String password;
         @NotNull
-        private Major major;
+        private List<Major> majors;
         @NotNull
         private Department department;
 
@@ -33,7 +34,7 @@ public class UserSignUpDto {
                     .name(name)
                     .email(email)
                     .password(encodedPassword)
-                    .major(major)
+                    .majors(majors)
                     .department(department)
                     .build();
         }

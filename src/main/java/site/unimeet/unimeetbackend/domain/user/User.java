@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.Department;
 import site.unimeet.unimeetbackend.domain.common.Major;
+import site.unimeet.unimeetbackend.domain.common.Mbti;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,17 +25,24 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private Mbti mbti;
+
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
-    private Major major;
+    private List<Major> majors;
+
     @Enumerated(EnumType.STRING)
     private Department department;
 
     @Builder
-    public User(String name, String email, String password, Major major, Department department){
+    public User(String name, String email, String password, List<Major> majors, Department department, Mbti mbti){
         this.name=name;
         this.email=email;
         this.password = password;
-        this.major = major;
+        this.majors = majors;
         this.department=department;
+        this.mbti = mbti;
     }
 }
