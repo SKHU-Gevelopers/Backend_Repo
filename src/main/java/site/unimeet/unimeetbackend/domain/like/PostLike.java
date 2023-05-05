@@ -13,13 +13,13 @@ import javax.persistence.*;
  *  "내가 좋아요 한 게시글" 을 추려내기 위해 필요한 클래스
  *  User 와 Post 의 ManyToMany 관계를 풀어낸다.
  *
- *  좋아요 버튼이 눌리면 Post의 likes 카운트를 하나 늘리고, Like 객체를 생성한다.
- *  좋아요 버튼이 다시 눌리면 Post의 likes 카운트를 하나 줄이고, Like 객체를 삭제한다.
+ *  좋아요 버튼이 눌리면 Post의 likes 카운트를 하나 늘리고, PostLike 객체를 생성한다.
+ *  좋아요 버튼이 다시 눌리면 Post의 likes 카운트를 하나 줄이고, PostLike 객체를 삭제한다.
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Like extends BaseTimeEntity {
+public class PostLike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class Like extends BaseTimeEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    public Like(User user, Post post) {
+    public PostLike(User user, Post post) {
         this.user = user;
         this.post = post;
     }
