@@ -1,1 +1,41 @@
 
+server:
+  port: 8443
+  #ssl:
+#    key-store-type: pkcs12
+#    key-alias: local
+#    enabled: true
+#    key-store:
+#    key-store-password:
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  datasource:
+    url: jdbc:mariadb://localhost:3307/unimeet
+    username: root
+    password: 9731923Yjy!
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        format_sql : true
+        default_batch_fetch_size: 1000
+
+    show-sql: true
+    open-in-view: false
+
+logging:
+  level:
+    org.hibernate.type: trace
+
+#file:
+#  upload:
+#    path: C:/Users/woo/myimage/
