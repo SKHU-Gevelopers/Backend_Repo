@@ -18,12 +18,10 @@ public class Comment extends BaseTimeEntity {
     private Long id;
     @Column(nullable = false)
     private String content;
-
     // 누가 작성했는지
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 
     @Builder
     public Comment(String content, User user) {

@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import site.unimeet.unimeetbackend.domain.common.Department;
+import site.unimeet.unimeetbackend.domain.common.Gender;
 import site.unimeet.unimeetbackend.domain.common.Major;
+import site.unimeet.unimeetbackend.domain.common.Mbti;
 import site.unimeet.unimeetbackend.domain.user.User;
 
 import javax.validation.constraints.Email;
@@ -34,6 +36,8 @@ public class UserSignUpDto {
                     .name(name)
                     .email(email)
                     .password(encodedPassword)
+                    .gender(Gender.MALE)
+                    .mbti(Mbti.INFJ)
                     .majors(majors)
                     .department(department)
                     .build();
