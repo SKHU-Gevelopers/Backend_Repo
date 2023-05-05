@@ -1,6 +1,5 @@
 package site.unimeet.unimeetbackend.domain.common;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 @Getter
