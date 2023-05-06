@@ -4,8 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
+    // 이메일 인증
+    EMAIL_CANNOT_BE_SENT(500, "이메일을 보낼 수 없습니다."),
 
-
+    // 회원가입
     EMAIL_ALREADY_REGISTERED(409, "이미 가입된 이메일입니다."),
 
     // 인증 - 로그인 시도

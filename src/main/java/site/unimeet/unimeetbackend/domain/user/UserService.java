@@ -27,6 +27,7 @@ public class UserService {
         }
     }
 
+    // 로그인 시 이메일과 비밀번호가 유효한지 체크,
     public void validatePassword(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
@@ -38,5 +39,11 @@ public class UserService {
             log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
             throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
         }
+    }
+
+    public void checkEmailDuplicated(String email) {
+        userRepository.findByEmail(email)
+                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);}
+                ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
     }
 }

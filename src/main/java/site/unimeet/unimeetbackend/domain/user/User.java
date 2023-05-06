@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String name;
+    private String nickname;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
@@ -30,7 +30,7 @@ public class User {
     @Column(nullable = false)
     private Mbti mbti;
     @Column
-    private String introduction;
+    private String introduction = "";
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> profileImageUrls;
     @ElementCollection(fetch = FetchType.LAZY)
@@ -39,8 +39,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Department department;
     @Builder
-    public User(String name, String email, String password, Gender gender, Mbti mbti, List<Major> majors, Department department) {
-        this.name = name;
+    public User(String nickname, String email, String password, Gender gender, Mbti mbti, List<Major> majors, Department department) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.gender = gender;
