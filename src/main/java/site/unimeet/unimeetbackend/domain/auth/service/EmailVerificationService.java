@@ -2,6 +2,7 @@ package site.unimeet.unimeetbackend.domain.auth.service;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class EmailVerificationService {
-    private final Cache<String, String> codeExpirationCache; // email, verification code
+    @Getter // executorService 에는 Getter가 필요하지 않을 것으로 판단.
+    private final Cache<String, String> codeExpirationCache; // <email, verification code>. thread-safe map.
     private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     @Autowired

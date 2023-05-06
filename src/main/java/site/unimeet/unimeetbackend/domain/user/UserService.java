@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
@@ -18,8 +19,18 @@ import javax.validation.ConstraintViolationException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailVerificationService emailVerificationService;
     @Transactional
     public User signUp(User user) {
+        // Cache 에서 Email로 검증코드를 가져온다.
+        String vrfCode = emailVerificationService.getCodeExpirationCache()
+                .getIfPresent(user.getEmail());
+        // 검증코드 만료 시 null이 반환된다. throw exception
+        if (vrfCode == null) {
+            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
+        }
+
+        // 회원가입
         try {
             return userRepository.save(user);
         } catch (ConstraintViolationException e) { // email unique 제약조건 위반 시

@@ -21,7 +21,6 @@ public class AuthController {
 
 
     // 로그인
-    // todo 회원가입 DTO 손보고, 인증번호 만료되었는지 체크
     @PostMapping("/auth/sign-in")
     public SingleRspsTemplate<TokenDto> signIn(@RequestBody @Valid UserSignInDto.Request singInRequest){
         TokenDto tokenDto = authService.signIn(singInRequest.getEmail(), singInRequest.getPassword());

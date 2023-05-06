@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum ErrorCode {
     // 이메일 인증
     EMAIL_CANNOT_BE_SENT(500, "이메일을 보낼 수 없습니다."),
-
+    EMAIL_VERIFICATION_CODE_NOT_FOUND(400, "이메일 인증 코드가 존재하지 않습니다."),
     // 회원가입
     EMAIL_ALREADY_REGISTERED(409, "이미 가입된 이메일입니다."),
 
