@@ -11,6 +11,7 @@ import site.unimeet.unimeetbackend.domain.common.Mbti;
 import site.unimeet.unimeetbackend.domain.user.User;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class UserSignUpDto {
         private String email;
         @Length(min = 4, max = 20, message = "비밀번호는 4~20자 사이여야 합니다")
         private String password;
+        @NotBlank(message = "이메일 인증 코드는 비어있을 수 없습니다")
+        private String emailVrfCode;
         @NotNull
         private Gender gender;
         @NotNull

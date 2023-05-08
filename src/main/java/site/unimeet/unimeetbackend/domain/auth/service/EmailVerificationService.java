@@ -34,6 +34,7 @@ public class EmailVerificationService {
         return verificationCode;
     }
 
+    // fixme: expireAfterWrite 와 기능이 겹치는지 확인
     private void invalidateCode(String email) {
         // Discards any cached value for the key.
         codeExpirationCache.invalidate(email);

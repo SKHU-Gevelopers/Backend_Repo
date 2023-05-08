@@ -21,13 +21,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
     @Transactional
-    public User signUp(User user) {
+    public User signUp(User user, String emailVrfCode) {
         // Cache 에서 Email로 검증코드를 가져온다.
-        String vrfCode = emailVerificationService.getCodeExpirationCache()
+        String cacheVrfCode = emailVerificationService.getCodeExpirationCache()
                 .getIfPresent(user.getEmail());
-        // 검증코드 만료 시 null이 반환된다. throw exception
-        if (vrfCode == null) {
+        // 검증코드 만료 시 cacheVrfCode 는 null이다.
+        if (cacheVrfCode == null) {
             throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
+        }
+        // 캐시의 검증코드가 not null 이므로, 입력된 검증코드와 일치하는지 확인
+        if (! cacheVrfCode.equals(emailVrfCode)){
+            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
         }
 
         // 회원가입

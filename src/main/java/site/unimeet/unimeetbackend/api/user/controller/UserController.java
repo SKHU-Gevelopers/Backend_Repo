@@ -26,12 +26,13 @@ public class UserController {
     //   회원가입 시 이메일 인증코드가 만료되었는지 체크하면 된다.
     @PostMapping("/users/sign-up")
     public ResponseEntity<SingleRspsTemplate<String>> signUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
-        User user = userService.signUp(signUpRequest.toEntity(passwordEncoder));
+        User user = userService.signUp(signUpRequest.toEntity(passwordEncoder), signUpRequest.getEmailVrfCode());
 
         SingleRspsTemplate<String> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.CREATED.value(),
                 user.getNickname() + " is created");
         return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
     }
+
 
 
 }
