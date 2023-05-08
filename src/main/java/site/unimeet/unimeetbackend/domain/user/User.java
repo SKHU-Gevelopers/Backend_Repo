@@ -28,13 +28,16 @@ public class User {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Mbti mbti;
-    @Column
+    @Column(nullable = false)
     private String introduction = "";
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> profileImageUrls;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Department department;
     @ElementCollection(fetch = FetchType.LAZY)
