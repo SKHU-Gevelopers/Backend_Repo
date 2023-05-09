@@ -31,7 +31,24 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
                 .order(1)   // 인증 인터셉터를 첫 번째로 수행
                 .addPathPatterns("/**")     // 이 경로를 대상으로 동작
-                .excludePathPatterns("/health/**")  // 이 경로는 검사 제외
+                .excludePathPatterns("/auth/**", "/users/sign-up")  // 이 경로는 검사 제외
         ;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

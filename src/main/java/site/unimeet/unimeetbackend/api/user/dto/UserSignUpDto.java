@@ -11,6 +11,7 @@ import site.unimeet.unimeetbackend.domain.common.Mbti;
 import site.unimeet.unimeetbackend.domain.user.User;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -21,23 +22,32 @@ public class UserSignUpDto {
     public static class Request {
         @Length(min = 2, max = 10, message = "이름은 2~10자 사이여야 합니다")
         private String name;
+        @Length(min = 2, max = 10, message = "이름은 2~10자 사이여야 합니다")
+        private String nickname;
         @Email(message = "Email 형식이어야 합니다")
         private String email;
         @Length(min = 4, max = 20, message = "비밀번호는 4~20자 사이여야 합니다")
         private String password;
+        @NotBlank(message = "이메일 인증 코드는 비어있을 수 없습니다")
+        private String emailVrfCode;
         @NotNull
-        private List<Major> majors;
+        private Gender gender;
+        @NotNull
+        private Mbti mbti;
         @NotNull
         private Department department;
+        @NotNull
+        private List<Major> majors;
 
         public User toEntity(PasswordEncoder passwordEncoder){
             String encodedPassword = passwordEncoder.encode(this.password);
             return User.builder()
                     .name(name)
+                    .nickname(nickname)
                     .email(email)
                     .password(encodedPassword)
-                    .gender(Gender.MALE)
-                    .mbti(Mbti.INFJ)
+                    .gender(gender)
+                    .mbti(mbti)
                     .majors(majors)
                     .department(department)
                     .build();

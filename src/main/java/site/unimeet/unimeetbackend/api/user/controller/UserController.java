@@ -1,7 +1,6 @@
 package site.unimeet.unimeetbackend.api.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +20,19 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    //회원가입
+
+    // todo 회원가입 DTO 손보고, 인증번호 만료되었는지 체크
+    //  이메일 인증 API를 따로 둘 것.
+    //   회원가입 시 이메일 인증코드가 만료되었는지 체크하면 된다.
     @PostMapping("/users/sign-up")
     public ResponseEntity<SingleRspsTemplate<String>> signUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
-        User user = userService.signUp(signUpRequest.toEntity(passwordEncoder));
-        SingleRspsTemplate<String> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.CREATED.value(),
-                user.getName() + " is created");
-        return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
+        User user = userService.signUp(signUpRequest.toEntity(passwordEncoder), signUpRequest.getEmailVrfCode());
 
+        SingleRspsTemplate<String> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.CREATED.value(),
+                user.getNickname() + " is created");
+        return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
     }
+
+
+
 }
