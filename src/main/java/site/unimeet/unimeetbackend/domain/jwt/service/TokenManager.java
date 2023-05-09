@@ -19,13 +19,13 @@ import java.util.Date;
 @Component
 public class TokenManager {
 
-    // @Value("${token.access-token-expiration-time}")
+     @Value("${token.access-token-expiration-time}")
     private String accessTokenExpirationTime;
 
-    // @Value("${token.refresh-token-expiration-time}")
+     @Value("${token.refresh-token-expiration-time}")
     private String refreshTokenExpirationTime;
 
-   // @Value("${token.secret}")
+    @Value("${token.secret}")
     private String tokenSecret;
 
     public TokenDto createTokenDto(String email) {
