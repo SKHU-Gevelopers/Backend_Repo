@@ -58,7 +58,7 @@ public class UserService {
 
     public void checkEmailDuplicated(String email) {
         userRepository.findByEmail(email)
-                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);}
+                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
                 ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
     }
 }
