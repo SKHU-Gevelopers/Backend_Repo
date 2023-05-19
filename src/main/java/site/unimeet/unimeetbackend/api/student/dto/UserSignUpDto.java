@@ -1,14 +1,15 @@
-package site.unimeet.unimeetbackend.api.user.dto;
+package site.unimeet.unimeetbackend.api.student.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import site.unimeet.unimeetbackend.domain.common.Department;
 import site.unimeet.unimeetbackend.domain.common.Gender;
 import site.unimeet.unimeetbackend.domain.common.Major;
 import site.unimeet.unimeetbackend.domain.common.Mbti;
-import site.unimeet.unimeetbackend.domain.user.User;
+import site.unimeet.unimeetbackend.domain.user.Student;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -39,15 +40,18 @@ public class UserSignUpDto {
         @NotNull
         private List<Major> majors;
 
-        public User toEntity(PasswordEncoder passwordEncoder){
+        @Value("${default.profile.image.url}")
+        private String defaultProfileImageUrl;
+        public Student toEntity(PasswordEncoder passwordEncoder){
             String encodedPassword = passwordEncoder.encode(this.password);
-            return User.builder()
+            return Student.builder()
                     .name(name)
                     .nickname(nickname)
                     .email(email)
                     .password(encodedPassword)
                     .gender(gender)
                     .mbti(mbti)
+                    .profileImageUrl(defaultProfileImageUrl)
                     .majors(majors)
                     .department(department)
                     .build();

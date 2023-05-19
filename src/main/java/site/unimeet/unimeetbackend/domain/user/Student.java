@@ -1,9 +1,7 @@
 package site.unimeet.unimeetbackend.domain.user;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.stereotype.Component;
 import site.unimeet.unimeetbackend.domain.common.Department;
 import site.unimeet.unimeetbackend.domain.common.Gender;
 import site.unimeet.unimeetbackend.domain.common.Major;
@@ -14,8 +12,9 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Component
 @Entity
-public class User {
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,8 +34,9 @@ public class User {
     private Mbti mbti;
     @Column(nullable = false)
     private String introduction = "";
-    @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> profileImageUrls;
+    @Setter
+    @Column(nullable = false)
+    private String profileImageUrl  = "";
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Department department;
@@ -45,13 +45,14 @@ public class User {
     private List<Major> majors;
 
     @Builder
-    public User(String name, String nickname, String email, String password, Gender gender, Mbti mbti, List<Major> majors, Department department) {
+    public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.mbti = mbti;
+        this.profileImageUrl = profileImageUrl;
         this.majors = majors;
         this.department = department;
     }
