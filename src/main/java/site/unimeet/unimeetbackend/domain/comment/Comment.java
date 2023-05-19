@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
-import site.unimeet.unimeetbackend.domain.user.User;
+import site.unimeet.unimeetbackend.domain.user.Student;
 
 import javax.persistence.*;
 
@@ -21,12 +21,12 @@ public class Comment extends BaseTimeEntity {
     // 누가 작성했는지
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Student student;
 
     @Builder
-    public Comment(String content, User user) {
+    public Comment(String content, Student student) {
         this.content = content;
-        this.user = user;
+        this.student = student;
     }
 
 }
