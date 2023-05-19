@@ -41,7 +41,7 @@ cloud:
     s3:
       bucket: unimeet-bucket
     stack:
-      auto: false
+      auto: false # No valid instance id defined StackTrace 무시
     region:
       static: ap-northeast-2
       auto: false
@@ -52,14 +52,15 @@ cloud:
 com:
   amazonaws:
     sdk:
-      disableEc2Metadata: true
+      disableEc2Metadata: true # Failed to connect to service endpoint: 에러 무시
+
 
 logging:
   level:
     com:
       amazonaws:
         util:
-          EC2MetadataUtils: ERROR
+          EC2MetadataUtils: ERROR # disableEc2Metadata 활성화로 인한 EC2 Instance Metadata Service is disabled 로그 무시
 
 default:
   profile:
