@@ -8,46 +8,6 @@ server:
 #    key-store:
 #    key-store-password:
 
-spring:
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username:
-    password:
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
-  datasource:
-    url:
-    username:
-    password:
-    driver-class-name: org.mariadb.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-
-    properties:
-      hibernate:
-        format_sql : true
-        default_batch_fetch_size: 1000
-
-    show-sql: true
-    open-in-view: false
-
 logging:
   level:
     org.hibernate.type: trace
-
-#file:
-#  upload:
-#    path: C:/Users/woo/myimage/
