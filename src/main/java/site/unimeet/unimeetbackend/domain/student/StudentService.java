@@ -1,4 +1,4 @@
-package site.unimeet.unimeetbackend.domain.user;
+package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

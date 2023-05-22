@@ -1,4 +1,4 @@
-package site.unimeet.unimeetbackend.domain.user;
+package site.unimeet.unimeetbackend.domain.student;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

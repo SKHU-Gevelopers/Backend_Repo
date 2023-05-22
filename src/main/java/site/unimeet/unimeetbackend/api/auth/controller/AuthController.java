@@ -12,7 +12,7 @@ import site.unimeet.unimeetbackend.api.auth.dto.UserSignInDto;
 import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.domain.auth.service.AuthService;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
-import site.unimeet.unimeetbackend.domain.user.StudentService;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 
 import javax.validation.Valid;
 

@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
-import site.unimeet.unimeetbackend.domain.user.Student;
-import site.unimeet.unimeetbackend.domain.user.StudentService;
+import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 
 import javax.validation.Valid;
@@ -35,7 +34,7 @@ public class StudentController {
 
 
     // 마이페이지 수정
-    @GetMapping("/test")
+    @PostMapping("/users/my-page")
     public String hello(MultipartFile multipartFile, @StudentEmail String email) {
         studentService.uploadProfileImg(multipartFile, email);
 

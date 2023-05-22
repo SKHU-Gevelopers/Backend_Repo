@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.post.Post;
-import site.unimeet.unimeetbackend.domain.user.Student;
+import site.unimeet.unimeetbackend.domain.student.Student;
 
 import javax.persistence.*;
 

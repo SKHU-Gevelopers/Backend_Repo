@@ -9,7 +9,7 @@ import site.unimeet.unimeetbackend.domain.common.Department;
 import site.unimeet.unimeetbackend.domain.common.Gender;
 import site.unimeet.unimeetbackend.domain.common.Major;
 import site.unimeet.unimeetbackend.domain.common.Mbti;
-import site.unimeet.unimeetbackend.domain.user.Student;
+import site.unimeet.unimeetbackend.domain.student.Student;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

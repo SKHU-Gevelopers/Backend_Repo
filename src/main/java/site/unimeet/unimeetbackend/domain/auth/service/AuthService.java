@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
-import site.unimeet.unimeetbackend.domain.user.StudentService;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 

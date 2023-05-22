@@ -8,8 +8,8 @@ import site.unimeet.unimeetbackend.domain.common.Department;
 import site.unimeet.unimeetbackend.domain.common.Gender;
 import site.unimeet.unimeetbackend.domain.common.Major;
 import site.unimeet.unimeetbackend.domain.common.Mbti;
-import site.unimeet.unimeetbackend.domain.user.Student;
-import site.unimeet.unimeetbackend.domain.user.StudentRepository;
+import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 
 
 import javax.annotation.PostConstruct;
