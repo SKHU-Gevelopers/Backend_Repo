@@ -37,9 +37,11 @@ public class WebConfig implements WebMvcConfigurer {
         ;
     }
 
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                // Todo Origin 웹서버 도메인으로
                 .allowedOriginPatterns("*") // Request Header의 Origin을, Response Header의 Access-Control-Allow-Origin에 그대로 넣어준다.
                 .allowedMethods(HttpMethod.GET.name()
                         ,HttpMethod.POST.name()
