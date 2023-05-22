@@ -44,6 +44,14 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private List<Major> majors;
 
+    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, List<Major> majors){
+        this.nickname = nickname;
+        this.mbti = mbti;
+        this.introduction = introduction;
+        this.profileImageUrl = profileImageUrl;
+        this.majors = majors;
+    }
+
     @Builder
     public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;

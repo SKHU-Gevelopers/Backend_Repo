@@ -17,6 +17,8 @@ public class S3Config {
     @Value("${cloud.aws.credentials.secret-key}")
     private String secretKey;
 
+    public static final String BUCKETNAME_SUFFIX_PROFILE_IMG = "/user_profile_img";
+
     @Bean(name = "s3Client")
     public AmazonS3Client amazonS3Client() {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey,secretKey);

@@ -5,12 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
 import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
-import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.ConstraintViolationException;
 
@@ -22,8 +21,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
-    private final S3Service s3Service;
-    private final String BUCKETNAME_SUFFIX_PROFILE_IMG = "/user_profile_img";
+
     @Transactional
     public Student signUp(Student student, String emailVrfCode) {
         // Cache 에서 Email로 검증코드를 가져온다.
@@ -46,6 +44,12 @@ public class StudentService {
         }
     }
 
+    @Transactional
+    public void editMyPage(EditMyPageDto.Request editMyPageRequest, String uploadedFilePath ,String email) {
+        Student student = findByEmail(email);
+        editMyPageRequest.editMyPage(student, uploadedFilePath);
+    }
+
     // 로그인 시 이메일과 비밀번호가 유효한지 체크,
     public void validatePassword(String email, String password) {
         Student student = studentRepository.findByEmail(email)
@@ -64,13 +68,6 @@ public class StudentService {
         studentRepository.findByEmail(email)
                 .ifPresent(user -> {throw new AuthenticationException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
                 ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
-    }
-
-    @Transactional
-    public void uploadProfileImg(MultipartFile multipartFile, String email) {
-        String uploadedFilePath = s3Service.upload(multipartFile, BUCKETNAME_SUFFIX_PROFILE_IMG);
-        Student student = findByEmail(email);
-        student.setProfileImageUrl(uploadedFilePath);
     }
 
     public Student findByEmail(String email) {
