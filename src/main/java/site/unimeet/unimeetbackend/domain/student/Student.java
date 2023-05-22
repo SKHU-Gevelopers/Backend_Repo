@@ -1,4 +1,4 @@
-package site.unimeet.unimeetbackend.domain.user;
+package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class Student {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String nickname;
     @Column(unique = true, nullable = false)
     private String email;
