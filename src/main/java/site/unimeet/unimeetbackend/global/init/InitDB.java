@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.common.Department;
-import site.unimeet.unimeetbackend.domain.common.Gender;
-import site.unimeet.unimeetbackend.domain.common.Major;
-import site.unimeet.unimeetbackend.domain.common.Mbti;
+import site.unimeet.unimeetbackend.domain.student.enums.Department;
+import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 

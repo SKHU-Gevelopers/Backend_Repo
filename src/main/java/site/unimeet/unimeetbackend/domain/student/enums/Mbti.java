@@ -1,4 +1,4 @@
-package site.unimeet.unimeetbackend.domain.common;
+package site.unimeet.unimeetbackend.domain.student.enums;
 
 import lombok.Getter;
 

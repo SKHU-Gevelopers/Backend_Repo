@@ -1,13 +1,8 @@
-package site.unimeet.unimeetbackend.domain.common;
+package site.unimeet.unimeetbackend.domain.post.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- *  Category 는 Major 와 내용이 거의 비슷한데,
- *  Category 는 게시글의 카테고리
- *  Major 는 학생(회원)이 가지는 정보
- */
-public enum Major {
+public enum Category {
     // IT학부
     SOFTWARE("소프트웨어전공"),  COMPUTER("컴퓨터공학전공"),
     INFORMATION("정보통신전공"),  AI("인공지능전공"), DPT_IT("IT융합자율학부"),
@@ -24,18 +19,21 @@ public enum Major {
     // 미디어콘텐츠학부
     JOURNALISM("언론학"), DIGITAL("디지털콘텐츠학"),
     DPT_MEDIA("미디어콘텐츠학부"),
+
+    // 교양
+    LIBERAL("교양학부"),
+
     ;
     @JsonValue
     private final String desc;
 
-    Major(String desc) {
+    Category(String desc) {
         this.desc = desc;
     }
-    // json 직렬화 시 한글 설명 desc로 반환됨
-
-
     // 역직렬화를 위함. CategoryConverter 에서 사용.
-    public static Major from(String major){
-        return Major.valueOf(major.toUpperCase());
+    public static Category from(String major){
+        return Category.valueOf(major.toUpperCase());
     }
+
+
 }

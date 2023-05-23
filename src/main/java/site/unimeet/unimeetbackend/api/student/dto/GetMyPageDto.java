@@ -3,9 +3,9 @@ package site.unimeet.unimeetbackend.api.student.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import site.unimeet.unimeetbackend.domain.common.Gender;
-import site.unimeet.unimeetbackend.domain.common.Major;
-import site.unimeet.unimeetbackend.domain.common.Mbti;
+import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
 import java.util.List;

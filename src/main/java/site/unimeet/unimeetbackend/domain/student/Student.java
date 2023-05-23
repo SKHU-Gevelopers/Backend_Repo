@@ -2,10 +2,10 @@ package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.common.Department;
-import site.unimeet.unimeetbackend.domain.common.Gender;
-import site.unimeet.unimeetbackend.domain.common.Major;
-import site.unimeet.unimeetbackend.domain.common.Mbti;
+import site.unimeet.unimeetbackend.domain.student.enums.Department;
+import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
 
 import javax.persistence.*;
 import java.util.List;
