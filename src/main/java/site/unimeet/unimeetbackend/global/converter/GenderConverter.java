@@ -2,7 +2,7 @@ package site.unimeet.unimeetbackend.global.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.common.Gender;
+import site.unimeet.unimeetbackend.domain.student.enums.Gender;
 
 @Component
 public class GenderConverter implements Converter<String, Gender> {

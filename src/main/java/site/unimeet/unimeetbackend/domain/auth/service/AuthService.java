@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
-import site.unimeet.unimeetbackend.domain.user.UserService;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 
@@ -18,13 +18,13 @@ import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException
 public class AuthService {
     private final EmailVerificationService emailVerificationService;
     private final JavaMailSender javaMailSender;
-    private final UserService userService;
+    private final StudentService studentService;
     private final TokenManager tokenManager;
 
     // todo 재발급 토큰 관리
     public TokenDto signIn(String email, String password) { //로그인
         // 1. email, password로 검증
-        userService.validatePassword(email, password);
+        studentService.validatePassword(email, password);
 
         // 2. 토큰 생성
         return tokenManager.createTokenDto(email);

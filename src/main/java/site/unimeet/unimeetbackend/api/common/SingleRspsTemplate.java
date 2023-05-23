@@ -13,4 +13,8 @@ public class SingleRspsTemplate<T> {
         this.statusCode = statusCode;
         this.data = data;
     }
+
+    public SingleRspsTemplate(int statusCode) {
+        this.statusCode = statusCode;
+    }
 }

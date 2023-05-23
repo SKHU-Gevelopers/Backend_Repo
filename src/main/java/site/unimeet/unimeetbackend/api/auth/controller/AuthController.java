@@ -12,7 +12,7 @@ import site.unimeet.unimeetbackend.api.auth.dto.UserSignInDto;
 import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.domain.auth.service.AuthService;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
-import site.unimeet.unimeetbackend.domain.user.UserService;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 
 import javax.validation.Valid;
 
@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
     private final AuthService authService;
-    private final UserService userService;
+    private final StudentService studentService;
 
     // 인증 테스트
     @GetMapping("/")
@@ -44,7 +44,7 @@ public class AuthController {
 //        String email = emailPrefix.getEmailPrefix() + "@office.skhu.ac.kr"; // skhu.ac.kr 이메일만 허용한다.
         String email = emailPrefix.getEmailPrefix() + "@gmail.com"; // 학교메일로 테스트하기 킹받아서 gmail로 바꿈
 
-        userService.checkEmailDuplicated(email); // 이메일이 이미 존재하는지 체크한다.
+        studentService.checkEmailDuplicated(email); // 이메일이 이미 존재하는지 체크한다.
         authService.sendEmailVerificationCode(email); // 이메일로 인증코드를 보낸다.
 
         return new SingleRspsTemplate<>(HttpStatus.OK.value(),
