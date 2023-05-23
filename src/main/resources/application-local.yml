@@ -11,3 +11,8 @@ server:
 logging:
   level:
     org.hibernate.type: trace
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
