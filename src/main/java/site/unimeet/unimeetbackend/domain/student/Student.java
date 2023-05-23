@@ -50,8 +50,10 @@ public class Student {
         this.nickname = nickname;
         this.mbti = mbti;
         this.introduction = introduction;
-        this.profileImageUrl = profileImageUrl;
         this.majors = majors;
+        if (profileImageUrl != null) {
+            this.profileImageUrl = profileImageUrl;
+        }
     }
 
     @Builder
