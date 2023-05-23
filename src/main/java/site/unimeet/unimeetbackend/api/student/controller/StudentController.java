@@ -38,13 +38,12 @@ public class StudentController {
 
     // 마이페이지 수정
     @PostMapping("/users/my-page")
-    public ResponseEntity<SingleRspsTemplate<?>> editMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
+    public ResponseEntity<?> editMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
         String uploadedFilePath = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
         studentService.editMyPage(editMyPageRequest, uploadedFilePath, email);
 
-        SingleRspsTemplate<?> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.NO_CONTENT.value());
-        return ResponseEntity.ok(rspsTemplate);
+        return ResponseEntity.noContent().build();
     }
 
     // 마이페이지 조회
@@ -55,9 +54,6 @@ public class StudentController {
         SingleRspsTemplate<GetMyPageDto.Response> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(), rspsDto);
         return ResponseEntity.ok(rspsTemplate);
     }
-
-
-
 }
 
 
