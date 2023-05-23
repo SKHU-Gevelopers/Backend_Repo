@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
+import site.unimeet.unimeetbackend.api.student.dto.GetMyPageDto;
 import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
@@ -73,5 +74,12 @@ public class StudentService {
     public Student findByEmail(String email) {
         return studentRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+    }
+
+    public GetMyPageDto.Response getMyPage(String email) {
+        Student student = studentRepository.findByEmailFetchMajors(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+
+        return GetMyPageDto.Response.of(student);
     }
 }

@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
+import site.unimeet.unimeetbackend.api.student.dto.GetMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
@@ -28,6 +26,7 @@ public class StudentController {
     // todo 인스턴스 변수명과 빈 이름이 어떤 관계인지 파악
     private final S3Service s3Service;
 
+    // 회원가입
     @PostMapping("/users/sign-up")
     public ResponseEntity<SingleRspsTemplate<String>> signUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
         Student student = studentService.signUp(signUpRequest.toEntity(passwordEncoder), signUpRequest.getEmailVrfCode());
@@ -39,14 +38,21 @@ public class StudentController {
 
     // 마이페이지 수정
     @PostMapping("/users/my-page")
-    public ResponseEntity<SingleRspsTemplate<String>> editMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
+    public ResponseEntity<SingleRspsTemplate<?>> editMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
         String uploadedFilePath = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
         studentService.editMyPage(editMyPageRequest, uploadedFilePath, email);
 
-        SingleRspsTemplate<String> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(),
-                "mypage is updated");
+        SingleRspsTemplate<?> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.NO_CONTENT.value());
+        return ResponseEntity.ok(rspsTemplate);
+    }
 
+    // 마이페이지 조회
+    @GetMapping("/users/my-page")
+    public ResponseEntity<SingleRspsTemplate<GetMyPageDto.Response>> editMyPage(@StudentEmail String email) {
+        GetMyPageDto.Response rspsDto = studentService.getMyPage(email);
+
+        SingleRspsTemplate<GetMyPageDto.Response> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(), rspsDto);
         return ResponseEntity.ok(rspsTemplate);
     }
 

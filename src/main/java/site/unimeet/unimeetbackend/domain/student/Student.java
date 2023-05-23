@@ -22,6 +22,8 @@ public class Student {
     private String name;
     @Column(unique = true, nullable = false)
     private String nickname;
+    @Column(nullable = false)
+    private byte age;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
@@ -53,9 +55,10 @@ public class Student {
     }
 
     @Builder
-    public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
+    public Student(String name, String nickname, byte age, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;
         this.nickname = nickname;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.gender = gender;
