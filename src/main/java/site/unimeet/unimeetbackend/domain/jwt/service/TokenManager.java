@@ -30,16 +30,16 @@ public class TokenManager {
 
     public TokenDto createTokenDto(String email) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
-        Date refreshTokenExpireTime = createRefreshTokenExpireTime();
+//        Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
         String accessToken = createAccessToken(email, accessTokenExpireTime);
-        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
+//        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
         return TokenDto.builder()
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
                 .accessTokenExpirationTime(accessTokenExpireTime)
-                .refreshToken(refreshToken)
-                .refreshTokenExpirationTime(refreshTokenExpireTime)
+//                .refreshToken(refreshToken)
+//                .refreshTokenExpirationTime(refreshTokenExpireTime)
                 .build();
     }
 
