@@ -1,10 +1,7 @@
 package site.unimeet.unimeetbackend.domain.common;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-@Getter
-@JsonFormat(shape = JsonFormat.Shape.OBJECT) // json 직렬화 시 한글 설명 desc로 반환됨
 public enum Category {
     // IT학부
     SOFTWARE("소프트웨어전공"),  COMPUTER("컴퓨터공학전공"),
@@ -27,13 +24,13 @@ public enum Category {
     LIBERAL("교양학부"),
 
     ;
+    @JsonValue
     private final String desc;
 
     Category(String desc) {
         this.desc = desc;
     }
     // 역직렬화를 위함. CategoryConverter 에서 사용.
-    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     public static Category from(String major){
         return Category.valueOf(major.toUpperCase());
     }
