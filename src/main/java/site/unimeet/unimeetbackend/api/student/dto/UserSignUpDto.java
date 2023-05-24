@@ -3,13 +3,12 @@ package site.unimeet.unimeetbackend.api.student.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.enums.Department;
 import site.unimeet.unimeetbackend.domain.student.enums.Gender;
 import site.unimeet.unimeetbackend.domain.student.enums.Major;
 import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
-import site.unimeet.unimeetbackend.domain.student.Student;
 
 import javax.validation.constraints.*;
 import java.util.List;
@@ -41,9 +40,7 @@ public class UserSignUpDto {
         private Department department;
         @NotNull
         private List<Major> majors;
-
-        @Value("${default.profile.image.url}")
-        private String defaultProfileImageUrl;
+        private final String defaultProfileImageUrl = "https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/ae5e08b9-9b37-433f-a2a5-03d720bd853e.png";
         public Student toEntity(PasswordEncoder passwordEncoder){
             String encodedPassword = passwordEncoder.encode(this.password);
             return Student.builder()
