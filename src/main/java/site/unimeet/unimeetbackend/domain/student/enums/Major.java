@@ -1,5 +1,6 @@
 package site.unimeet.unimeetbackend.domain.student.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -35,6 +36,7 @@ public enum Major {
 
 
     // 역직렬화를 위함. CategoryConverter 에서 사용.
+    @JsonCreator
     public static Major from(String major){
         return Major.valueOf(major.toUpperCase());
     }

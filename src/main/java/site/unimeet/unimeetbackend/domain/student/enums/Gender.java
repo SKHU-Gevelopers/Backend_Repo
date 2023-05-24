@@ -1,5 +1,6 @@
 package site.unimeet.unimeetbackend.domain.student.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Gender {
@@ -12,6 +13,7 @@ public enum Gender {
         this.desc = desc;
     }
     // 역직렬화를 위함. CategoryConverter 에서 사용.
+    @JsonCreator
     public static Gender from(String major){
         return Gender.valueOf(major.toUpperCase());
     }

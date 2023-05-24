@@ -1,5 +1,6 @@
 package site.unimeet.unimeetbackend.domain.student.enums;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Department {
@@ -14,6 +15,7 @@ public enum Department {
     }
 
     // 역직렬화를 위함. Department Converter에서 사용.
+    @JsonCreator
     public static Department from(String department){
         return Department.valueOf(department.toUpperCase());
     }
