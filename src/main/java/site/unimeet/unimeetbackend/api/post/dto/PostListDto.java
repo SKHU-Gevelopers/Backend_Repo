@@ -3,7 +3,6 @@ package site.unimeet.unimeetbackend.api.post.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.Hibernate;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 import site.unimeet.unimeetbackend.domain.student.enums.Gender;
@@ -25,7 +24,6 @@ public class PostListDto {
     private int likes;
 
     public static PostListDto of(Post post){
-        Hibernate.initialize(post.getTitle());
         return PostListDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
