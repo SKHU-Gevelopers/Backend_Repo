@@ -1,17 +1,15 @@
 package site.unimeet.unimeetbackend.domain.post;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.post.dto.PostDto;
 import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
+import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
 
-import java.util.List;
-import java.util.Optional;
-
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -19,14 +17,22 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
     private final StudentRepository studentRepository;
 
+    @Transactional
     //게시글 작성
     public Post addPost(PostDto postDto){
        return postRepository.save(postDto.toEntity());
     }
 
+    public Post findById(Long id){
+        return postRepository.findById(id).
+                orElseThrow(()->new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+    }
+
+    @Transactional
     //게시글 삭제
     public void deletePost(Long id){
-        postRepository.deleteById(id);
+        Post post = findById(id);
+        postRepository.delete(post);
     }
 
     //게시글 좋아요 기능

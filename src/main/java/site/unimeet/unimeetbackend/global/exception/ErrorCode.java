@@ -30,6 +30,9 @@ public enum ErrorCode {
 
     // 학생
     STUDENT_NOT_FOUND(404, "해당 학생을 찾을 수 없습니다."),
+
+    // 게시글
+    POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
     ;
 
 

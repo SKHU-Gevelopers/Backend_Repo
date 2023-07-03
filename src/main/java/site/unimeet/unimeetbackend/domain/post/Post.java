@@ -34,15 +34,14 @@ public class Post extends BaseTimeEntity {
     private int likes; // 좋아요 수
 
     @Builder
-    public Post(Long id, String title, String content, List<String> imageUrls, State state, int maxPeople, Gender gender, int likes) {
-        this.id = id;
+    public Post(String title, String content, List<String> imageUrls, State state, int maxPeople, Gender gender) {
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
         this.state = state;
         this.maxPeople = maxPeople;
         this.gender = gender;
-        this.likes = likes;
+        this.likes = 0;
     }
 }
 
