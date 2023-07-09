@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.file.FileIOException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -60,9 +61,9 @@ public class S3Service {
         metadata.setContentType(multipartFile.getContentType());
 
         PutObjectRequest putObjectRequest;
-        try {
+        try (InputStream inputStream = multipartFile.getInputStream()){
             putObjectRequest = new PutObjectRequest(bucketName + bucketNameSuffix , storedFileName,
-                    multipartFile.getInputStream(), metadata);
+                    inputStream, metadata);
         } catch (IOException e) {
             // FileIOException 발생시키기 전에, IOEXCEPTION 에 대한 로그를 남긴다.
             log.error("IOEXCEPTION: " + "originalFileName: " + originalFileName +
