@@ -6,13 +6,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
-import site.unimeet.unimeetbackend.api.student.dto.GetMyPageDto;
+import site.unimeet.unimeetbackend.api.student.dto.MyPageDto;
+import site.unimeet.unimeetbackend.api.student.dto.PublicMyPageDto;
 import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
+import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
+import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookRepository;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
+    private final GuestBookRepository guestBookRepository;
 
     public Student findById(Long id) {
         return studentRepository.findById(id)
@@ -81,11 +86,18 @@ public class StudentService {
         editMyPageRequest.editMyPage(student, uploadedFilePath);
     }
 
-    public GetMyPageDto.Response getMyPage(String email) {
+    public MyPageDto.Response getMyPage(String email) {
         Student student = studentRepository.findByEmailFetchMajors(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
 
-        return GetMyPageDto.Response.of(student);
+        return MyPageDto.Response.of(student);
+    }
+
+    public PublicMyPageDto.Res getPublicMyPage(Long id) {
+        Student student = findById(id);
+        List<GuestBook> guestBooks = guestBookRepository.findByTargetStudentId(id);
+
+        return PublicMyPageDto.Res.from(student, guestBooks);
     }
 
 

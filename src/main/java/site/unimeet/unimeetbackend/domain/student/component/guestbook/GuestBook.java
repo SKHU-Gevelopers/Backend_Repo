@@ -22,12 +22,12 @@ public class GuestBook extends BaseTimeEntity {
 
     // 방명록 작성자. 한 작성자가 방명록 여러개 작성 가능
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "writer_id")
     private Student writer;
 
     // 방명록 작성대상 Student
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "target_student_id")
     private Student targetStudent;
 
     @Builder
