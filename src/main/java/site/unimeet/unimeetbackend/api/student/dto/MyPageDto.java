@@ -10,7 +10,7 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 
 import java.util.List;
 
-public class GetMyPageDto {
+public class MyPageDto {
     @Getter
     @Builder
     public static class Response{
