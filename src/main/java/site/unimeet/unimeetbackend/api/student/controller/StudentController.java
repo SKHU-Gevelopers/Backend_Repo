@@ -48,11 +48,11 @@ public class StudentController {
 
     // 마이페이지 조회
     @GetMapping("/users/my-page")
-    public ResponseEntity<SingleRspsTemplate<GetMyPageDto.Response>> editMyPage(@StudentEmail String email) {
+    public SingleRspsTemplate<GetMyPageDto.Response> editMyPage(@StudentEmail String email) {
         GetMyPageDto.Response rspsDto = studentService.getMyPage(email);
 
         SingleRspsTemplate<GetMyPageDto.Response> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(), rspsDto);
-        return ResponseEntity.ok(rspsTemplate);
+        return rspsTemplate;
     }
 }
 
