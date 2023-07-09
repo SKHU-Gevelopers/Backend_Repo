@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.post.dto.PostDto;
-import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
-import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
 
@@ -14,8 +12,6 @@ import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundExcepti
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
-    private final StudentRepository studentRepository;
 
     @Transactional
     //게시글 작성
