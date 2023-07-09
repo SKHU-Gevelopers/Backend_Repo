@@ -1,4 +1,4 @@
-package site.unimeet.unimeetbackend.domain.student.enums;
+package site.unimeet.unimeetbackend.domain.student.component.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

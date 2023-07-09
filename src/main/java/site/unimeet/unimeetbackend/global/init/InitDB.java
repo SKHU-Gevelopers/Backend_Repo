@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.student.enums.Department;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
-import site.unimeet.unimeetbackend.domain.student.enums.Major;
-import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 
@@ -29,7 +29,7 @@ public class InitDB {
         ArrayList<Major> majors = new ArrayList<>();
         majors.add(Major.AI);
         majors.add(Major.ENGLISH);
-        Student student = new Student("김성김", "nickname", (byte) 26, "eeee@email.com", passwordEncoder.encode("pppp"),
+        Student student = new Student("김성김", "nickname", "eeee@email.com", passwordEncoder.encode("pppp"),
                 Gender.MALE, Mbti.ENFJ, defaultProfileImageUrl, majors, Department.IT);
         studentRepository.save(student);
     }

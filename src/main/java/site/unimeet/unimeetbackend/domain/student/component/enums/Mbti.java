@@ -1,7 +1,4 @@
-package site.unimeet.unimeetbackend.domain.student.enums;
-
-import lombok.Getter;
-
+package site.unimeet.unimeetbackend.domain.student.component.enums;
 
 public enum Mbti {
     ESTP, ESTJ, ENTP, ENTJ, ESFP, ESFJ, ENFP, ENFJ,

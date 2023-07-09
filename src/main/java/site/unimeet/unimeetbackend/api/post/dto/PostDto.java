@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import java.util.List;
 
@@ -26,14 +26,12 @@ public class PostDto {
 
     public Post toEntity(){
         return Post.builder()
-                .id(id)
                 .title(title)
                 .content(content)
                 .imageUrls(imageUrls)
                 .state(state)
                 .maxPeople(maxPeople)
                 .gender(gender)
-                .likes(likes)
                 .build();
     }
 

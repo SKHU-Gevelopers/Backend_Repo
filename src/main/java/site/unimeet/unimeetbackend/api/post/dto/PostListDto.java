@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import site.unimeet.unimeetbackend.domain.student.Student;
-import site.unimeet.unimeetbackend.domain.student.enums.Department;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
-import site.unimeet.unimeetbackend.domain.student.enums.Major;
-import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 
 import javax.validation.constraints.*;
 import java.util.List;

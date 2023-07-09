@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
-import site.unimeet.unimeetbackend.domain.student.enums.Major;
-import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
 import javax.validation.constraints.NotNull;

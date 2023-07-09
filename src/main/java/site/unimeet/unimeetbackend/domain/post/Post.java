@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 
 import javax.persistence.*;
