@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.RspsTemplate;
-import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.api.post.dto.PostDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostRepository;
@@ -22,21 +21,21 @@ public class PostController {
 
     //게시글 전체 불러오기
     @GetMapping("/post")
-    public RspsTemplate<Post> getPost(){
+    public RspsTemplate<List<Post>> handleGetPost(){
         List<Post> postList = postRepository.findAll();
-        return new RspsTemplate<>(200, postList);
+        return new RspsTemplate<>(HttpStatus.OK, postList);
     }
 
     //게시글 생성
     @PostMapping("/post")
-    public ResponseEntity<SingleRspsTemplate<String>> addPost(@RequestBody PostDto postDto){
+    public ResponseEntity<RspsTemplate<String>> handleAddPost(@RequestBody PostDto postDto){
         postService.addPost(postDto);
-        SingleRspsTemplate<String> rspsTemplate = new SingleRspsTemplate<>(201,"게시글 생성 완료");
+        RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.CREATED,"게시글 생성 완료");
         return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
     }
     //게시글 삭제
     @DeleteMapping("/post/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable("id") Long id){
+    public ResponseEntity<String> handleDeletePost(@PathVariable("id") Long id){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
