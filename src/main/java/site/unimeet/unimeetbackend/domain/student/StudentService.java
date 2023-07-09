@@ -23,6 +23,36 @@ public class StudentService {
     private final PasswordEncoder passwordEncoder;
     private final EmailVerificationService emailVerificationService;
 
+    public Student findById(Long id) {
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+    }
+
+    public void checkEmailDuplicated(String email) {
+        studentRepository.findByEmail(email)
+                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
+                ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
+    }
+
+    public Student findByEmail(String email) {
+        return studentRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+    }
+
+    // 로그인 시 이메일과 비밀번호가 유효한지 체크,
+    public void validatePassword(String email, String password) {
+        Student student = studentRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("로그인 시도, email: {}, 이메일이 일치하지 않습니다.", email);
+                    return new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+                });
+        if (!passwordEncoder.matches(password, student.getPassword())) {
+            // printf 스타일로 로그 출력,
+            log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
+            throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+        }
+    }
+
     @Transactional
     public Student signUp(Student student, String emailVrfCode) {
         // Cache 에서 Email로 검증코드를 가져온다.
@@ -51,35 +81,12 @@ public class StudentService {
         editMyPageRequest.editMyPage(student, uploadedFilePath);
     }
 
-    // 로그인 시 이메일과 비밀번호가 유효한지 체크,
-    public void validatePassword(String email, String password) {
-        Student student = studentRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    log.error("로그인 시도, email: {}, 이메일이 일치하지 않습니다.", email);
-                    return new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
-                });
-        if (!passwordEncoder.matches(password, student.getPassword())) {
-            // printf 스타일로 로그 출력,
-            log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
-            throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
-        }
-    }
-
-    public void checkEmailDuplicated(String email) {
-        studentRepository.findByEmail(email)
-                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
-                ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
-    }
-
-    public Student findByEmail(String email) {
-        return studentRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
-    }
-
     public GetMyPageDto.Response getMyPage(String email) {
         Student student = studentRepository.findByEmailFetchMajors(email)
                 .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
 
         return GetMyPageDto.Response.of(student);
     }
+
+
 }

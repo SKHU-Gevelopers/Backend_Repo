@@ -9,8 +9,10 @@ import site.unimeet.unimeetbackend.api.common.SingleRspsTemplate;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.GetMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
+import site.unimeet.unimeetbackend.api.student.dto.WriteGuestBookDto;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
+import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
@@ -22,6 +24,7 @@ import javax.validation.Valid;
 @RestController
 public class StudentController {
     private final StudentService studentService;
+    private final GuestBookService guestBookService;
     private final PasswordEncoder passwordEncoder;
     // todo 인스턴스 변수명과 빈 이름이 어떤 관계인지 파악
     private final S3Service s3Service;
@@ -53,6 +56,15 @@ public class StudentController {
 
         SingleRspsTemplate<GetMyPageDto.Response> rspsTemplate = new SingleRspsTemplate<>(HttpStatus.OK.value(), rspsDto);
         return rspsTemplate;
+    }
+
+    // 방명록 작성
+    @PostMapping("/users/{userId}/guestbooks")
+    public ResponseEntity<?> writeGuestbook(@StudentEmail String writerEmail,
+                                            @PathVariable("userId") Long targetUserId, @RequestBody WriteGuestBookDto.Req reqDto) {
+        guestBookService.write(targetUserId, reqDto.getContent(), writerEmail);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 
