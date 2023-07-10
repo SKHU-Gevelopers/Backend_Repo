@@ -3,7 +3,6 @@ package site.unimeet.unimeetbackend.domain.post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.unimeet.unimeetbackend.api.post.dto.PostDto;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
 
@@ -15,8 +14,8 @@ public class PostService {
 
     @Transactional
     //게시글 작성
-    public Post addPost(PostDto postDto){
-       return postRepository.save(postDto.toEntity());
+    public Post addPost(Post post){
+       return postRepository.save(post);
     }
 
     public Post findById(Long id){

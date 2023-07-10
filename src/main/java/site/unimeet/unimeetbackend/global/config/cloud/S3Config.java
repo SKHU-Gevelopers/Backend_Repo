@@ -18,6 +18,7 @@ public class S3Config {
     private String secretKey;
 
     public static final String BUCKETNAME_SUFFIX_PROFILE_IMG = "/user_profile_img";
+    public static final String BUCKETNAME_SUFFIX_POST_IMG = "/post_img";
 
     @Bean(name = "s3Client")
     public AmazonS3Client amazonS3Client() {

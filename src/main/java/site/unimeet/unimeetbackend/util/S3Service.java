@@ -30,7 +30,7 @@ public class S3Service {
     private final AmazonS3Client s3Client;
 
     // return fullFilePath
-    public List<String> uploadAll(List<MultipartFile> multipartFiles, String bucketNameSuffix){
+    public List<String> upload(List<MultipartFile> multipartFiles, String bucketNameSuffix){
         List<String> storedFilePaths = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             // empty Check. type=file 이며 name이 일치한다면, 본문이 비어있어도 MultiPartFile 객체가 생성된다.
@@ -64,6 +64,8 @@ public class S3Service {
         try (InputStream inputStream = multipartFile.getInputStream()){
             putObjectRequest = new PutObjectRequest(bucketName + bucketNameSuffix , storedFileName,
                     inputStream, metadata);
+            // Upload the file to the specified bucket
+            s3Client.putObject(putObjectRequest);
         } catch (IOException e) {
             // FileIOException 발생시키기 전에, IOEXCEPTION 에 대한 로그를 남긴다.
             log.error("IOEXCEPTION: " + "originalFileName: " + originalFileName +
@@ -71,9 +73,7 @@ public class S3Service {
             e.printStackTrace();
             throw new FileIOException(ErrorCode.FILE_CANNOT_BE_STORED);
         }
-        // Upload the file to the specified bucket
-        s3Client.putObject(putObjectRequest);
-        System.out.println("File uploaded successfully!");
+
         return storedFilePath;
     }
 

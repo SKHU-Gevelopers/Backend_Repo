@@ -42,8 +42,8 @@ public class StudentController {
     @PostMapping("/users/my-page")
     public ResponseEntity<?> handleEditMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
-        String uploadedFilePath = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
-        studentService.editMyPage(editMyPageRequest, uploadedFilePath, email);
+        String uploadedFileUrl = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
+        studentService.editMyPage(editMyPageRequest, uploadedFileUrl, email);
 
         return ResponseEntity.noContent().build();
     }
