@@ -2,10 +2,10 @@ package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.student.enums.Department;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
-import site.unimeet.unimeetbackend.domain.student.enums.Major;
-import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,8 +22,8 @@ public class Student {
     private String name;
     @Column(unique = true, nullable = false)
     private String nickname;
-    @Column(nullable = false)
-    private byte age;
+//    @Column(nullable = false)
+//    private byte age;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
@@ -57,10 +57,9 @@ public class Student {
     }
 
     @Builder
-    public Student(String name, String nickname, byte age, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
+    public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;
         this.nickname = nickname;
-        this.age = age;
         this.email = email;
         this.password = password;
         this.gender = gender;

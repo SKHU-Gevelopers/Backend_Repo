@@ -1,17 +1,17 @@
 package site.unimeet.unimeetbackend.api.common;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-import java.util.List;
 // 응답 템플릿
-// 응답 DTO를 리스트로 보낼 때
+// 응답 DTO가 리스트가 아닐 때
 @Getter
 public class RspsTemplate<T> {
     private int statusCode;
-    private List<T> data;
+    private T data;
 
-    public RspsTemplate(int statusCode, List<T> data) {
-        this.statusCode = statusCode;
+    public RspsTemplate(HttpStatus httpStatus, T data) {
+        this.statusCode = httpStatus.value();
         this.data = data;
     }
 }

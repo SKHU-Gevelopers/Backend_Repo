@@ -3,19 +3,18 @@ package site.unimeet.unimeetbackend.api.student.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
-import site.unimeet.unimeetbackend.domain.student.enums.Major;
-import site.unimeet.unimeetbackend.domain.student.enums.Mbti;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
 import java.util.List;
 
-public class GetMyPageDto {
+public class MyPageDto {
     @Getter
     @Builder
     public static class Response{
         private String nickname;
-        private short age;
         private Gender gender;
         private Mbti mbti;
         private String introduction;
@@ -25,7 +24,6 @@ public class GetMyPageDto {
         public static Response of(Student student) {
             return Response.builder()
                     .nickname(student.getNickname())
-                    .age(student.getAge())
                     .gender(student.getGender())
                     .mbti(student.getMbti())
                     .introduction(student.getIntroduction())

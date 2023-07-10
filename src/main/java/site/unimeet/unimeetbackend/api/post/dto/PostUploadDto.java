@@ -1,39 +1,38 @@
 package site.unimeet.unimeetbackend.api.post.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.domain.post.Post;
-import site.unimeet.unimeetbackend.domain.post.enums.State;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@RequiredArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-public class PostDto {
-    private Long id;
-    private String title;
-    private String content;
-    private List<String> imageUrls;
-    private State state;
-    private int maxPeople;
-    private Gender gender;
-    private int likes;
 
-    public Post toEntity(){
+@AllArgsConstructor
+@Data
+public class PostUploadDto {
+    @NotBlank
+    private String title;
+    @NotBlank
+    private String content;
+    @NotNull
+    private List<MultipartFile> postImages;
+    @Min(1)
+    private int maxPeople;
+    @NotNull
+    private Gender gender;
+
+    public Post toEntity(List<String> imageUrls){
         return Post.builder()
-                .id(id)
                 .title(title)
                 .content(content)
                 .imageUrls(imageUrls)
-                .state(state)
                 .maxPeople(maxPeople)
                 .gender(gender)
-                .likes(likes)
                 .build();
     }
 

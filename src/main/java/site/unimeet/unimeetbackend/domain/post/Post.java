@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
-import site.unimeet.unimeetbackend.domain.student.enums.Gender;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 
 import javax.persistence.*;
@@ -27,18 +27,17 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private State state; // 만남 모집중 상태. In progress, Done
     @Column(nullable = false)
-    private int maxPeople; // 희망 인원
+    private Integer maxPeople; // 희망 인원
     @Column(nullable = false)
     private Gender gender; // 희망 성별
-
-    private int likes; // 좋아요 수
+    private Integer likes; // 좋아요 수
 
     @Builder
-    public Post(String title, String content, List<String> imageUrls, State state, int maxPeople, Gender gender) {
+    private Post(String title, String content, List<String> imageUrls, int maxPeople, Gender gender) {
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
-        this.state = state;
+        this.state = State.IN_PROGRESS;
         this.maxPeople = maxPeople;
         this.gender = gender;
         this.likes = 0;
