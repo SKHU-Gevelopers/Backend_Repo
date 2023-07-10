@@ -14,7 +14,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class PostDto {
+public class PostUploadDto {
     @NotBlank
     private String title;
     @NotBlank

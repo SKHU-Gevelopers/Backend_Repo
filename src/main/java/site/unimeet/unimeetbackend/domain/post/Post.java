@@ -30,7 +30,6 @@ public class Post extends BaseTimeEntity {
     private Integer maxPeople; // 희망 인원
     @Column(nullable = false)
     private Gender gender; // 희망 성별
-
     private Integer likes; // 좋아요 수
 
     @Builder
