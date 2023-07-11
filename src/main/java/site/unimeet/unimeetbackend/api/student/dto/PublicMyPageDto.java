@@ -20,6 +20,7 @@ public class PublicMyPageDto {
 
         public static Res from(Student student, List<GuestBook> guestBooks) {
             StudentDto studentDto = StudentDto.builder()
+                    .profileImageUrl(student.getProfileImageUrl())
                     .nickname(student.getNickname())
                     .department(student.getDepartment())
                     .mbti(student.getMbti())
@@ -37,6 +38,7 @@ public class PublicMyPageDto {
         @Getter
         @Builder
         private static class StudentDto {
+            private String profileImageUrl;
             private String nickname;
             private Department department;
             private Mbti mbti;
