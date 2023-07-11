@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.util.S3Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ public class PostController {
 
     //게시글 생성
     @PostMapping("/posts")
-    public ResponseEntity<RspsTemplate<String>> handleAddPost(@ModelAttribute PostUploadDto postUploadDto){
+    public ResponseEntity<RspsTemplate<String>> handleAddPost(@ModelAttribute @Valid PostUploadDto postUploadDto){
         List<String> uploadedFileUrls = s3Service.upload(postUploadDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
         postService.addPost(postUploadDto.toEntity(uploadedFileUrls));
 

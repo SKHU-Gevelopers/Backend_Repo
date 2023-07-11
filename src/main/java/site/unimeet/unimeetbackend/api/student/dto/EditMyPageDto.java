@@ -23,6 +23,7 @@ public class EditMyPageDto {
         private String introduction;
         @NotNull
         private List<Major> majors;
+        @NotNull
         private MultipartFile profileImg;
 
         public void editMyPage(Student student, String profileImageUrl) {
