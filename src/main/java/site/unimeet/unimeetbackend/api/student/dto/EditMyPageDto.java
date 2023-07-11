@@ -23,6 +23,7 @@ public class EditMyPageDto {
         private String introduction;
         @NotNull
         private List<Major> majors;
+        @NotNull(message = "프로필 이미지가 NULL입니다.")
         private MultipartFile profileImg;
 
         public void editMyPage(Student student, String profileImageUrl) {

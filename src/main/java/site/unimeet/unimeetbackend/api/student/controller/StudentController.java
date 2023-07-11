@@ -17,6 +17,7 @@ import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class StudentController {
 
     // 마이페이지 수정
     @PostMapping("/users/my-page")
-    public ResponseEntity<?> handleEditMyPage(@ModelAttribute EditMyPageDto.Request editMyPageRequest
+    public ResponseEntity<?> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
         String uploadedFileUrl = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
         studentService.editMyPage(editMyPageRequest, uploadedFileUrl, email);
@@ -60,7 +61,7 @@ public class StudentController {
     // 방명록 작성
     @PostMapping("/users/{userId}/guestbooks")
     public ResponseEntity<?> handleWriteGuestbook(@StudentEmail String writerEmail,
-                                            @PathVariable("userId") Long targetUserId, @RequestBody WriteGuestBookDto reqDto) {
+                                            @PathVariable("userId") Long targetUserId, @RequestBody @Valid WriteGuestBookDto reqDto) {
         guestBookService.write(targetUserId, reqDto.getContent(), writerEmail);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -70,6 +71,7 @@ public class StudentController {
     @Getter
     @NoArgsConstructor
     private static class WriteGuestBookDto {
+        @NotBlank
         private String content;
     }
 
