@@ -36,8 +36,12 @@ public class InitDB {
 
         Student student2 = new Student("김경민", "경민이", "eeee1@email.com", passwordEncoder.encode("pppp"),
                 Gender.FEMALE, Mbti.ENFP, S3Config.getDefaultProfileImageUrl(), majors, Department.SOCIAL);
+
+        Student student3 = new Student("감경민", "갱민이", "eeee2@email.com", passwordEncoder.encode("pppp"),
+                Gender.FEMALE, Mbti.ENFJ, S3Config.getDefaultProfileImageUrl(), majors, Department.HUMANITIES);
         studentRepository.save(student);
         studentRepository.save(student2);
+        studentRepository.save(student3);
 
         GuestBook guestBook1 = GuestBook.builder()
                 .content("이병건은 이병건을 좋아해요")
@@ -59,6 +63,27 @@ public class InitDB {
                 .targetStudent(student)
                 .build();
         guestBookRepository.save(guestBook3);
+
+        GuestBook guestBook4 = GuestBook.builder()
+                .content("김경민이 이병건을 좋아해요3")
+                .writer(student3)
+                .targetStudent(student)
+                .build();
+        guestBookRepository.save(guestBook4);
+
+        GuestBook guestBook5 = GuestBook.builder()
+                .content("김경민이 이병건을 좋아해요4")
+                .writer(student3)
+                .targetStudent(student3)
+                .build();
+        guestBookRepository.save(guestBook5);
+
+        GuestBook guestBook6 = GuestBook.builder()
+                .content("김경민이 이병건을 좋아해요5")
+                .writer(student3)
+                .targetStudent(student3)
+                .build();
+        guestBookRepository.save(guestBook6);
 
     }
 }
