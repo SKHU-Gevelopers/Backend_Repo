@@ -32,10 +32,16 @@ public class PostLike extends BaseTimeEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    @Column(nullable = false)
+    private boolean status;
+
     public PostLike(Student student, Post post) {
         this.student = student;
         this.post = post;
+        this.status = true;
     }
+
+
 }
 
 
