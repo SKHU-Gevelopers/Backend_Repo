@@ -3,10 +3,9 @@ package site.unimeet.unimeetbackend.api.student.component.dm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import site.unimeet.unimeetbackend.api.common.RspsTemplate;
+import site.unimeet.unimeetbackend.api.student.component.dm.dto.ReadDMDto;
 import site.unimeet.unimeetbackend.api.student.component.dm.dto.SendDMDto;
 import site.unimeet.unimeetbackend.domain.student.component.dm.DMService;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
@@ -27,6 +26,18 @@ public class DMController {
         dmService.sendDM(senderId, receiverEmail, sendDMDto.getTitle(), sendDMDto.getContent());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    // DM 단건조회
+    @GetMapping("/dm/{dmId}")
+    public RspsTemplate<ReadDMDto.Res> handleGetDM(@PathVariable Long dmId, @StudentEmail String email) {
+
+        ReadDMDto.Res res = dmService.readDM(dmId, email);
+        return new RspsTemplate<>(HttpStatus.OK, res);
+    }
+
+
+
+    // DM 목록조회
 
 
 }
