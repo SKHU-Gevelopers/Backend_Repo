@@ -13,6 +13,7 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import javax.validation.constraints.*;
 import java.util.List;
 
+// 회원가입
 public class UserSignUpDto {
     @Getter
     @NoArgsConstructor

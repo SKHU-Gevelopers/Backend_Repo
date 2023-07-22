@@ -1,7 +1,6 @@
 package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Component
 @Entity
 public class Student {
     @Id
