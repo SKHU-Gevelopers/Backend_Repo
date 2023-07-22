@@ -12,7 +12,6 @@ import site.unimeet.unimeetbackend.api.student.dto.PublicMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
-import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
@@ -24,7 +23,6 @@ import javax.validation.Valid;
 @RestController("/users")
 public class StudentController {
     private final StudentService studentService;
-    private final GuestBookService guestBookService;
     private final PasswordEncoder passwordEncoder;
     // todo 인스턴스 변수명과 빈 이름이 어떤 관계인지 파악
     private final S3Service s3Service;

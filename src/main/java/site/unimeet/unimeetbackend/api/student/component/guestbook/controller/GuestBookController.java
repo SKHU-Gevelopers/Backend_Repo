@@ -16,12 +16,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @RequiredArgsConstructor
-@RestController("/users")
+@RestController
 public class GuestBookController {
     private final GuestBookService guestBookService;
 
     // 방명록 작성
-    @PostMapping("/{userId}/guestbooks")
+    @PostMapping("/users/{userId}/guestbooks")
     public ResponseEntity<?> handleWriteGuestbook(@StudentEmail String writerEmail,
                                                   @PathVariable("userId") Long targetUserId, @RequestBody @Valid WriteGuestBookDto reqDto) {
         guestBookService.write(targetUserId, reqDto.getContent(), writerEmail);
@@ -32,7 +32,7 @@ public class GuestBookController {
     @Getter
     @NoArgsConstructor
     private static class WriteGuestBookDto {
-        @NotBlank
+        @NotBlank(message = "방명록 내용을 입력해주세요.")
         private String content;
     }
 }
