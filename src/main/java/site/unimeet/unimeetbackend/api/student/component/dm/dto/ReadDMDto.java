@@ -2,22 +2,23 @@ package site.unimeet.unimeetbackend.api.student.component.dm.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNameDto;
+import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
 import site.unimeet.unimeetbackend.domain.student.component.dm.DM;
 
+// DM 단건 조회
 public class ReadDMDto {
     @Builder
     @Getter
     public static class Res {
         private DMDto dm;
-        private StudentIdAndNameDto sender;
+        private StudentIdAndNickNameDto sender;
 
         public static Res from(DM dm) {
             DMDto dmDto = DMDto.builder()
                     .title(dm.getTitle())
                     .content(dm.getContent())
                     .build();
-            StudentIdAndNameDto sender = StudentIdAndNameDto.from(dm.getSender());
+            StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(dm.getSender());
 
             return Res.builder()
                     .dm(dmDto)

@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 게시글 목록
 public class PostListDto {
     @Getter
     @Builder

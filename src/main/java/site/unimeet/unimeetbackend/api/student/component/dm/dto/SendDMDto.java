@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
+// DM 전송
 public class SendDMDto {
     @Getter
     @NoArgsConstructor

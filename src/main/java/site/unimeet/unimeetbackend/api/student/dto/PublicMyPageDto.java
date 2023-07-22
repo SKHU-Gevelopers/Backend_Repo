@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 공개 프로필(마이페이지) 조회
 public class PublicMyPageDto {
 
     @Getter

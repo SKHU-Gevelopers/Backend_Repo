@@ -9,6 +9,7 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import java.util.List;
 
+// 게시글 상세정보 조회
 public class PostDetailDto {
     @Getter
     @Builder

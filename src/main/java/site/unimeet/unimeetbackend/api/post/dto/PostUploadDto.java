@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-
+// 게시글 업로드
 @AllArgsConstructor
 @Data
 public class PostUploadDto {

@@ -34,10 +34,12 @@ public class DMController {
         ReadDMDto.Res res = dmService.readDM(dmId, email);
         return new RspsTemplate<>(HttpStatus.OK, res);
     }
-
-
-
     // DM 목록조회
+    @GetMapping("/dm")
+    public RspsTemplate<?> handleGetDMList(@StudentEmail String email) {
+        return null;
+    }
+
 
 
 }

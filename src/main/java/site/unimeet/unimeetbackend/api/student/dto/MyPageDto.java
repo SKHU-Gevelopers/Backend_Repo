@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 
 import java.util.List;
 
+// 마이페이지 조회
 public class MyPageDto {
     @Getter
     @Builder
