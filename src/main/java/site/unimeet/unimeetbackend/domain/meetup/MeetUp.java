@@ -23,6 +23,8 @@ public class MeetUp extends BaseTimeEntity {
     private String title;
     @Column(nullable = false)
     private String content;
+    @Column(nullable = false)
+    private String contact;
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> imageUrls;
 
@@ -34,9 +36,10 @@ public class MeetUp extends BaseTimeEntity {
     private Student requester; // 신청자
 
     @Builder
-    private MeetUp(String title, String content, List<String> imageUrls, Post targetPost, Student requester) {
+    private MeetUp(String title, String content, String contact,List<String> imageUrls, Post targetPost, Student requester) {
         this.title = title;
         this.content = content;
+        this.contact = contact;
         this.imageUrls = imageUrls;
         this.targetPost = targetPost;
         this.requester = requester;

@@ -19,6 +19,8 @@ public class MeetUpRequestDto {
         private String title;
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
+        @NotBlank(message = "연락처를 입력해주세요.")
+        private String contact;
         @NotNull(message = "이미지 전송 오류입니다.")
         private List<MultipartFile> meetUpImage;
 
@@ -26,6 +28,7 @@ public class MeetUpRequestDto {
             return MeetUp.builder()
                     .title(title)
                     .content(content)
+                    .contact(contact)
                     .imageUrls(meetUpImageUrls)
                     .targetPost(targetPost)
                     .requester(requester)

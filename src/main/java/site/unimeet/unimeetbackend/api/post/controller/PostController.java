@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
 import site.unimeet.unimeetbackend.domain.meetup.MeetUpService;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
+import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.Valid;
@@ -58,8 +59,9 @@ public class PostController {
 
     // 만남 신청
     @PostMapping("/posts/{postId}/meet-ups")
-    public ResponseEntity<?> createMeetUp(@PathVariable Long postId, @ModelAttribute MeetUpRequestDto.Req req){
-        meetUpService.createMeetUpRequest(postId, req);
+    public ResponseEntity<?> createMeetUp(@PathVariable Long postId, @ModelAttribute MeetUpRequestDto.Req req,
+                                                                            @StudentEmail String email){
+        meetUpService.createMeetUpRequest(postId, req, email);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

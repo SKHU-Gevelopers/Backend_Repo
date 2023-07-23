@@ -37,7 +37,7 @@ public class PostListDto {
 
             private static PostListDto.Res.PostDto from(Post post){
                 List<String> imageUrls = post.getImageUrls();
-                String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : S3Config.getDefaultProfileImageUrl();
+                String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : S3Config.DEFAULT_PROFILE_IMAGE_URL;
 
                 return PostListDto.Res.PostDto.builder()
                         .id(post.getId())
