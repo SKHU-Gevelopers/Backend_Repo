@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.RspsTemplate;
+import site.unimeet.unimeetbackend.api.post.dto.MeetUpRequestDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
+import site.unimeet.unimeetbackend.domain.meetup.MeetUpService;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.util.S3Service;
@@ -20,6 +22,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final S3Service s3Service;
+    private final MeetUpService meetUpService;
 
     //게시글 목록 조회
     @GetMapping("/posts")
@@ -50,6 +53,14 @@ public class PostController {
     public ResponseEntity<String> handleDeletePost(@PathVariable("id") Long id){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    // 만남 신청
+    @PostMapping("/posts/{postId}/meet-ups")
+    public ResponseEntity<?> createMeetUp(@PathVariable Long postId, @ModelAttribute MeetUpRequestDto.Req req){
+        meetUpService.createMeetUpRequest(postId, req);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 

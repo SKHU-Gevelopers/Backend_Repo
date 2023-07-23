@@ -32,13 +32,13 @@ public class InitDB {
         majors.add(Major.AI);
         majors.add(Major.ENGLISH);
         Student student = new Student("이병건", "침착맨", "eeee@email.com", passwordEncoder.encode("pppp"),
-                Gender.MALE, Mbti.INTP, S3Config.getDefaultProfileImageUrl(), majors, Department.IT);
+                Gender.MALE, Mbti.INTP, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.IT);
 
         Student student2 = new Student("김경민", "경민이", "eeee1@email.com", passwordEncoder.encode("pppp"),
-                Gender.FEMALE, Mbti.ENFP, S3Config.getDefaultProfileImageUrl(), majors, Department.SOCIAL);
+                Gender.FEMALE, Mbti.ENFP, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.SOCIAL);
 
         Student student3 = new Student("감경민", "갱민이", "eeee2@email.com", passwordEncoder.encode("pppp"),
-                Gender.FEMALE, Mbti.ENFJ, S3Config.getDefaultProfileImageUrl(), majors, Department.HUMANITIES);
+                Gender.FEMALE, Mbti.ENFJ, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.HUMANITIES);
         studentRepository.save(student);
         studentRepository.save(student2);
         studentRepository.save(student3);
