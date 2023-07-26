@@ -6,16 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
-import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
-import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
+import site.unimeet.unimeetbackend.domain.like.PostLike;
+import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
@@ -23,6 +21,8 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
     private final StudentRepository studentRepository;
+    private final PostLikeRepository postLikeRepository;
+
 
     @Transactional
     //게시글 작성
@@ -70,10 +70,40 @@ public class PostService {
     }
 
     //게시글 좋아요 기능
-//    @Transactional
-//    public String likePost(Long id){
-//
-//    }
+    @Transactional
+    public String updateLikePost(Long id, Student student) {
+
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+
+        if (!hasLikePost(post, student)) {
+            post.increaseLikeCount();
+            return createLikePost(post, student);
+        }
+
+        post.decreaseLikeCount();
+        return removeLikePost(post, student);
+    }
+
+    private String removeLikePost(Post post, Student student) {
+        PostLike postLike = postLikeRepository.findByPostAndStudent(post,student)
+                .orElseThrow();
+
+        postLikeRepository.delete(postLike);
+
+        return "게시글 좋아요 삭제";
+    }
+
+    public String createLikePost(Post post, Student student) {
+        PostLike postLike = new PostLike(post, student);
+        postLikeRepository.save(postLike);
+        return "게시글 좋아요";
+    }
+
+    public boolean hasLikePost(Post post, Student student) {
+        return postLikeRepository.findByPostAndStudent(post, student)
+                .isPresent();
+    }
 
 }
 

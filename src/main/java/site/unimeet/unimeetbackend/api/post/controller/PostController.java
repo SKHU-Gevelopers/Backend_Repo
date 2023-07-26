@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
+import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.Valid;
@@ -23,7 +24,6 @@ public class PostController {
     private final PostService postService;
     private final S3Service s3Service;
 
-    private final Student student;
 
     //게시글 목록 조회
     @GetMapping("/posts")
@@ -56,10 +56,10 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    //게시글 수정 - 뭔가 안됨 뭔지 모르겠음, 일단 개똥으로 짠듯 ;;;
+    //게시글 수정
     @PutMapping("posts/{id}")
     public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute PostUpdateDto postUpdateDto){
-//        List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
+        List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
         postService.editPost(id,postUpdateDto);
         
         RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
@@ -67,18 +67,13 @@ public class PostController {
     }
     
     //게시글 좋아요
-//    @PutMapping("/posts/{id")
-//    public ResponseEntity<String> likePost(@PathVariable("id") Long id){
-//        postService.likePost(id);
-//        return ResponseEntity.ok("게시글 좋아요");
-//    }
+    @PutMapping("/postlike/{id}")
+    public ResponseEntity<String> likePost(@PathVariable("id") Long id, @StudentEmail Student student){
+        postService.updateLikePost(id, student);
+        return ResponseEntity.ok("게시글 좋아요");
+    }
 
 }
-
-
-
-
-
 
     //인기글 조회
 

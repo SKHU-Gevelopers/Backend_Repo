@@ -35,7 +35,7 @@ public class PostLike extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean status;
 
-    public PostLike(Student student, Post post) {
+    public PostLike(Post post, Student student) {
         this.student = student;
         this.post = post;
         this.status = true;

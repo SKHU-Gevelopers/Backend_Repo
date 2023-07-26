@@ -16,8 +16,9 @@ public class PostUpdateDto {
     private String title;
 
     private String content;
-//    @NotNull(message = "이미지가 NULL입니다.")
-//    private List<MultipartFile> postImages;
+
+    @NotNull(message = "이미지가 NULL입니다.")
+    private List<MultipartFile> postImages;
 
     private int maxPeople;
 

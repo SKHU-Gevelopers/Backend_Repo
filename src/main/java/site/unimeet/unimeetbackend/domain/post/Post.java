@@ -51,6 +51,15 @@ public class Post extends BaseTimeEntity {
         this.maxPeople = maxPeople;
         this.gender = gender;
     }
+
+    public void increaseLikeCount() {
+        this.likes += 1;
+    }
+
+    public void decreaseLikeCount() {
+        this.likes -= 1;
+    }
+
 }
 
 
