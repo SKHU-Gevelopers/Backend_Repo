@@ -23,6 +23,7 @@ public class Post extends BaseTimeEntity {
     private String title;
     @Lob
     private String content;
+
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> imageUrls;
     @Enumerated(EnumType.STRING)

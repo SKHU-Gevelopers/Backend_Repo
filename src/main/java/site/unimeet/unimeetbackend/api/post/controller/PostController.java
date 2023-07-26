@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.RspsTemplate;
-import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
-import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
-import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
-import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
+import site.unimeet.unimeetbackend.api.post.dto.*;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
@@ -67,13 +64,12 @@ public class PostController {
     }
     
     //게시글 좋아요
-    @PutMapping("/postlike/{id}")
-    public ResponseEntity<String> likePost(@PathVariable("id") Long id, @StudentEmail Student student){
-        postService.updateLikePost(id, student);
+    @PutMapping("/postlike")
+    public ResponseEntity<String> likePost(@RequestBody @Valid PostLikeDto postLikeDto){
+        postService.updateLikePost(postLikeDto);
         return ResponseEntity.ok("게시글 좋아요");
     }
 
 }
 
-    //인기글 조회
 

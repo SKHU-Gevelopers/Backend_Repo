@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
+import site.unimeet.unimeetbackend.api.post.dto.PostLikeDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
 import site.unimeet.unimeetbackend.domain.like.PostLike;
@@ -71,12 +72,15 @@ public class PostService {
 
     //게시글 좋아요 기능
     @Transactional
-    public String updateLikePost(Long id, Student student) {
+    public String updateLikePost(PostLikeDto postLikeDto) {
 
-        Post post = postRepository.findById(id)
+        Post post = postRepository.findById(postLikeDto.getPostId())
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
 
-        if (!hasLikePost(post, student)) {
+        Student student = studentRepository.findById(postLikeDto.getStudentId())
+                .orElseThrow(()-> new EntityNotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+
+        if (!hasLikePost(post,student)) {
             post.increaseLikeCount();
             return createLikePost(post, student);
         }
@@ -85,7 +89,7 @@ public class PostService {
         return removeLikePost(post, student);
     }
 
-    private String removeLikePost(Post post, Student student) {
+    private String removeLikePost(Post post , Student student) {
         PostLike postLike = postLikeRepository.findByPostAndStudent(post,student)
                 .orElseThrow();
 
@@ -94,7 +98,7 @@ public class PostService {
         return "게시글 좋아요 삭제";
     }
 
-    public String createLikePost(Post post, Student student) {
+    public String createLikePost(Post post , Student student) {
         PostLike postLike = new PostLike(post, student);
         postLikeRepository.save(postLike);
         return "게시글 좋아요";
@@ -104,6 +108,9 @@ public class PostService {
         return postLikeRepository.findByPostAndStudent(post, student)
                 .isPresent();
     }
+
+
+    
 
 }
 

@@ -5,7 +5,6 @@ import lombok.Getter;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
-import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class PostListDto {
             private int maxPeople;
             private Gender gender;
             private int likes;
-            private StudentIdAndNickNameDto sender;
+
 
             private static PostListDto.Res.PostDto from(Post post){
                 List<String> imageUrls = post.getImageUrls();
