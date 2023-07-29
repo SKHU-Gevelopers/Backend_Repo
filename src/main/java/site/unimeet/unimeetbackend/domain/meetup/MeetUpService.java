@@ -23,19 +23,28 @@ public class MeetUpService {
     private final StudentService studentService;
 
 
+    // Todo 자기 자신에게는 신청할 수 없도록 예외처리
     @Transactional
     public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
         // post 조회
-        Post targetPost = postService.findById(targetPostId);
+        Post targetPost = postService.findByIdFetchWriter(targetPostId);
 
-        // requester 조회
-        Student requester = studentService.findByEmail(requesterEmail);
+        // post의 작성자이자, meetUp의 수신자
+        Student receiver = targetPost.getWriter();
+
+        // sender 조회
+        Student sender = studentService.findByEmail(requesterEmail);
 
         // 이미지 저장
         List<String> uploadedMeetUpImgUrls = s3Service.upload(req.getMeetUpImage(), S3Config.BUCKETNAME_SUFFIX_MEETUP_IMG);
 
         // 객체 생성 후 저장
-        MeetUp meetUp = req.toEntity(uploadedMeetUpImgUrls, targetPost, requester);
+        MeetUp meetUp = req.toEntity(uploadedMeetUpImgUrls, targetPost, sender, receiver);
         meetUpRepository.save(meetUp);
     }
+
+//    public MeetUpListDto.Res getMeetUpList(String email) {
+//        Student receiver = studentService.findByEmail(email);
+//        meetUpRepository.findAllBy
+//    }
 }

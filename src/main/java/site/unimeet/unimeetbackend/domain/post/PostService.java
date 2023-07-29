@@ -45,6 +45,10 @@ public class PostService {
         return PostDetailDto.Res.from(post);
     }
 
+    public Post findByIdFetchWriter(Long id) {
+        return EntityUtil.checkNotFound(postRepository.findByIdFetchWriter(id), ErrorCode.POST_NOT_FOUND);
+    }
+
     @Transactional
     public void writePost(PostUploadDto postUploadDto, List<String> uploadedFileUrls, String email) {
         Student writer = studentService.findByEmail(email);
@@ -53,9 +57,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post findByIdFetchWriter(Long writerId) {
-        return null;
-    }
+
 
 
     //게시글 좋아요 기능

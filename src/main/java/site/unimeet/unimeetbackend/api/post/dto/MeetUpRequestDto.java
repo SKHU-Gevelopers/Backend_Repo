@@ -24,14 +24,15 @@ public class MeetUpRequestDto {
         @NotNull(message = "이미지 전송 오류입니다.")
         private List<MultipartFile> meetUpImage;
 
-        public MeetUp toEntity(List<String> meetUpImageUrls, Post targetPost, Student requester){
+        public MeetUp toEntity(List<String> meetUpImageUrls, Post targetPost, Student sender, Student receiver){
             return MeetUp.builder()
                     .title(title)
                     .content(content)
                     .contact(contact)
                     .imageUrls(meetUpImageUrls)
                     .targetPost(targetPost)
-                    .requester(requester)
+                    .sender(sender)
+                    .receiver(receiver)
                     .build();
         }
     }
