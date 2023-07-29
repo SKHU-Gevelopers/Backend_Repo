@@ -64,19 +64,22 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 받은 만남신청 목록
-//    @GetMapping("/meet-ups")
-//    public RspsTemplate<MeetUpListDto.Res> handleGetMeetUpList(@StudentEmail String email){
-//        MeetUpListDto.Res meetUpRequests = meetUpService.getMeetUpList(email);
-//        return new RspsTemplate<>(HttpStatus.OK, meetUpRequests);
-//    }
+     //받은 만남신청 목록
+    @GetMapping("/meet-ups")
+    public RspsTemplate<MeetUpListDto.Res> handleGetMeetUpList(@StudentEmail String email){
+        MeetUpListDto.Res meetUpRequests = meetUpService.getMeetUpList(email);
+        return new RspsTemplate<>(HttpStatus.OK, meetUpRequests);
+    }
 
-//    // 받은 만남신청 상세
-//    @GetMapping("/meet-ups/{meetUpId}")
-//    public RspsTemplate<MeetUpRequestDto.DetailRes> handleGetMeetUpRequestDetail(@PathVariable Long meetUpId){
-//        MeetUpRequestDto.DetailRes meetUpRequestDetail = meetUpService.getMeetUpRequestDetail(meetUpId);
-//        return new RspsTemplate<>(HttpStatus.OK, meetUpRequestDetail);
-//    }
+    // 받은 만남신청 상세
+    @GetMapping("/meet-ups/{meetUpId}")
+    public RspsTemplate<MeetUpDetailDto.Res> handleGetMeetUpRequestDetail(
+                                                                                            @PathVariable Long meetUpId
+                                                                                          , @StudentEmail String receiverEmail){
+        MeetUpDetailDto.Res meetUpRequestDetail = meetUpService.getMeetUpDetail(meetUpId, receiverEmail);
+        return new RspsTemplate<>(HttpStatus.OK, meetUpRequestDetail);
+    }
+
 //
 //    // 만남신청 수락
 //    @PostMapping("/meet-ups/{meetUpId}/accept")
