@@ -13,10 +13,15 @@ public class MeetUpListDto {
     public static class Res {
         List<MeetUpDto> meetUps;
 
-        public Res(List<MeetUp> meetUps) {
-            this.meetUps = meetUps.stream()
+        public static Res from(List<MeetUp> meetUps) {
+            List<MeetUpDto> meetUpDtos = meetUps.stream()
                     .map(MeetUpDto::new)
                     .collect(Collectors.toList());
+            return new Res(meetUpDtos);
+        }
+
+        private Res(List<MeetUpDto> meetUps) {
+            this.meetUps = meetUps;
         }
 
         @Getter
