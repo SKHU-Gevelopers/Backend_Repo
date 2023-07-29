@@ -9,7 +9,7 @@ import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
+import site.unimeet.unimeetbackend.util.EntityUtil;
 
 import java.util.List;
 
@@ -21,13 +21,11 @@ public class PostService {
     private final StudentService studentService;
 
     public Post findById(Long id){
-        return postRepository.findById(id).
-                orElseThrow(()->new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+        return EntityUtil.checkNotFound(postRepository.findById(id), ErrorCode.POST_NOT_FOUND);
     }
 
     public Post findByIdFetchImageUrls(Long id){
-        return postRepository.findByIdFetchImageUrls(id)
-                .orElseThrow(()->new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+        return EntityUtil.checkNotFound(postRepository.findByIdFetchImageUrls(id), ErrorCode.POST_NOT_FOUND);
     }
 
     @Transactional
@@ -53,6 +51,10 @@ public class PostService {
         Post post = postUploadDto.toEntity(uploadedFileUrls, writer);
         // PostUploadDto 에서 입력값을 검증하므로, ConstraintViolationException 체크하지 않음
         postRepository.save(post);
+    }
+
+    public Post findByIdFetchWriter(Long writerId) {
+        return null;
     }
 
 
