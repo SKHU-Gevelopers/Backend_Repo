@@ -3,6 +3,7 @@ package site.unimeet.unimeetbackend.domain.meetup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.unimeet.unimeetbackend.api.post.dto.MeetUpListDto;
 import site.unimeet.unimeetbackend.api.post.dto.MeetUpRequestDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostService;
@@ -24,6 +25,7 @@ public class MeetUpService {
 
 
     // Todo 자기 자신에게는 신청할 수 없도록 예외처리
+    // Todo 두 번 이상 신청할 수 없도록 예외처리
     @Transactional
     public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
         // post 조회
@@ -43,8 +45,25 @@ public class MeetUpService {
         meetUpRepository.save(meetUp);
     }
 
-//    public MeetUpListDto.Res getMeetUpList(String email) {
-//        Student receiver = studentService.findByEmail(email);
-//        meetUpRepository.findAllBy
-//    }
+    public MeetUpListDto.Res getMeetUpList(String receiverEmail) {
+        // receiver 조회
+        Student receiver = studentService.findByEmail(receiverEmail);
+
+        // receiver가 피신청자인 meetUp 목록 조회
+        List<MeetUp> meetUps = meetUpRepository.findAllByReceiver(receiver);
+        return new MeetUpListDto.Res(meetUps);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
