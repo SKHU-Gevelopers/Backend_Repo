@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.global.exception.BusinessException;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -48,6 +50,15 @@ public class MeetUp extends BaseTimeEntity {
         this.targetPost = targetPost;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    public void checkReceiverEmail(String httpRequesterEmail) {
+        String receiverEmail = receiver.getEmail();
+
+        // receiver와 httpRequester가 같지 않다면 예외발생
+        if (! receiverEmail.equals(httpRequesterEmail)) {
+            throw new BusinessException(ErrorCode.MEETUP_RECEIVER_NOT_MATCHED);
+        }
     }
 }
 

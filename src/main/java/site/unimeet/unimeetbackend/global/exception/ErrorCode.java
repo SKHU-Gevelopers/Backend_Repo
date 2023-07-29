@@ -37,10 +37,12 @@ public enum ErrorCode {
 
     // 게시글
     POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
-
+    POST_ALREADY_DONE(400, "해당 게시글은 만남신청이 종료되었습니다."),
     // 만남(MeetUp)
     MEETUP_NOT_FOUND(404, "해당 만남을 찾을 수 없습니다."),
-    MEETUP_RECEIVER_NOT_MATCHED(403, "해당 만남의 피신청자가 아닙니다");
+    MEETUP_RECEIVER_NOT_MATCHED(403, "해당 만남의 피신청자가 아닙니다"),
+
+    ;
 
 
 

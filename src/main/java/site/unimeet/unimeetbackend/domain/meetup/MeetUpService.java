@@ -11,7 +11,6 @@ import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
-import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.util.EntityUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
@@ -65,13 +64,9 @@ public class MeetUpService {
      */
     public MeetUpDetailDto.Res getMeetUpDetail(Long meetUpId, String httpRequesterEmail) {
         MeetUp meetUp = findByIdFetchAll(meetUpId);
-        String receiverEmail = meetUp.getReceiver().getEmail();
 
-        // receiver와 httpRequester가 같지 않다면 예외발생
-        if (! receiverEmail.equals(httpRequesterEmail)){
-            throw new BusinessException(ErrorCode.MEETUP_RECEIVER_NOT_MATCHED);
-        }
-
+        // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
+        meetUp.checkReceiverEmail(httpRequesterEmail);
         return MeetUpDetailDto.Res.from(meetUp);
     }
 
