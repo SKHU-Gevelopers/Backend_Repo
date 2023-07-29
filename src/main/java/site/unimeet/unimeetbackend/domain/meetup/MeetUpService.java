@@ -49,6 +49,18 @@ public class MeetUpService {
         meetUpRepository.save(meetUp);
     }
 
+    @Transactional
+    public void accept(Long meetUpId, String httpRequesterEmail) {
+        MeetUp meetUp = findByIdFetchReceiverAndPost(meetUpId);
+        Post post = meetUp.getTargetPost();
+
+        // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
+        post.checkWriterEmail(httpRequesterEmail);
+
+        // 게시글의 상태를 DONE으로 변경한다.
+        post.setStateDone();
+    }
+
     public MeetUpListDto.Res getMeetUpList(String receiverEmail) {
         // receiver 조회
         Student receiver = studentService.findByEmail(receiverEmail);
@@ -78,6 +90,12 @@ public class MeetUpService {
     public MeetUp findByIdFetchAll(Long meetUpId) {
         return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchAll(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
+
+    public MeetUp findByIdFetchReceiverAndPost(Long meetUpId) {
+        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+    }
+
+
 }
 
 

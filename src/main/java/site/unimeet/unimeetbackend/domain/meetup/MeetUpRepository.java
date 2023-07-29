@@ -14,4 +14,9 @@ public interface MeetUpRepository extends JpaRepository<MeetUp, Long> {
             " Join Fetch m.receiver Join Fetch m.targetPost Join Fetch m.sender Left Join Fetch m.imageUrls" +
             " where m.id = :meetUpId")
     MeetUp findByIdFetchAll(Long meetUpId);
+
+    @Query("Select m From MeetUp m" +
+            " Join Fetch m.receiver Join Fetch m.targetPost" +
+            " where m.id = :meetUpId")
+    MeetUp findByIdFetchReceiverAndPost(Long meetUpId);
 }

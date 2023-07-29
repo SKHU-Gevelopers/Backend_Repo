@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
+import site.unimeet.unimeetbackend.domain.post.enums.State;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
-import site.unimeet.unimeetbackend.domain.post.enums.State;
+import site.unimeet.unimeetbackend.global.exception.BusinessException;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,6 +38,23 @@ public class Post extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", nullable = false)
     private Student writer; // 작성자
+
+    public void setStateDone() {
+        if (this.state == State.DONE) {
+            throw new BusinessException(ErrorCode.POST_ALREADY_DONE);
+        }
+        this.state = State.DONE;
+    }
+
+    public void checkWriterEmail(String httpRequesterEmail) {
+        String writerEmail = writer.getEmail();
+
+        // receiver와 httpRequester가 같지 않다면 예외발생
+        if (! writerEmail.equals(httpRequesterEmail)) {
+            throw new BusinessException(ErrorCode.POST_WRITER_NOT_MATCHED);
+        }
+    }
+
 
     @Builder
     private Post(String title, String content, List<String> imageUrls, int maxPeople, Gender gender, Student writer) {

@@ -80,13 +80,12 @@ public class PostController {
         return new RspsTemplate<>(HttpStatus.OK, meetUpRequestDetail);
     }
 
-//
-//    // 만남신청 수락
-//    @PostMapping("/meet-ups/{meetUpId}/accept")
-//    public ResponseEntity<?> handleAcceptMeetUpRequest(@PathVariable Long meetUpId, @StudentEmail String email){
-//        meetUpService.acceptMeetUpRequest(meetUpId, email);
-//        return ResponseEntity.noContent().build();
-//    }
+    // 만남신청 수락
+    @PostMapping("/meet-ups/{meetUpId}/accept")
+    public ResponseEntity<?> handleAcceptMeetUpRequest(@PathVariable Long meetUpId, @StudentEmail String email){
+        meetUpService.accept(meetUpId, email);
+        return ResponseEntity.noContent().build();
+    }
 }
 
     //게시글 수정

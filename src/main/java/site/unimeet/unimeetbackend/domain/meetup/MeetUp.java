@@ -32,11 +32,10 @@ public class MeetUp extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-    private Post targetPost;          // 소속 게시글
+    private Post targetPost; // 소속 게시글
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id", nullable = false)
     private Student sender; // 신청자
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id", nullable = false)
     private Student receiver; // 피신청자
