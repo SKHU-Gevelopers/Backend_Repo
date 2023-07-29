@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
+import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
+import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
 
@@ -15,12 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-
-    @Transactional
-    //게시글 작성
-    public Post addPost(Post post){
-       return postRepository.save(post);
-    }
+    private final StudentService studentService;
 
     public Post findById(Long id){
         return postRepository.findById(id).
@@ -31,7 +29,6 @@ public class PostService {
         return postRepository.findByIdFetchImageUrls(id)
                 .orElseThrow(()->new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
     }
-
 
     @Transactional
     //게시글 삭제
@@ -48,6 +45,14 @@ public class PostService {
     public PostDetailDto.Res getPostDetail(Long id) {
         Post post = findByIdFetchImageUrls(id);
         return PostDetailDto.Res.from(post);
+    }
+
+    @Transactional
+    public void writePost(PostUploadDto postUploadDto, List<String> uploadedFileUrls, String email) {
+        Student writer = studentService.findByEmail(email);
+        Post post = postUploadDto.toEntity(uploadedFileUrls, writer);
+        // PostUploadDto 에서 입력값을 검증하므로, ConstraintViolationException 체크하지 않음
+        postRepository.save(post);
     }
 
 

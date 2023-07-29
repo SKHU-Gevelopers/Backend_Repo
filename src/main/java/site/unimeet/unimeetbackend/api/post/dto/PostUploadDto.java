@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.domain.post.Post;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import javax.validation.constraints.Min;
@@ -26,13 +27,14 @@ public class PostUploadDto {
     @NotNull
     private Gender gender;
 
-    public Post toEntity(List<String> imageUrls){
+    public Post toEntity(List<String> imageUrls, Student writer){
         return Post.builder()
                 .title(title)
                 .content(content)
                 .imageUrls(imageUrls)
                 .maxPeople(maxPeople)
                 .gender(gender)
+                .writer(writer)
                 .build();
     }
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 
@@ -32,14 +33,19 @@ public class Post extends BaseTimeEntity {
     private Gender gender; // 희망 성별
     private Integer likes; // 좋아요 수
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id", nullable = false)
+    private Student writer; // 작성자
+
     @Builder
-    private Post(String title, String content, List<String> imageUrls, int maxPeople, Gender gender) {
+    private Post(String title, String content, List<String> imageUrls, int maxPeople, Gender gender, Student writer) {
         this.title = title;
         this.content = content;
         this.imageUrls = imageUrls;
         this.state = State.IN_PROGRESS;
         this.maxPeople = maxPeople;
         this.gender = gender;
+        this.writer = writer;
         this.likes = 0;
     }
 }
