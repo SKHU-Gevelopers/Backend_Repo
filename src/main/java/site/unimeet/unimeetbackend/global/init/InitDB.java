@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import site.unimeet.unimeetbackend.domain.meetup.MeetUp;
+import site.unimeet.unimeetbackend.domain.meetup.MeetUpRepository;
+import site.unimeet.unimeetbackend.domain.post.Post;
+import site.unimeet.unimeetbackend.domain.post.PostRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
@@ -21,6 +25,8 @@ import java.util.ArrayList;
 @Component
 public class InitDB {
     private final StudentRepository studentRepository;
+    private final MeetUpRepository meetUpRepository;
+    private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
     private final GuestBookRepository guestBookRepository;
 
@@ -85,5 +91,41 @@ public class InitDB {
                 .build();
         guestBookRepository.save(guestBook6);
 
+        Post post = Post.builder()
+                .title("제목1")
+                .content("내용1")
+                .imageUrls(null)
+                .maxPeople(4)
+                .gender(Gender.MALE)
+                .writer(student)
+                .build();
+        postRepository.save(post);
+
+        MeetUp meetUp = MeetUp.builder()
+                .title("만남신청1")
+                .content("만남신청내용1")
+                .contact("010-1234-1234")
+                .imageUrls(null)
+                .targetPost(post)
+                .sender(student2)
+                .receiver(student)
+                .build();
+        meetUpRepository.save(meetUp);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
