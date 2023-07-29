@@ -55,11 +55,10 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-
     // 만남 신청
     @PostMapping("/posts/{postId}/meet-ups")
     public ResponseEntity<?> handleCreateMeetUp(@PathVariable Long postId, @ModelAttribute MeetUpRequestDto.Req req,
-                                                                            @StudentEmail String email){
+                                                                                        @StudentEmail String email){
         meetUpService.createMeetUpRequest(postId, req, email);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -26,9 +26,7 @@ public class MeetUpService {
     private final PostService postService;
     private final StudentService studentService;
 
-
-    // Todo 자기 자신에게는 신청할 수 없도록 예외처리
-    // Todo 두 번 이상 신청할 수 없도록 예외처리
+    // 만남 신청
     @Transactional
     public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
         /** post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.*/
@@ -41,10 +39,14 @@ public class MeetUpService {
         // sender 조회
         Student sender = studentService.findByEmail(requesterEmail);
 
+        // 같은 게시글에 대해서 신청자 중복 체크
+        EntityUtil.mustNull(meetUpRepository.findByTargetPostAndSender(targetPost, sender),
+                ErrorCode.MEETUP_SENDER_DUPLICATED);
+
         // 이미지 저장
         List<String> uploadedMeetUpImgUrls = s3Service.upload(req.getMeetUpImage(), S3Config.BUCKETNAME_SUFFIX_MEETUP_IMG);
 
-        // 객체 생성 후 저장
+        // 객체 생성 후 저장. 객체 생성할 때 신청자와 피신청자가 같은지 체크.
         MeetUp meetUp = req.toEntity(uploadedMeetUpImgUrls, targetPost, sender, receiver);
         meetUpRepository.save(meetUp);
     }

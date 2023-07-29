@@ -2,6 +2,7 @@ package site.unimeet.unimeetbackend.domain.meetup;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface MeetUpRepository extends JpaRepository<MeetUp, Long> {
             " Join Fetch m.receiver Join Fetch m.targetPost" +
             " where m.id = :meetUpId")
     MeetUp findByIdFetchReceiverAndPost(Long meetUpId);
+
+    MeetUp findByTargetPostAndSender(Post targetPost, Student sender);
 }

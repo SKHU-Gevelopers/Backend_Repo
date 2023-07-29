@@ -14,4 +14,10 @@ public class EntityUtil {
     public static <E> E checkNotFound(Optional<E> entity, ErrorCode errorCode) {
         return entity.orElseThrow(() -> new BusinessException(errorCode));
     }
+
+    public static void mustNull(Object entity, ErrorCode errorCode) {
+        if (entity != null) throw new BusinessException(errorCode);
+    }
+
+
 }

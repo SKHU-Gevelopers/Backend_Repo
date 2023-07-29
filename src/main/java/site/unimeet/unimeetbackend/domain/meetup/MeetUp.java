@@ -49,6 +49,11 @@ public class MeetUp extends BaseTimeEntity {
         this.targetPost = targetPost;
         this.sender = sender;
         this.receiver = receiver;
+
+        // 신청자와 피신청자가 같다면 예외발생
+        if (sender.getId().equals(receiver.getId())) {
+            throw new BusinessException(ErrorCode.MEETUP_CANNOT_BE_MADE_WITH_SAME_STUDENT);
+        }
     }
 
     public void checkReceiverEmail(String httpRequesterEmail) {
