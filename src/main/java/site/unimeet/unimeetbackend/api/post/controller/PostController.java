@@ -8,6 +8,7 @@ import site.unimeet.unimeetbackend.api.common.RspsTemplate;
 import site.unimeet.unimeetbackend.api.post.dto.*;
 import site.unimeet.unimeetbackend.domain.meetup.MeetUpService;
 import site.unimeet.unimeetbackend.domain.post.PostService;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
@@ -21,6 +22,7 @@ public class PostController {
     private final PostService postService;
     private final S3Service s3Service;
     private final MeetUpService meetUpService;
+
 
     //게시글 목록 조회
     @GetMapping("/posts")
@@ -55,6 +57,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+
     // 만남 신청
     @PostMapping("/posts/{postId}/meet-ups")
     public ResponseEntity<?> handleCreateMeetUp(@PathVariable Long postId, @ModelAttribute MeetUpRequestDto.Req req,
@@ -85,11 +88,25 @@ public class PostController {
         meetUpService.accept(meetUpId, email);
         return ResponseEntity.noContent().build();
     }
-}
+
 
     //게시글 수정
-
+    @PutMapping("posts/{id}")
+    public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute PostUpdateDto postUpdateDto){
+        List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
+        postService.editPost(id,postUpdateDto);
+        
+        RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(rspsTemplate);
+    }
+    
     //게시글 좋아요
+    @PutMapping("/postlike")
+    public ResponseEntity<String> likePost(@RequestBody @Valid PostLikeDto postLikeDto){
+        postService.updateLikePost(postLikeDto);
+        return ResponseEntity.ok("게시글 좋아요");
+    }
 
-    //인기글 조회
+}
+
 

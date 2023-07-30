@@ -1,8 +1,10 @@
 package site.unimeet.unimeetbackend.domain.like;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.http.client.methods.RequestBuilder;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.student.Student;
@@ -32,10 +34,18 @@ public class PostLike extends BaseTimeEntity {
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    public PostLike(Student student, Post post) {
+    @Column(nullable = false)
+    private boolean status;
+
+    @Builder
+    public PostLike(Post post, Student student) {
         this.student = student;
         this.post = post;
+        this.status = true;
     }
+
+
+
 }
 
 

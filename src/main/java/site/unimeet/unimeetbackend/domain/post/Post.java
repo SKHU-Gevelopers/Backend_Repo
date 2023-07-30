@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
+import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
@@ -25,6 +27,7 @@ public class Post extends BaseTimeEntity {
     private String title;
     @Lob
     private String content;
+
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> imageUrls;
     @Enumerated(EnumType.STRING)
@@ -67,6 +70,23 @@ public class Post extends BaseTimeEntity {
         this.writer = writer;
         this.likes = 0;
     }
+
+    public void update(String title, String content, int maxPeople, Gender gender){
+        this.title = title;
+        this.content = content;
+//        this.imageUrls = imageUrls;
+        this.maxPeople = maxPeople;
+        this.gender = gender;
+    }
+
+    public void increaseLikeCount() {
+        this.likes += 1;
+    }
+
+    public void decreaseLikeCount() {
+        this.likes -= 1;
+    }
+
 }
 
 
