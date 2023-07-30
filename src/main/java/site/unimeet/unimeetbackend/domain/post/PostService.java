@@ -68,12 +68,11 @@ public class PostService {
 
     @Transactional
     //게시글 수정
-    public Long editPost(Long id, PostUpdateDto postUpdateDto) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+    public Long editPost(Long id, PostUpdateDto postUpdateDto, String email) {
+        Post post = findByIdFetchWriter(id);
+        post.checkWriterEmail(email); // 게시글 작성자와 요청자가 같은지 권한 확인
 
         post.update(postUpdateDto.getTitle(), postUpdateDto.getContent(),postUpdateDto.getMaxPeople(), postUpdateDto.getGender());
-
         return id;
     }
 

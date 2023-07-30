@@ -51,9 +51,12 @@ public class PostController {
 
     //게시글 수정
     @PutMapping("posts/{id}")
-    public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute PostUpdateDto postUpdateDto){
+    public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id
+                                                                                                                 , @Valid @ModelAttribute PostUpdateDto postUpdateDto
+                                                                                                                 , @StudentEmail String email
+    ){
         List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
-        postService.editPost(id,postUpdateDto);
+        postService.editPost(id,postUpdateDto, email);
 
         RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(rspsTemplate);
