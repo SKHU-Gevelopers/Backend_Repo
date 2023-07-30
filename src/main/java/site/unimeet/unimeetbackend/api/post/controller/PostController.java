@@ -8,7 +8,6 @@ import site.unimeet.unimeetbackend.api.common.RspsTemplate;
 import site.unimeet.unimeetbackend.api.post.dto.*;
 import site.unimeet.unimeetbackend.domain.meetup.MeetUpService;
 import site.unimeet.unimeetbackend.domain.post.PostService;
-import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import site.unimeet.unimeetbackend.util.S3Service;
