@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 공개 프로필(마이페이지) 조회
 public class PublicMyPageDto {
 
     @Getter
@@ -38,18 +39,18 @@ public class PublicMyPageDto {
         @Getter
         @Builder
         private static class StudentDto {
-            private String profileImageUrl;
-            private String nickname;
-            private Department department;
-            private Mbti mbti;
+            String profileImageUrl;
+            String nickname;
+            Department department;
+            Mbti mbti;
         }
 
         @Getter
         @Builder
         private static class GuestBookDto{
-            private Long writerId;
-            private String profileImageUrl;
-            private String content;
+            Long writerId;
+            String profileImageUrl;
+            String content;
 
             // GuestBookDto 변환
             public static List<GuestBookDto> from(List<GuestBook> guestBooks) {

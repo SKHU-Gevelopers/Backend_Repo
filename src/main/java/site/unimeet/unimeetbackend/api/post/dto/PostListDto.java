@@ -5,11 +5,11 @@ import lombok.Getter;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
-import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 게시글 목록
 public class PostListDto {
     @Getter
     @Builder
@@ -25,19 +25,18 @@ public class PostListDto {
         @Getter
         @Builder
         private static class PostDto{
-            private Long id;
-            private String title;
-            private String content;
-            private String imageUrl;
-            private State state;
-            private int maxPeople;
-            private Gender gender;
-            private int likes;
+            Long id;
+            String title;
+            String content;
+            String imageUrl;
+            State state;
+            int maxPeople;
+            Gender gender;
+            int likes;
 
-
-            private static PostListDto.Res.PostDto from(Post post){
+            static PostListDto.Res.PostDto from(Post post){
                 List<String> imageUrls = post.getImageUrls();
-                String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : S3Config.getDefaultProfileImageUrl();
+                String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : "";
 
                 return PostListDto.Res.PostDto.builder()
                         .id(post.getId())
@@ -50,7 +49,7 @@ public class PostListDto {
                         .likes(post.getLikes())
                         .build();
             }
-            private static List<PostListDto.Res.PostDto> from (List<Post> postList){
+            static List<PostListDto.Res.PostDto> from (List<Post> postList){
                 return postList.stream()
                         .map(PostListDto.Res.PostDto::from)
                         .collect(Collectors.toList());

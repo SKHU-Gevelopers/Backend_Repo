@@ -22,6 +22,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_EXPIRED(401, "해당 refresh token은 만료됐습니다."),
     REFRESH_TOKEN_NOT_FOUND(400, "해당 refresh token은 존재하지 않습니다."),
     NOT_VALID_TOKEN(401, "유효하지 않은 토큰입니다."),
+    FORBIDDEN(403, "권한이 없습니다."),
 
     // 파일
     FILE_CANNOT_BE_STORED(500, "파일을 저장할 수 없습니다."),
@@ -31,12 +32,22 @@ public enum ErrorCode {
     // 학생
     STUDENT_NOT_FOUND(404, "해당 학생을 찾을 수 없습니다."),
 
+    // 쪽지
+    DM_NOT_FOUND(404, "해당 쪽지를 찾을 수 없습니다."),
+
     // 게시글
     POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
+    POST_ALREADY_DONE(400, "해당 게시글은 만남신청이 종료되었습니다."),
+    POST_WRITER_NOT_MATCHED(400, "해당 게시글의 작성자가 아닙니다."),
+
+    // 만남(MeetUp)
+    MEETUP_NOT_FOUND(404, "해당 만남을 찾을 수 없습니다."),
+    MEETUP_RECEIVER_NOT_MATCHED(403, "해당 만남의 피신청자가 아닙니다"),
+    MEETUP_CANNOT_BE_MADE_WITH_SAME_STUDENT(400, "신청자와 피신청자가 같습니다."),
+    MEETUP_SENDER_DUPLICATED(409, "한 게시글에 중복 신청할 수 없습니다."),
+
+
     ;
-
-
-
 
     private int status;
     private String message;

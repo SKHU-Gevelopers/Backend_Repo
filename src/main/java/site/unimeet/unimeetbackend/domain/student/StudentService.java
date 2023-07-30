@@ -14,6 +14,7 @@ import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookR
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
+import site.unimeet.unimeetbackend.util.EntityUtil;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -29,8 +30,8 @@ public class StudentService {
     private final GuestBookRepository guestBookRepository;
 
     public Student findById(Long id) {
-        return studentRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+        return EntityUtil.checkNotFound(
+                studentRepository.findById(id), ErrorCode.STUDENT_NOT_FOUND);
     }
 
     public void checkEmailDuplicated(String email) {
@@ -40,8 +41,7 @@ public class StudentService {
     }
 
     public Student findByEmail(String email) {
-        return studentRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
+        return EntityUtil.checkNotFound(studentRepository.findByEmail(email), ErrorCode.STUDENT_NOT_FOUND);
     }
 
     // 로그인 시 이메일과 비밀번호가 유효한지 체크,
@@ -87,9 +87,7 @@ public class StudentService {
     }
 
     public MyPageDto.Response getMyPage(String email) {
-        Student student = studentRepository.findByEmailFetchMajors(email)
-                .orElseThrow(() -> new BusinessException(ErrorCode.STUDENT_NOT_FOUND));
-
+        Student student = EntityUtil.checkNotFound(studentRepository.findByEmailFetchMajors(email), ErrorCode.STUDENT_NOT_FOUND);
         return MyPageDto.Response.of(student);
     }
 
@@ -99,6 +97,4 @@ public class StudentService {
 
         return PublicMyPageDto.Res.from(student, guestBooks);
     }
-
-
 }

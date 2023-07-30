@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+// 마이페이지 수정
 public class EditMyPageDto {
     @Getter
     @AllArgsConstructor

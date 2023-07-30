@@ -10,5 +10,5 @@ public interface StudentRepository extends JpaRepository <Student,Long> {
     Optional<Student> findByEmailAndPassword(String email, String password);
 
     @Query("Select distinct s From Student s Join Fetch s.majors Where s.email = :email")
-    Optional<Student> findByEmailFetchMajors(String email);
+    Student findByEmailFetchMajors(String email);
 }

@@ -11,8 +11,9 @@ import site.unimeet.unimeetbackend.domain.like.PostLike;
 import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
+import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
+import site.unimeet.unimeetbackend.util.EntityUtil;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final StudentRepository studentRepository;
     private final PostLikeRepository postLikeRepository;
-
+    private final StudentService studentService;
 
     @Transactional
     //게시글 작성
@@ -31,14 +32,12 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post findById(Long id) {
-        return postRepository.findById(id).
-                orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+    public Post findById(Long id){
+        return EntityUtil.checkNotFound(postRepository.findById(id), ErrorCode.POST_NOT_FOUND);
     }
 
-    public Post findByIdFetchImageUrls(Long id) {
-        return postRepository.findByIdFetchImageUrls(id)
-                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+    public Post findByIdFetchImageUrls(Long id){
+        return EntityUtil.checkNotFound(postRepository.findByIdFetchImageUrls(id), ErrorCode.POST_NOT_FOUND);
     }
 
     @Transactional
@@ -57,6 +56,20 @@ public class PostService {
         Post post = findByIdFetchImageUrls(id);
         return PostDetailDto.Res.from(post);
     }
+
+    public Post findByIdFetchWriter(Long id) {
+        return EntityUtil.checkNotFound(postRepository.findByIdFetchWriter(id), ErrorCode.POST_NOT_FOUND);
+    }
+
+    @Transactional
+    public void writePost(PostUploadDto postUploadDto, List<String> uploadedFileUrls, String email) {
+        Student writer = studentService.findByEmail(email);
+        Post post = postUploadDto.toEntity(uploadedFileUrls, writer);
+        // PostUploadDto 에서 입력값을 검증하므로, ConstraintViolationException 체크하지 않음
+        postRepository.save(post);
+    }
+
+
 
 
     @Transactional
