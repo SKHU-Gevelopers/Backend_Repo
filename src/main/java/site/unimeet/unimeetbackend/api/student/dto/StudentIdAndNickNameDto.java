@@ -1,12 +1,13 @@
 package site.unimeet.unimeetbackend.api.student.dto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
 // 사용자 식별자와 이름을 포함함.
 @Getter
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 public class StudentIdAndNickNameDto {
     private Long id;
     private String nickname;

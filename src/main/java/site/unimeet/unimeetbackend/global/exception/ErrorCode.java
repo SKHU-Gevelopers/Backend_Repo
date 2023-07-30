@@ -37,10 +37,17 @@ public enum ErrorCode {
 
     // 게시글
     POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
+    POST_ALREADY_DONE(400, "해당 게시글은 만남신청이 종료되었습니다."),
+    POST_WRITER_NOT_MATCHED(400, "해당 게시글의 작성자가 아닙니다."),
+
+    // 만남(MeetUp)
+    MEETUP_NOT_FOUND(404, "해당 만남을 찾을 수 없습니다."),
+    MEETUP_RECEIVER_NOT_MATCHED(403, "해당 만남의 피신청자가 아닙니다"),
+    MEETUP_CANNOT_BE_MADE_WITH_SAME_STUDENT(400, "신청자와 피신청자가 같습니다."),
+    MEETUP_SENDER_DUPLICATED(409, "한 게시글에 중복 신청할 수 없습니다."),
+
+
     ;
-
-
-
 
     private int status;
     private String message;
