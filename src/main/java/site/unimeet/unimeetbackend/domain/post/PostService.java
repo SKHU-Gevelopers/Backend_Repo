@@ -34,9 +34,11 @@ public class PostService {
 
     @Transactional
     //게시글 삭제
-    public void deletePost(Long id) {
-        Post post = findById(id);
-        postRepository.delete(post);
+    public void deletePost(Long id, String requesterEmail) {
+        Post post = findByIdFetchWriter(id);
+
+        post.checkWriterEmail(requesterEmail); // 게시글 작성자와 요청자가 같은지 확인
+        postRepository.delete(post); // 삭제
     }
 
     public PostListDto.Res getPosts() {

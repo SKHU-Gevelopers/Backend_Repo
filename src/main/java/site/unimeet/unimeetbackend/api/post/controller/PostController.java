@@ -51,11 +51,10 @@ public class PostController {
 
     //게시글 삭제
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<String> handleDeletePost(@PathVariable("id") Long id){
-        postService.deletePost(id);
+    public ResponseEntity<String> handleDeletePost(@PathVariable("id") Long id, @StudentEmail String email){
+        postService.deletePost(id, email);
         return ResponseEntity.noContent().build();
     }
-
 
     // 만남 신청
     @PostMapping("/posts/{postId}/meet-ups")
