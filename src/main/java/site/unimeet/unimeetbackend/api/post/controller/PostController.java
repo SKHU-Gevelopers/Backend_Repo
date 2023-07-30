@@ -49,11 +49,28 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
     }
 
+    //게시글 수정
+    @PutMapping("posts/{id}")
+    public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute PostUpdateDto postUpdateDto){
+        List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
+        postService.editPost(id,postUpdateDto);
+
+        RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
+        return ResponseEntity.status(HttpStatus.OK).body(rspsTemplate);
+    }
+
     //게시글 삭제
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<String> handleDeletePost(@PathVariable("id") Long id, @StudentEmail String email){
         postService.deletePost(id, email);
         return ResponseEntity.noContent().build();
+    }
+
+    //게시글 좋아요
+    @PutMapping("/posts/{postId}/like")
+    public ResponseEntity<String> likePost(@PathVariable Long postId, @StudentEmail String email){
+        postService.updateLikePost(postId, email);
+        return ResponseEntity.ok("게시글 좋아요");
     }
 
     // 만남 신청
@@ -88,22 +105,7 @@ public class PostController {
     }
 
 
-    //게시글 수정
-    @PutMapping("posts/{id}")
-    public ResponseEntity<RspsTemplate<String>> handleEditPost(@PathVariable("id") Long id, @Valid @ModelAttribute PostUpdateDto postUpdateDto){
-        List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
-        postService.editPost(id,postUpdateDto);
-        
-        RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
-        return ResponseEntity.status(HttpStatus.OK).body(rspsTemplate);
-    }
-    
-    //게시글 좋아요
-    @PutMapping("/postlike")
-    public ResponseEntity<String> likePost(@RequestBody @Valid PostLikeDto postLikeDto){
-        postService.updateLikePost(postLikeDto);
-        return ResponseEntity.ok("게시글 좋아요");
-    }
+
 
 }
 

@@ -79,12 +79,11 @@ public class PostService {
 
     //게시글 좋아요 기능
     @Transactional
-    public String updateLikePost(PostLikeDto postLikeDto) {
-
-        Post post = postRepository.findById(postLikeDto.getPostId())
+    public String updateLikePost(Long id, String email) {
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
 
-        Student student = studentRepository.findById(postLikeDto.getStudentId())
+        Student student = studentRepository.findByEmail(email)
                 .orElseThrow(()-> new EntityNotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
         if (!hasLikePost(post,student)) {
