@@ -20,7 +20,8 @@ import javax.validation.Valid;
 
 
 @RequiredArgsConstructor
-@RestController("/users")
+@RequestMapping("/users")
+@RestController
 public class StudentController {
     private final StudentService studentService;
     private final PasswordEncoder passwordEncoder;
