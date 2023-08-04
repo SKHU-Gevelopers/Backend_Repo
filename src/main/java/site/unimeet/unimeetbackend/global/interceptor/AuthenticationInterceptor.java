@@ -32,10 +32,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         log.info("AuthenticationInterceptor preHandler");
 
-        // prefilght 요청은 모두 허용
-        if ("OPTIONS".equals(request.getMethod()))
-            return true;
-
         //  1. authorization 필수 체크. 헤더 부분에 Authorization 이 없으면 지정한 예외를 발생시킴
         //  토큰 유무 확인
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
