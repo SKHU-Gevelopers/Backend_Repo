@@ -47,6 +47,9 @@ public enum ErrorCode {
     MEETUP_SENDER_DUPLICATED(409, "한 게시글에 중복 신청할 수 없습니다."),
 
 
+    KAKAO_ID_ALREADY_REGISTERED(409, "이미 가입된 카카오 아이디입니다."),
+
+    STUDENT_CONSTRAINT_ERROR(400, "저장 실패. 중복 값 혹은 Null 값 등 제약 조건을 확인해주세요."),
     ;
 
     private int status;

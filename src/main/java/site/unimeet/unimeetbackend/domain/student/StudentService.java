@@ -72,11 +72,19 @@ public class StudentService {
             throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
         }
 
+        if (studentRepository.existsByKakaoId(student.getKakaoId())) {
+            throw new BusinessException(ErrorCode.KAKAO_ID_ALREADY_REGISTERED);
+        }
+
+        if (studentRepository.existsByEmail(student.getEmail())) {
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_REGISTERED);
+        }
+
         // 회원가입
         try {
             return studentRepository.save(student);
         } catch (ConstraintViolationException e) { // email unique 제약조건 위반 시
-            throw new BusinessException(ErrorCode.EMAIL_ALREADY_REGISTERED);
+            throw new BusinessException(ErrorCode.STUDENT_CONSTRAINT_ERROR);
         }
     }
 

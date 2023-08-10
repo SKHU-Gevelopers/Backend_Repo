@@ -11,4 +11,9 @@ public interface StudentRepository extends JpaRepository <Student,Long> {
 
     @Query("Select distinct s From Student s Join Fetch s.majors Where s.email = :email")
     Student findByEmailFetchMajors(String email);
+
+    boolean existsByKakaoId(String kakaoId);
+
+    boolean existsByEmail(String email);
+
 }
