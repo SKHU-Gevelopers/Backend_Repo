@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class DM extends BaseTimeEntity {
+public class Dm extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +29,7 @@ public class DM extends BaseTimeEntity {
     private Student receiver;
 
     @Builder
-    private DM(String title, String content, Student sender, Student receiver) {
+    private Dm(String title, String content, Student sender, Student receiver) {
         this.title = title;
         this.content = content;
         this.sender = sender;

@@ -4,37 +4,37 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
-import site.unimeet.unimeetbackend.domain.student.component.dm.DM;
+import site.unimeet.unimeetbackend.domain.student.component.dm.Dm;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DMListDto {
+public class DmListDto {
     @Getter
     public static class Res {
-        private List<DMDto> dmList;
+        private List<DmDto> dmList;
 
-        public Res(List<DM> dmList) {
-            List<DMDto> convertedDMDtos = dmList.stream()
-                    .map(DMDto::from)
+        public Res(List<Dm> dmList) {
+            List<DmDto> convertedDmDtos = dmList.stream()
+                    .map(DmDto::from)
                     .collect(Collectors.toList());
 
-            this.dmList = convertedDMDtos;
+            this.dmList = convertedDmDtos;
         }
 
         @Getter
         @Builder
-        private static class DMDto {
+        private static class DmDto {
             private String title;
             private StudentIdAndNickNameDto sender;
             @JsonFormat(pattern = "yy-MM-dd HH:mm")
             private LocalDateTime sentAt;
 
-            private static DMDto from(DM dm) {
+            private static DmDto from(Dm dm) {
                 StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(dm.getSender());
 
-                DMDto dmDto = DMDto.builder()
+                DmDto dmDto = DmDto.builder()
                         .title(dm.getTitle())
                         .sender(sender)
                         .sentAt(dm.getCreateTime())

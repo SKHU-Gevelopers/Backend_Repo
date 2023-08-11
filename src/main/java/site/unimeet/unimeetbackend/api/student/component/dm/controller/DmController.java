@@ -5,18 +5,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.RspsTemplate;
-import site.unimeet.unimeetbackend.api.student.component.dm.dto.DMListDto;
+import site.unimeet.unimeetbackend.api.student.component.dm.dto.DmListDto;
 import site.unimeet.unimeetbackend.api.student.component.dm.dto.ReadDMDto;
 import site.unimeet.unimeetbackend.api.student.component.dm.dto.SendDMDto;
-import site.unimeet.unimeetbackend.domain.student.component.dm.DMService;
+import site.unimeet.unimeetbackend.domain.student.component.dm.DmService;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-public class DMController {
-    private final DMService dmService;
+public class DmController {
+    private final DmService dmService;
 
     // DM 보내기
     // {userId} 는 receiverId, 토큰으로 sender 확인
@@ -24,7 +24,7 @@ public class DMController {
     public ResponseEntity<?> handleSendDM(@PathVariable("userId") Long receiverId, @StudentEmail String senderEmail,
                                                      @RequestBody @Valid SendDMDto.Req sendDMDto) {
 
-        dmService.sendDM(receiverId, senderEmail, sendDMDto.getTitle(), sendDMDto.getContent());
+        dmService.sendDm(receiverId, senderEmail, sendDMDto.getTitle(), sendDMDto.getContent());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -38,8 +38,8 @@ public class DMController {
 
     // DM 목록조회
     @GetMapping("/dm")
-    public RspsTemplate<DMListDto.Res> handleGetDMList(@StudentEmail String email) {
-        DMListDto.Res res = dmService.readDMList(email);
+    public RspsTemplate<DmListDto.Res> handleGetDMList(@StudentEmail String email) {
+        DmListDto.Res res = dmService.readDMList(email);
         return new RspsTemplate<>(HttpStatus.OK, res);
     }
 
