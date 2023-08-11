@@ -101,7 +101,6 @@ public class PostController {
     }
 
     // 만남신청 수락
-    // Todo : 쪽지와 이메일로 수락알림 + 톡디보내기
     @PostMapping("/meet-ups/{meetUpId}/accept")
     public ResponseEntity<?> handleAcceptMeetUpRequest(@PathVariable Long meetUpId, @StudentEmail String email){
         meetUpService.accept(meetUpId, email);

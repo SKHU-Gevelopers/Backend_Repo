@@ -60,7 +60,7 @@ public class Student {
     }
 
     @Builder
-    public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department) {
+    private Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
