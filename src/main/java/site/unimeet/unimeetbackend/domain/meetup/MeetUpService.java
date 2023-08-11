@@ -33,7 +33,7 @@ public class MeetUpService {
     // 만남 신청
     @Transactional
     public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
-        /** post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.*/
+        // post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.
         // post 조회
         Post targetPost = postService.findByIdFetchWriter(targetPostId);
 

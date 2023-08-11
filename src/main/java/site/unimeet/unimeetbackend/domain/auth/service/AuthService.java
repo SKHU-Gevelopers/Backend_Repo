@@ -1,7 +1,6 @@
 package site.unimeet.unimeetbackend.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
@@ -12,8 +11,6 @@ import site.unimeet.unimeetbackend.domain.student.StudentService;
 @Transactional(readOnly = true)
 @Service
 public class AuthService {
-    private final EmailVerificationService emailVerificationService;
-    private final JavaMailSender javaMailSender;
     private final StudentService studentService;
     private final TokenManager tokenManager;
 
