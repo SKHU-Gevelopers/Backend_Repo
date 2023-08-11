@@ -20,23 +20,28 @@ public class Student {
     private String name;
     @Column(unique = true, nullable = false)
     private String nickname;
+    @Column(unique = true, nullable = false)
+    private String kakaoId;
 //    @Column(nullable = false)
 //    private byte age;
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
+
     @Column(nullable = false)
     private String introduction = "";
     @Setter
     @Column(nullable = false)
     private String profileImageUrl  = "";
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Department department;
@@ -55,13 +60,14 @@ public class Student {
     }
 
     @Builder
-    public Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String profileImageUrl,List<Major> majors, Department department) {
+    private Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.mbti = mbti;
+        this.kakaoId = kakaoId;
         this.profileImageUrl = profileImageUrl;
         this.majors = majors;
         this.department = department;

@@ -10,8 +10,10 @@ import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
+import site.unimeet.unimeetbackend.domain.student.component.dm.DmService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
+import site.unimeet.unimeetbackend.util.EmailService;
 import site.unimeet.unimeetbackend.util.EntityUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
 
@@ -25,11 +27,13 @@ public class MeetUpService {
     private final S3Service s3Service;
     private final PostService postService;
     private final StudentService studentService;
+    private final DmService dmService;
+    private final EmailService emailService;
 
     // 만남 신청
     @Transactional
     public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
-        /** post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.*/
+        // post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.
         // post 조회
         Post targetPost = postService.findByIdFetchWriter(targetPostId);
 
@@ -53,7 +57,9 @@ public class MeetUpService {
 
     @Transactional
     public void accept(Long meetUpId, String httpRequesterEmail) {
-        MeetUp meetUp = findByIdFetchReceiverAndPost(meetUpId);
+        MeetUp meetUp = findByIdFetchReceiverAndSenderAndPost(meetUpId);
+        Student meetUpSender = meetUp.getSender();
+        Student meetUpReceiver = meetUp.getReceiver();
         Post post = meetUp.getTargetPost();
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
@@ -61,6 +67,18 @@ public class MeetUpService {
 
         // 게시글의 상태를 DONE으로 변경한다.
         post.setStateDone();
+
+        // todo 쪽지와 이메일로 수락알림 + 톡디보내기
+        // (meetUp의) receiver가 sender에게 쪽지를 보낸다.
+        dmService.sendDmOnMeetUpAcceptance(meetUpSender.getId(), meetUpReceiver.getId());
+
+        // system에서 meetUp sender에게 이메일 전송
+        String title = "Unimeet - 만남 수락 알림";
+        String content = meetUpSender.getNickname() + "님이 만남 신청을 수락했습니다.\n"
+                + "수락한놈 카카오톡 ID : " + meetUpSender.getKakaoId() + "\n\n\n"
+                + "이 메시지는 시스템에 의해 자동으로 발송되었습니다."
+                ;
+        emailService.sendEmail(meetUpSender.getEmail(), title, content);
     }
 
     public MeetUpListDto.Res getMeetUpList(String receiverEmail) {
@@ -93,8 +111,8 @@ public class MeetUpService {
         return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchAll(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
-    public MeetUp findByIdFetchReceiverAndPost(Long meetUpId) {
-        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+    public MeetUp findByIdFetchReceiverAndSenderAndPost(Long meetUpId) {
+        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndSenderAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
 

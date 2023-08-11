@@ -37,55 +37,88 @@ public class InitDB {
         ArrayList<Major> majors = new ArrayList<>();
         majors.add(Major.AI);
         majors.add(Major.ENGLISH);
-        Student student = new Student("이병건", "침착맨", "eeee@email.com", passwordEncoder.encode("pppp"),
-                Gender.MALE, Mbti.INTP, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.IT);
 
-        Student student2 = new Student("김경민", "경민이", "eeee1@email.com", passwordEncoder.encode("pppp"),
-                Gender.FEMALE, Mbti.ENFP, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.SOCIAL);
+        // convert to constructor to builder
+        Student student = Student.builder()
+                .name("박세희")
+                .nickname("박세희Nickname")
+                .email("eeee@naver.com")
+                .password(passwordEncoder.encode("pppp"))
+                .gender(Gender.MALE)
+                .mbti(Mbti.INTP)
+                .kakaoId("chj6703")
+                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .majors(majors)
+                .department(Department.IT)
+                .build();
 
-        Student student3 = new Student("감경민", "갱민이", "eeee2@email.com", passwordEncoder.encode("pppp"),
-                Gender.FEMALE, Mbti.ENFJ, S3Config.DEFAULT_PROFILE_IMAGE_URL, majors, Department.HUMANITIES);
+        Student student2 = Student.builder()
+                .name("괴인")
+                .nickname("괴인Nickname")
+                .email("eeee1@naver.com")
+                .password(passwordEncoder.encode("pppp"))
+                .gender(Gender.MALE)
+                .mbti(Mbti.INTP)
+                .kakaoId("kakaoId")
+                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .majors(majors)
+                .department(Department.SOCIAL)
+                .build();
+
+        Student student3 = Student.builder()
+                .name("이예술")
+                .nickname("이예술Nickname")
+                .email("eeee2@email.com")
+                .password(passwordEncoder.encode("pppp"))
+                .gender(Gender.MALE)
+                .mbti(Mbti.INTP)
+                .kakaoId("kimdonguk")
+                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .majors(majors)
+                .department(Department.SOCIAL)
+                .build();
+
         studentRepository.save(student);
         studentRepository.save(student2);
         studentRepository.save(student3);
 
         GuestBook guestBook1 = GuestBook.builder()
-                .content("이병건은 이병건을 좋아해요")
+                .content("박세희가 박세희에게")
                 .writer(student)
                 .targetStudent(student)
                 .build();
         guestBookRepository.save(guestBook1);
 
         GuestBook guestBook2 = GuestBook.builder()
-                .content("김경민이 이병건을 좋아해요1")
+                .content("괴인이 박세희에게")
                 .writer(student2)
                 .targetStudent(student)
                 .build();
         guestBookRepository.save(guestBook2);
 
         GuestBook guestBook3 = GuestBook.builder()
-                .content("김경민이 이병건을 좋아해요2")
+                .content("괴인이 박세희에게2")
                 .writer(student2)
                 .targetStudent(student)
                 .build();
         guestBookRepository.save(guestBook3);
 
         GuestBook guestBook4 = GuestBook.builder()
-                .content("김경민이 이병건을 좋아해요3")
+                .content("이예술이 박세희에게")
                 .writer(student3)
                 .targetStudent(student)
                 .build();
         guestBookRepository.save(guestBook4);
 
         GuestBook guestBook5 = GuestBook.builder()
-                .content("김경민이 이병건을 좋아해요4")
+                .content("이예술이 이예술에게")
                 .writer(student3)
                 .targetStudent(student3)
                 .build();
         guestBookRepository.save(guestBook5);
 
         GuestBook guestBook6 = GuestBook.builder()
-                .content("김경민이 이병건을 좋아해요5")
+                .content("이예술이 이예술에게2")
                 .writer(student3)
                 .targetStudent(student3)
                 .build();
@@ -100,6 +133,16 @@ public class InitDB {
                 .writer(student)
                 .build();
         postRepository.save(post);
+
+        Post post2 = Post.builder()
+                .title("제목2")
+                .content("내용2")
+                .imageUrls(null)
+                .maxPeople(4)
+                .gender(Gender.MALE)
+                .writer(student2)
+                .build();
+        postRepository.save(post2);
 
         MeetUp meetUp = MeetUp.builder()
                 .title("만남신청1")
