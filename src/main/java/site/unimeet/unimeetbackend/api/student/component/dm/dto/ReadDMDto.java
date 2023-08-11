@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
-import site.unimeet.unimeetbackend.domain.student.component.dm.DM;
+import site.unimeet.unimeetbackend.domain.student.component.dm.Dm;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,7 @@ public class ReadDMDto {
     public static class Res {
         private DMDto dm;
 
-        public static Res from(DM dm) {
+        public static Res from(Dm dm) {
             StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(dm.getSender());
             DMDto dmDto = DMDto.builder()
                     .title(dm.getTitle())

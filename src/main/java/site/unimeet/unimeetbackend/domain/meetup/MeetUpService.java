@@ -10,6 +10,7 @@ import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
+import site.unimeet.unimeetbackend.domain.student.component.dm.DmService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.util.EntityUtil;
@@ -25,6 +26,7 @@ public class MeetUpService {
     private final S3Service s3Service;
     private final PostService postService;
     private final StudentService studentService;
+    private final DmService dmService;
 
     // 만남 신청
     @Transactional
@@ -53,7 +55,7 @@ public class MeetUpService {
 
     @Transactional
     public void accept(Long meetUpId, String httpRequesterEmail) {
-        MeetUp meetUp = findByIdFetchReceiverAndPost(meetUpId);
+        MeetUp meetUp = findByIdFetchReceiverAndSenderAndPost(meetUpId);
         Post post = meetUp.getTargetPost();
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
@@ -61,6 +63,11 @@ public class MeetUpService {
 
         // 게시글의 상태를 DONE으로 변경한다.
         post.setStateDone();
+
+        // todo 쪽지와 이메일로 수락알림 + 톡디보내기
+        // receiver가 sender에게 쪽지를 보낸다.
+        dmService.sendDmOnMeetUpAcceptance(meetUp.getSender().getId(), meetUp.getReceiver().getId());
+
     }
 
     public MeetUpListDto.Res getMeetUpList(String receiverEmail) {
@@ -93,8 +100,8 @@ public class MeetUpService {
         return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchAll(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
-    public MeetUp findByIdFetchReceiverAndPost(Long meetUpId) {
-        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+    public MeetUp findByIdFetchReceiverAndSenderAndPost(Long meetUpId) {
+        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndSenderAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
 
