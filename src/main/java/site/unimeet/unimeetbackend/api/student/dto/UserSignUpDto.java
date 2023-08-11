@@ -28,16 +28,16 @@ public class UserSignUpDto {
         private String password;
         @NotBlank(message = "이메일 인증 코드는 비어있을 수 없습니다")
         private String emailVrfCode;
-        @NotNull
+        @NotNull(message = "성별을 선택해주세요")
         private Gender gender;
-        @NotNull
+        @NotNull(message = "MBTI를 선택해주세요")
         private Mbti mbti;
-        @NotNull
+        @NotNull(message = "kakaoId를 입력해주세요.")
         @Length(min = 1, max = 20, message = "카카오 아이디는 1~20자 사이여야 합니다")
         private String kakaoId;
-        @NotNull
+        @NotNull(message = "학과를 선택해주세요")
         private Department department;
-        @NotNull
+        @NotNull(message = "전공을 선택해주세요")
         private List<Major> majors;
         private final String defaultProfileImageUrl = "https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/ae5e08b9-9b37-433f-a2a5-03d720bd853e.png";
         public Student toEntity(PasswordEncoder passwordEncoder){
