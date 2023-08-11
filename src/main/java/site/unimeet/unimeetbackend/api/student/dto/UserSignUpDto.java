@@ -32,6 +32,7 @@ public class UserSignUpDto {
         private Gender gender;
         @NotNull
         private Mbti mbti;
+        @NotNull
         @Length(min = 1, max = 20, message = "카카오 아이디는 1~20자 사이여야 합니다")
         private String kakaoId;
         @NotNull

@@ -1,4 +1,5 @@
 package site.unimeet.unimeetbackend.global.exception.handler;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
@@ -21,7 +23,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     /**
-     * javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
+     *javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
      * HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
      * 주로 @RequestBody, @RequestPart 어노테이션에서 발생
      */
@@ -38,9 +40,8 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, sb.toString());
     }
 
-    /**
-     * @ModelAttribute 으로 binding error 발생시 BindException 발생한다.
-     */
+
+    /** _@ModelAttribute 으로 binding error 발생시 BindException 발생한다. */
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ErrorResponseDto> handleBindException(BindException e, HttpServletRequest request) {
         printLog(e, request);
@@ -52,6 +53,14 @@ public class GlobalExceptionHandler {
         }
 
         return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, sb.toString());
+    }
+
+    // @RequestParam 파라미터
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponseDto> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
+        printLog(e, request);
+        String message = "파라미터 '" + e.getParameterName() + "'이 누락되었습니다.";
+        return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(BusinessException.class)
@@ -82,6 +91,4 @@ public class GlobalExceptionHandler {
     private void printLog(Exception e, HttpServletRequest request) {
         log.error(e.getClass().getSimpleName() + ": 발생, 에러 메시지: "+ e.getMessage() + ",요청 METHOD " + request.getMethod() + ", 요청 url + " + request.getRequestURI());
     }
-
-
 }
