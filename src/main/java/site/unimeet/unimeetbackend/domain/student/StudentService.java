@@ -2,6 +2,7 @@ package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,6 @@ import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 import site.unimeet.unimeetbackend.util.EntityUtil;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Slf4j
@@ -82,8 +82,8 @@ public class StudentService {
 
         // 회원가입
         try {
-            return studentRepository.save(student);
-        } catch (ConstraintViolationException e) { // email unique 제약조건 위반 시
+            return studentRepository.saveAndFlush(student);
+        } catch (DataIntegrityViolationException e) { // email unique 제약조건 위반 시
             throw new BusinessException(ErrorCode.STUDENT_CONSTRAINT_ERROR);
         }
     }
