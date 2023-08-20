@@ -154,6 +154,21 @@ public class InitDB {
                 .receiver(student)
                 .build();
         meetUpRepository.save(meetUp);
+
+        ArrayList<Post> posts = new ArrayList<>();
+        int postCount = 40;
+        for (int i = 1; i <= postCount; i++) {
+            Post postElement = Post.builder()
+                    .title("제목 " + i)
+                    .content("내용 " + i)
+                    .imageUrls(null)
+                    .maxPeople(4)
+                    .gender(Gender.MALE)
+                    .writer(student)
+                    .build();
+            posts.add(postElement);
+        }
+        postRepository.saveAll(posts);
     }
 }
 

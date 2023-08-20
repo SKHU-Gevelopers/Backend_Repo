@@ -1,6 +1,8 @@
 package site.unimeet.unimeetbackend.api.post.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +24,19 @@ public class PostController {
     private final S3Service s3Service;
     private final MeetUpService meetUpService;
 
-
     //게시글 목록 조회
     @GetMapping("/posts")
-    public RspsTemplate<PostListDto.Res> handleGetPosts(){
-        PostListDto.Res postList = postService.getPosts();
+    public RspsTemplate<PostListDto.Res> handleGetPosts(@RequestParam(defaultValue = "1") final int page){
+
+        if (page < 1)
+            throw new IllegalArgumentException("page는 1 이상이어야 합니다.");
+
+        // 0-base인 페이지를 클라이언트단에서 1-based인 것처럼 사용할 수 있게 함
+        final int POST_PAGE_SIZE = 6;
+
+        Pageable pageable = PageRequest.of(page - 1 , POST_PAGE_SIZE);
+
+        PostListDto.Res postList = postService.getPosts(pageable);
         return new RspsTemplate<>(HttpStatus.OK, postList);
     }
 
