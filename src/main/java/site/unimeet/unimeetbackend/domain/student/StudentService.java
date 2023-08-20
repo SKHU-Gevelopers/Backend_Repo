@@ -3,6 +3,8 @@ package site.unimeet.unimeetbackend.domain.student;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +18,6 @@ import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 import site.unimeet.unimeetbackend.util.EntityUtil;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -99,10 +99,9 @@ public class StudentService {
         return MyPageDto.Response.of(student);
     }
 
-    public PublicMyPageDto.Res getPublicMyPage(Long id) {
+    public PublicMyPageDto.Res getPublicMyPage(Long id, Pageable pageable) {
         Student student = findById(id);
-        List<GuestBook> guestBooks = guestBookRepository.findByTargetStudentId(id);
-
+        Page<GuestBook> guestBooks = guestBookRepository.findByTargetStudent(student, pageable);
         return PublicMyPageDto.Res.from(student, guestBooks);
     }
 }

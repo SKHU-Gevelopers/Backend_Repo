@@ -1,6 +1,7 @@
 package site.unimeet.unimeetbackend.api.student.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
+import site.unimeet.unimeetbackend.util.PageableUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.Valid;
@@ -59,11 +61,14 @@ public class StudentController {
 
      // 공개 마이페이지 조회
     @GetMapping("/{userId}/my-page")
-    public RspsTemplate<PublicMyPageDto.Res> handleGetMyPage(@PathVariable Long userId) {
-        PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(userId);
+    public RspsTemplate<PublicMyPageDto.Res> handleGetMyPage(@PathVariable Long userId,
+                                                             @RequestParam(defaultValue = "1") final int page) {
+        final int GUESTBOOK_PAGE_SIZE = 6;
+        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE);
 
-        RspsTemplate<PublicMyPageDto.Res> rspsTemplate = new RspsTemplate<>(HttpStatus.OK, rspsDto);
-        return rspsTemplate;
+        PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(userId, pageable);
+
+        return new RspsTemplate<>(HttpStatus.OK, rspsDto);
     }
 }
 

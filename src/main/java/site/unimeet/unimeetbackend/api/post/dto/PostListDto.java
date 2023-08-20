@@ -18,9 +18,7 @@ public class PostListDto {
         List<PostDto> posts;
         SliceInfoDto page;
         public static PostListDto.Res from(Slice<Post> postList){
-            SliceInfoDto pageInfoDto = SliceInfoDto.from(postList);
-            List<PostDto> postDtos = PostDto.from(postList);
-            return new PostListDto.Res(postDtos, pageInfoDto);
+            return new PostListDto.Res(PostDto.from(postList), SliceInfoDto.from(postList));
         }
 
         public Res(List<PostDto> posts, SliceInfoDto page) {
@@ -31,7 +29,7 @@ public class PostListDto {
         @Getter
         @Builder
         private static class PostDto{
-            Long id;
+            long id;
             String title;
             String content;
             String imageUrl;

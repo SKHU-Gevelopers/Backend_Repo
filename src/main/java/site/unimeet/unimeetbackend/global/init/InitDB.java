@@ -124,6 +124,18 @@ public class InitDB {
                 .build();
         guestBookRepository.save(guestBook6);
 
+        ArrayList<GuestBook> guestBooks = new ArrayList<>();
+        int guestBookCount = 20;
+        for (int i = 1; i <= guestBookCount; i++) {
+            GuestBook guestBookElement = GuestBook.builder()
+                    .content("괴인이 박세희에게 " + i)
+                    .writer(student2)
+                    .targetStudent(student)
+                    .build();
+            guestBooks.add(guestBookElement);
+        }
+        guestBookRepository.saveAll(guestBooks);
+
         Post post = Post.builder()
                 .title("제목1")
                 .content("내용1")
@@ -156,7 +168,7 @@ public class InitDB {
         meetUpRepository.save(meetUp);
 
         ArrayList<Post> posts = new ArrayList<>();
-        int postCount = 40;
+        int postCount = 30;
         for (int i = 1; i <= postCount; i++) {
             Post postElement = Post.builder()
                     .title("제목 " + i)
