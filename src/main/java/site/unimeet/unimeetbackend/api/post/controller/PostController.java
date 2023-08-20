@@ -27,7 +27,7 @@ public class PostController {
     //게시글 목록 조회
     @GetMapping("/posts")
     public RspsTemplate<PostListDto.Res> handleGetPosts(@RequestParam(defaultValue = "1") final int page){
-        final int POST_PAGE_SIZE = 6;
+        final int POST_PAGE_SIZE = 8;
         Pageable pageable = PageableUtil.of(page, POST_PAGE_SIZE);
 
         PostListDto.Res postList = postService.getPosts(pageable);
