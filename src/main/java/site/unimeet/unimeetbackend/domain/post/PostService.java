@@ -1,9 +1,14 @@
 package site.unimeet.unimeetbackend.domain.post;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.unimeet.unimeetbackend.api.post.dto.*;
+import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
+import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
+import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
+import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
 import site.unimeet.unimeetbackend.domain.like.PostLike;
 import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
@@ -41,8 +46,8 @@ public class PostService {
         postRepository.delete(post); // 삭제
     }
 
-    public PostListDto.Res getPosts() {
-        List<Post> posts = postRepository.findAll();
+    public PostListDto.Res getPosts(Pageable pageable) {
+        Slice<Post> posts = postRepository.findAllFetchWriter(pageable);
         return PostListDto.Res.from(posts);
     }
 

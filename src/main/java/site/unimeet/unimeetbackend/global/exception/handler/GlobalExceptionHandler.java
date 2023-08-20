@@ -55,6 +55,12 @@ public class GlobalExceptionHandler {
         return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, sb.toString());
     }
 
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<ErrorResponseDto> handleBusinessException(IllegalArgumentException e, HttpServletRequest request){
+        printLog(e, request);
+        return createErrorResponse(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
     // @RequestParam 파라미터
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponseDto> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
