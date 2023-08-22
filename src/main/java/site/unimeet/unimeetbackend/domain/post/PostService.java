@@ -73,11 +73,10 @@ public class PostService {
 
     @Transactional
     //게시글 수정
-    public Long editPost(Long id, PostUpdateDto postUpdateDto, String email) {
+    public Long editPost(Long id, PostUpdateDto postUpdateDto, String email, List<String> uploadedFileUrls) {
         Post post = findByIdFetchWriter(id);
         post.checkWriterEmail(email); // 게시글 작성자와 요청자가 같은지 권한 확인
-
-        post.update(postUpdateDto.getTitle(), postUpdateDto.getContent(),postUpdateDto.getMaxPeople(), postUpdateDto.getGender());
+        post.update(postUpdateDto.getTitle(), postUpdateDto.getContent(),postUpdateDto.getMaxPeople(), postUpdateDto.getGender(),uploadedFileUrls);
         return id;
     }
 

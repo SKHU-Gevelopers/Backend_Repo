@@ -60,7 +60,7 @@ public class PostController {
                                                                                                                  , @StudentEmail String email
     ){
         List<String> uploadedFileUrls = s3Service.upload(postUpdateDto.getPostImages(), S3Config.BUCKETNAME_SUFFIX_POST_IMG);
-        postService.editPost(id,postUpdateDto, email);
+        postService.editPost(id, postUpdateDto, email, uploadedFileUrls);
 
         RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.OK,"게시글 수정 완료");
         return ResponseEntity.status(HttpStatus.OK).body(rspsTemplate);
