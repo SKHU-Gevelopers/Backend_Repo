@@ -1,10 +1,10 @@
 package site.unimeet.unimeetbackend.domain.jwt.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import site.unimeet.unimeetbackend.domain.jwt.constant.GrantType;
@@ -13,144 +13,116 @@ import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.NotValidTokenException;
 
+import java.security.Key;
 import java.util.Date;
+
 
 @Slf4j
 @Component
 public class TokenManager {
 
-    @Value("${token.access-token-expiration-time}")
-    private String accessTokenExpirationTime;
+    private final long accessTokenExpirationTime;
+    private final long refreshTokenExpirationTime;
+    private final Key key;
 
-    @Value("${token.refresh-token-expiration-time}")
-    private String refreshTokenExpirationTime;
-
-    @Value("${token.secret}")
-    private String tokenSecret;
+    @Autowired
+    public TokenManager(
+            @Value("${token.secret}") String tokenSecret
+            , @Value("${token.access-token-expiration-time}") long accessTokenExpirationTime
+            , @Value("${token.refresh-token-expiration-time}") long refreshTokenExpirationTime) {
+        // Base64 Decode. String to Bin
+        byte[] keyBytes = Decoders.BASE64.decode(tokenSecret);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.accessTokenExpirationTime = accessTokenExpirationTime;
+        this.refreshTokenExpirationTime = refreshTokenExpirationTime;
+    }
 
     public TokenDto createTokenDto(String email) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
-//        Date refreshTokenExpireTime = createRefreshTokenExpireTime();
+        Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
         String accessToken = createAccessToken(email, accessTokenExpireTime);
-//        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
+        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
         return TokenDto.builder()
                 .grantType(GrantType.BEARER.getType())
                 .accessToken(accessToken)
                 .accessTokenExpirationTime(accessTokenExpireTime)
-//                .refreshToken(refreshToken)
-//                .refreshTokenExpirationTime(refreshTokenExpireTime)
+                .refreshToken(refreshToken)
+                .refreshTokenExpirationTime(refreshTokenExpireTime)
                 .build();
     }
 
     private Date createAccessTokenExpireTime() {
-        return new Date(System.currentTimeMillis() + Long.parseLong(accessTokenExpirationTime));
+        return new Date(System.currentTimeMillis() + accessTokenExpirationTime);
     }
 
     private Date createRefreshTokenExpireTime() {
-        return new Date(System.currentTimeMillis() + Long.parseLong(refreshTokenExpirationTime));
+        return new Date(System.currentTimeMillis() + refreshTokenExpirationTime);
     }
 
     private String createAccessToken(String email, Date expirationTime) {
-        String accessToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(TokenType.ACCESS.name())                // 토큰 제목
                 .setAudience(email)                                 // 토큰 대상자
-                .setIssuedAt(new Date())                            // 토큰 발급 시간
-                .setExpiration(expirationTime)                      // 토큰 만료 시간
+                .setIssuedAt(new Date())                         // 토큰 발급 시간
+                .setExpiration(expirationTime)                // 토큰 만료 시간
                 /**
-                 *      Claim 에는 key-value 로 여러 값 저장 가능한 듯
-                 *      이렇게 토큰 내부에 정보를 저장해두면
-                 *      DB에서 정보를 조회해 Role을 확인하거나 할 필요가 없음. 토큰만 뜯어도 정보가 있어서.
+                 *      Claim 에는 Standard Claims 들을 제외하고도
+                 *      key-value 로 여러 값 저장 가능.
                  */
-//                .claim("role", role)                          // 유저 role.
-                .signWith(SignatureAlgorithm.HS512, tokenSecret)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setHeaderParam("typ", "JWT")
                 .compact();
-        return accessToken;
     }
 
     private String createRefreshToken(String email, Date expirationTime) {
-        String refreshToken = Jwts.builder()
+        return Jwts.builder()
                 .setSubject(TokenType.REFRESH.name())               // 토큰 제목
                 .setAudience(email)                                 // 토큰 대상자
                 .setIssuedAt(new Date())                            // 토큰 발급 시간
                 .setExpiration(expirationTime)                      // 토큰 만료 시간
-                .signWith(SignatureAlgorithm.HS512, tokenSecret)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setHeaderParam("typ", "JWT")
                 .compact();
-        return refreshToken;
+    }
+
+    // Claims 파싱과 예외처리를 담당함.
+    public Claims getTokenClaims(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key).build()
+                    .parseClaimsJws(token).getBody();
+        } catch (JwtException e) {
+            throw new NotValidTokenException(ErrorCode.NOT_VALID_TOKEN);
+        }
     }
 
     public String getMemberEmail(String accessToken) {
-        String email;
-        try {
-            Claims claims = Jwts.parser().setSigningKey(tokenSecret)
-                    .parseClaimsJws(accessToken).getBody();
-            email = claims.getAudience();
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new NotValidTokenException(ErrorCode.NOT_VALID_TOKEN);
-        }
-        return email;
+        return getTokenClaims(accessToken).getAudience(); // aud == email
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(tokenSecret)
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(key).build()
                     .parseClaimsJws(token);
             return true;
-        } catch(JwtException e) {  //토큰 변조
+            /* 검증 여부를 boolean 반환해야 하므로 예외상황에서 로그만 출력함.*/
+        } catch (MalformedJwtException e) {
             log.info("잘못된 jwt token", e);
-        } catch (Exception e){
+        } catch (JwtException e) {
             log.info("jwt token 검증 중 에러 발생", e);
         }
         return false;
     }
 
-    public Claims getTokenClaims(String token) {
-        Claims claims;
-        try {
-            claims = Jwts.parser().setSigningKey(tokenSecret)  //jwt 만들 때 사용했던 키
-                    .parseClaimsJws(token).getBody()
-            ;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new NotValidTokenException(ErrorCode.NOT_VALID_TOKEN);
-        }
-        return claims;
-    }
-
     public boolean isTokenExpired(Date tokenExpiredTime) {
         Date now = new Date();
-        if(now.after(tokenExpiredTime)) { //토큰 만료된 경우
-            return true;
-        }
-        return false;
+        return now.after(tokenExpiredTime);
     }
 
     public String getTokenType(String token){
-        String tokenType;
-        try{
-            Claims claims = Jwts.parser().setSigningKey(tokenSecret)
-                    .parseClaimsJws(token).getBody();
-            tokenType = claims.getSubject();
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new NotValidTokenException(ErrorCode.NOT_VALID_TOKEN);
-        }
-        return tokenType;
+        Claims claims = getTokenClaims(token);
+        return claims.getSubject();
     }
-
-//    public String getRole(String token) {
-//        Claims claims;
-//        try {
-//            claims = Jwts.parser().setSigningKey(tokenSecret)
-//                    .parseClaimsJws(token).getBody();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new NotValidTokenException(ErrorCode.NOT_VALID_TOKEN);
-//        }
-//
-//        return (String) claims.get("role");
-//    }
 }
