@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentDto;
-import site.unimeet.unimeetbackend.api.comment.dto.CommentReadDto;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentRequestDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostRepository;
@@ -24,15 +23,15 @@ public class CommentService {
     private final PostRepository postRepository;
 
     @Transactional
-    public List<CommentDto> findAllComments(CommentReadDto commentReadDto) {
-        return commentRepository.findByPostId(commentReadDto.getPostId()).stream()
+    public List<CommentDto> findAllComments(Long postId) {
+        return commentRepository.findByPostId(postId).stream()
                 .map(CommentDto::toDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public CommentDto createComment(CommentRequestDto requestDto, Student student) {
-        Post post = postRepository.findById(requestDto.getPostId())
+    public CommentDto createComment(Long postId, CommentRequestDto requestDto, Student student) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
         Comment comment = new Comment(requestDto.getContent(), student, post);
         commentRepository.save(comment);
