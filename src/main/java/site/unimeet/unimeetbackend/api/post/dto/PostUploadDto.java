@@ -20,6 +20,7 @@ public class PostUploadDto {
     private String title;
     @NotBlank
     private String content;
+
     @NotNull(message = "이미지가 NULL입니다.")
     private List<MultipartFile> postImages;
     @Min(1)

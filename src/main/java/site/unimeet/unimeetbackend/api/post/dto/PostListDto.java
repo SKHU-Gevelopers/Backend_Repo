@@ -36,6 +36,8 @@ public class PostListDto {
             State state;
             int maxPeople;
             Gender gender;
+            String profileImageUrl;
+            String nickname;
             int likes;
 
             static PostListDto.Res.PostDto from(Post post){
@@ -50,6 +52,8 @@ public class PostListDto {
                         .state(post.getState())
                         .maxPeople(post.getMaxPeople())
                         .gender(post.getGender())
+                        .profileImageUrl(post.getWriter().getProfileImageUrl())
+                        .nickname(post.getWriter().getNickname())
                         .likes(post.getLikes())
                         .build();
             }

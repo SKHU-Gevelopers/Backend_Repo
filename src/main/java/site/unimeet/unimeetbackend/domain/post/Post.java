@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
@@ -71,10 +72,10 @@ public class Post extends BaseTimeEntity {
         this.likes = 0;
     }
 
-    public void update(String title, String content, int maxPeople, Gender gender){
+    public void update(String title, String content, int maxPeople, Gender gender, List<String> imageUrls){
         this.title = title;
         this.content = content;
-//        this.imageUrls = imageUrls;
+        this.imageUrls = imageUrls;
         this.maxPeople = maxPeople;
         this.gender = gender;
     }

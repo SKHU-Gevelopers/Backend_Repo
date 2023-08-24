@@ -17,7 +17,6 @@ public class PostUpdateDto {
 
     private String content;
 
-    @NotNull(message = "이미지가 NULL입니다.")
     private List<MultipartFile> postImages;
 
     private int maxPeople;
@@ -28,6 +27,7 @@ public class PostUpdateDto {
         return Post.builder()
                 .title(title)
                 .content(content)
+                .imageUrls(imageUrls)
                 .maxPeople(maxPeople)
                 .gender(gender)
                 .build();

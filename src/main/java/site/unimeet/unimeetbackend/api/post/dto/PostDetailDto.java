@@ -3,8 +3,10 @@ package site.unimeet.unimeetbackend.api.post.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import java.util.List;
@@ -22,8 +24,12 @@ public class PostDetailDto {
         private Gender gender; // 희망 성별
         private Integer likes; // 좋아요 수
 
+        private String profileImageUrl; //작성자 프로필 사진
+        private String nickname; //작성자 닉네임
+
         public static PostDetailDto.Res from(Post post){
-            return PostDetailDto.Res.builder()
+            Student writer = post.getWriter();
+            return Res.builder()
                     .title(post.getTitle())
                     .content(post.getContent())
                     .imageUrls(post.getImageUrls())
@@ -31,6 +37,8 @@ public class PostDetailDto {
                     .maxPeople(post.getMaxPeople())
                     .gender(post.getGender())
                     .likes(post.getLikes())
+                    .profileImageUrl(writer.getProfileImageUrl())
+                    .nickname(writer.getNickname())
                     .build();
         }
     }
