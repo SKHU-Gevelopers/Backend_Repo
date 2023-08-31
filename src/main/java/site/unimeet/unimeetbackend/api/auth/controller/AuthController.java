@@ -39,14 +39,14 @@ public class AuthController {
     @PostMapping("/auth/sign-in")
     public ResTemplate<TokenDto> handleSignIn(@RequestBody @Valid UserSignInDto.Request singInRequest){
         TokenDto tokenDto = authService.signInTemp(singInRequest.getEmail(), singInRequest.getPassword());
-        return new ResTemplate<>(HttpStatus.OK, tokenDto);
+        return new ResTemplate<>(HttpStatus.OK, "로그인 성공", tokenDto);
     }
 
     // 로그인V2
     @PostMapping("/auth/sign-in/short-token-exp")
     public ResTemplate<TokenDto> handleSignInV2(@RequestBody @Valid UserSignInDto.Request singInRequest){
         TokenDto tokenDto = authService.signIn(singInRequest.getEmail(), singInRequest.getPassword());
-        return new ResTemplate<>(HttpStatus.OK, tokenDto);
+        return new ResTemplate<>(HttpStatus.OK, "로그인 V2 성공",tokenDto);
     }
 
     // 로그아웃
