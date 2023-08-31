@@ -82,6 +82,12 @@ public class AuthService {
         tokenDto.setUsername(student.getName());
         return tokenDto;
     }
+
+    @Transactional
+    public void logout(String email) {
+        Student student = studentService.findByEmail(email);
+        student.logout();
+    }
 }
 
 
