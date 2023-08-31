@@ -5,8 +5,13 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
+import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
+import site.unimeet.unimeetbackend.util.DateTimeUtils;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -22,8 +27,7 @@ public class Student {
     private String nickname;
     @Column(unique = true, nullable = false)
     private String kakaoId;
-//    @Column(nullable = false)
-//    private byte age;
+
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
@@ -49,15 +53,10 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private List<Major> majors;
 
-    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, List<Major> majors){
-        this.nickname = nickname;
-        this.mbti = mbti;
-        this.introduction = introduction;
-        this.majors = majors;
-        if (profileImageUrl != null) {
-            this.profileImageUrl = profileImageUrl;
-        }
-    }
+    private String refreshToken;
+
+    private LocalDateTime tokenExp;
+
 
     @Builder
     private Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department) {
@@ -71,5 +70,31 @@ public class Student {
         this.profileImageUrl = profileImageUrl;
         this.majors = majors;
         this.department = department;
+    }
+
+    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, List<Major> majors){
+        this.nickname = nickname;
+        this.mbti = mbti;
+        this.introduction = introduction;
+        this.majors = majors;
+        if (profileImageUrl != null) {
+            this.profileImageUrl = profileImageUrl;
+        }
+    }
+
+    public void updateRefreshTokenAndExp(String refreshToken, Date refreshTokenExp) {
+        this.refreshToken = refreshToken;
+        this.tokenExp = DateTimeUtils.convertToLocalDateTime(refreshTokenExp);
+    }
+
+    public void logout(){
+        this.refreshToken = "";
+        this.tokenExp = LocalDateTime.now();
+    }
+
+    public void validateRefreshTokenExp() {
+        if(tokenExp.isBefore(LocalDateTime.now())){
+            throw new AuthenticationException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+        }
     }
 }

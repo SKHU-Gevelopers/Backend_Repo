@@ -30,7 +30,7 @@ public class StudentService {
     private final GuestBookRepository guestBookRepository;
 
     public Student findById(Long id) {
-        return EntityUtil.checkNotFound(
+        return EntityUtil.mustNotNull(
                 studentRepository.findById(id), ErrorCode.STUDENT_NOT_FOUND);
     }
 
@@ -41,21 +41,7 @@ public class StudentService {
     }
 
     public Student findByEmail(String email) {
-        return EntityUtil.checkNotFound(studentRepository.findByEmail(email), ErrorCode.STUDENT_NOT_FOUND);
-    }
-
-    // 로그인 시 이메일과 비밀번호가 유효한지 체크,
-    public void validatePassword(String email, String password) {
-        Student student = studentRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    log.error("로그인 시도, email: {}, 이메일이 일치하지 않습니다.", email);
-                    return new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
-                });
-        if (!passwordEncoder.matches(password, student.getPassword())) {
-            // printf 스타일로 로그 출력,
-            log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
-            throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
-        }
+        return EntityUtil.mustNotNull(studentRepository.findByEmail(email), ErrorCode.STUDENT_NOT_FOUND);
     }
 
     @Transactional
@@ -95,7 +81,7 @@ public class StudentService {
     }
 
     public MyPageDto.Response getMyPage(String email) {
-        Student student = EntityUtil.checkNotFound(studentRepository.findByEmailFetchMajors(email), ErrorCode.STUDENT_NOT_FOUND);
+        Student student = EntityUtil.mustNotNull(studentRepository.findByEmailFetchMajors(email), ErrorCode.STUDENT_NOT_FOUND);
         return MyPageDto.Response.of(student);
     }
 
@@ -103,5 +89,9 @@ public class StudentService {
         Student student = findById(id);
         Page<GuestBook> guestBooks = guestBookRepository.findByTargetStudent(student, pageable);
         return PublicMyPageDto.Res.from(student, guestBooks);
+    }
+
+    public Student findByRefreshToken(String refreshToken) {
+        return EntityUtil.mustNotNull(studentRepository.findByRefreshToken(refreshToken), ErrorCode.REFRESH_TOKEN_NOT_FOUND);
     }
 }

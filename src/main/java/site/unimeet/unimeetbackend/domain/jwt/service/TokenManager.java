@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import site.unimeet.unimeetbackend.domain.jwt.constant.GrantType;
+import site.unimeet.unimeetbackend.domain.jwt.constant.AuthScheme;
 import site.unimeet.unimeetbackend.domain.jwt.constant.TokenType;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
@@ -21,20 +21,20 @@ import java.util.Date;
 @Component
 public class TokenManager {
 
-    private final long accessTokenExpirationTime;
-    private final long refreshTokenExpirationTime;
+    private final long accessTokenExpMillis;
+    private final long refreshTokenExpMillis;
     private final Key key;
 
     @Autowired
     public TokenManager(
             @Value("${token.secret}") String tokenSecret
-            , @Value("${token.access-token-expiration-time}") long accessTokenExpirationTime
-            , @Value("${token.refresh-token-expiration-time}") long refreshTokenExpirationTime) {
+            , @Value("${token.access-token-expiration-time}") long accessTokenExpMillis
+            , @Value("${token.refresh-token-expiration-time}") long refreshTokenExpMillis) {
         // Base64 Decode. String to Bin
         byte[] keyBytes = Decoders.BASE64.decode(tokenSecret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.accessTokenExpirationTime = accessTokenExpirationTime;
-        this.refreshTokenExpirationTime = refreshTokenExpirationTime;
+        this.accessTokenExpMillis = accessTokenExpMillis;
+        this.refreshTokenExpMillis = refreshTokenExpMillis;
     }
 
     public TokenDto createTokenDto(String email) {
@@ -44,20 +44,33 @@ public class TokenManager {
         String accessToken = createAccessToken(email, accessTokenExpireTime);
         String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
         return TokenDto.builder()
-                .grantType(GrantType.BEARER.getType())
+                .authScheme(AuthScheme.BEARER.getType())
                 .accessToken(accessToken)
-                .accessTokenExpirationTime(accessTokenExpireTime)
+                .accessTokenExp(accessTokenExpireTime)
                 .refreshToken(refreshToken)
-                .refreshTokenExpirationTime(refreshTokenExpireTime)
+                .refreshTokenExp(refreshTokenExpireTime)
+                .build();
+    }
+
+    // 테스트용. tokenExp만큼 유효한 토큰 쌍 생성
+    public TokenDto createTokenDtoTemp(String email, Date tokenExp) {
+        String accessToken = createAccessToken(email, tokenExp);
+        String refreshToken = createRefreshToken(email, tokenExp);
+        return TokenDto.builder()
+                .authScheme(AuthScheme.BEARER.getType())
+                .accessToken(accessToken)
+                .accessTokenExp(tokenExp)
+                .refreshToken(refreshToken)
+                .refreshTokenExp(tokenExp)
                 .build();
     }
 
     private Date createAccessTokenExpireTime() {
-        return new Date(System.currentTimeMillis() + accessTokenExpirationTime);
+        return new Date(System.currentTimeMillis() + accessTokenExpMillis);
     }
 
     private Date createRefreshTokenExpireTime() {
-        return new Date(System.currentTimeMillis() + refreshTokenExpirationTime);
+        return new Date(System.currentTimeMillis() + refreshTokenExpMillis);
     }
 
     private String createAccessToken(String email, Date expirationTime) {
