@@ -12,9 +12,11 @@ import site.unimeet.unimeetbackend.api.auth.dto.UserSignInDto;
 import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.domain.auth.service.AuthService;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
+import site.unimeet.unimeetbackend.domain.jwt.service.TokenValidator;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.util.EmailService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
@@ -24,6 +26,7 @@ public class AuthController {
     private final AuthService authService;
     private final StudentService studentService;
     private final EmailService emailService;
+    private final TokenValidator tokenValidator;
 
     // 인증 테스트
     @GetMapping("/")
@@ -34,9 +37,32 @@ public class AuthController {
     // 로그인
     @PostMapping("/auth/sign-in")
     public ResTemplate<TokenDto> handleSignIn(@RequestBody @Valid UserSignInDto.Request singInRequest){
+        TokenDto tokenDto = authService.signInTemp(singInRequest.getEmail(), singInRequest.getPassword());
+        return new ResTemplate<>(HttpStatus.OK, tokenDto);
+    }
+
+    // 로그인V2
+    @PostMapping("/auth/sign-in/short-token-exp")
+    public ResTemplate<TokenDto> handleSignInV2(@RequestBody @Valid UserSignInDto.Request singInRequest){
         TokenDto tokenDto = authService.signIn(singInRequest.getEmail(), singInRequest.getPassword());
         return new ResTemplate<>(HttpStatus.OK, tokenDto);
     }
+
+    /**
+     *   refresh 토큰을 이용, access 토큰을 재발급하는 메소드
+     */
+    @PostMapping(value = "/auth/token/reissue")
+    public ResTemplate<TokenDto> accessToken(HttpServletRequest httpServletRequest){
+
+        String authorizationHeader = httpServletRequest.getHeader("Authorization");
+        tokenValidator.validateBearer(authorizationHeader);
+
+        String refreshToken = authorizationHeader.split(" ")[1];
+        TokenDto tokenDto = authService.reassureByRefreshToken(refreshToken);
+
+        return new ResTemplate<>(HttpStatus.OK, "토큰 재발급", tokenDto);
+    }
+
 
     /** 메일 인증
      * 1. 이메일 인증코드를 만들어서 이메일로 보내기
