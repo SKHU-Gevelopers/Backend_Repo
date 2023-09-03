@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.global.exception.BusinessException;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 
 import javax.persistence.*;
 
@@ -36,8 +38,14 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
     }
 
-    public boolean isOwnedComment(Student student){
-        return this.student.equals(student);
+
+
+    public void checkWriterEmail(String httpRequesterEmail) {
+        String writerEmail = student.getEmail();
+        // receiver와 httpRequester가 같지 않다면 예외발생
+        if (! writerEmail.equals(httpRequesterEmail)) {
+            throw new BusinessException(ErrorCode.COMMENT_WRITER_NOT_MATCHED);
+        }
     }
 
 }
