@@ -34,18 +34,18 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<ResTemplate<CommentDto>> writeComment(@PathVariable Long postId
                                                                 , @Valid @RequestBody final CommentRequestDto requestDto
-                                                                , @StudentEmail Student student){
+                                                                , @StudentEmail String email){
 
-        CommentDto commentDto = commentService.createComment(postId, requestDto, student);
+        CommentDto commentDto = commentService.createComment(postId, requestDto, email);
 
         ResTemplate<CommentDto> resTemplate = new ResTemplate<>(HttpStatus.CREATED, "댓글 작성 완료", commentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resTemplate);
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<ResTemplate<?>> deleteComment(@PathVariable Long id, @StudentEmail Student student){
+    public ResponseEntity<ResTemplate<?>> deleteComment(@PathVariable Long id, @StudentEmail String email){
 
-        commentService.deleteComment(id, student);
+        commentService.deleteComment(id, email);
 
         ResTemplate<?> resTemplate = new ResTemplate<>(HttpStatus.OK, id + "번 댓글 삭제 완료");
         return ResponseEntity.ok(resTemplate);

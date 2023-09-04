@@ -39,6 +39,10 @@ public enum ErrorCode {
     POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
     POST_ALREADY_DONE(400, "해당 게시글은 만남신청이 종료되었습니다."),
     POST_WRITER_NOT_MATCHED(400, "해당 게시글의 작성자가 아닙니다."),
+    
+    // 댓글
+    NOT_EXIST_COMMENT(404, "해당 댓글을 찾을 수 없습니다."),
+    COMMENT_WRITER_NOT_MATCHED(400,"해당 댓글의 작성자가 아닙니다."),
 
     // 만남(MeetUp)
     MEETUP_NOT_FOUND(404, "해당 만남을 찾을 수 없습니다."),
