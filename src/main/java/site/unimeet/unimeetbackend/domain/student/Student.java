@@ -72,7 +72,7 @@ public class Student {
         this.department = department;
     }
 
-    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, List<Major> majors){
+    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, String kakaoId,List<Major> majors){
         this.nickname = nickname;
         this.mbti = mbti;
         this.introduction = introduction;
@@ -80,6 +80,7 @@ public class Student {
         if (profileImageUrl != null) {
             this.profileImageUrl = profileImageUrl;
         }
+        this.kakaoId = kakaoId;
     }
 
     public void updateRefreshTokenAndExp(String refreshToken, Date refreshTokenExp) {

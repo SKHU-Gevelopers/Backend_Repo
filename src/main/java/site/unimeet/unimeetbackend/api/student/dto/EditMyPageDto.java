@@ -22,13 +22,15 @@ public class EditMyPageDto {
         @NotNull
         private Mbti mbti;
         private String introduction;
+        @Length(min = 1, max = 20, message = "카카오 아이디는 1~20자 사이여야 합니다")
+        private String kakaoId;
         @NotNull
         private List<Major> majors;
         @NotNull(message = "프로필 이미지가 NULL입니다.")
         private MultipartFile profileImg;
 
         public void editMyPage(Student student, String profileImageUrl) {
-            student.editMyPage(nickname, mbti, introduction, profileImageUrl, majors);
+            student.editMyPage(nickname, mbti, introduction, profileImageUrl, kakaoId,majors);
         }
     }
 }
