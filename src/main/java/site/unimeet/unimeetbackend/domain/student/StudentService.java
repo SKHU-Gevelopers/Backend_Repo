@@ -5,13 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.MyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.PublicMyPageDto;
-import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookRepository;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
@@ -25,8 +23,6 @@ import site.unimeet.unimeetbackend.util.EntityUtil;
 @Service
 public class StudentService {
     private final StudentRepository studentRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final EmailVerificationService emailVerificationService;
     private final GuestBookRepository guestBookRepository;
 
     public Student findById(Long id) {
@@ -80,9 +76,9 @@ public class StudentService {
         editMyPageRequest.editMyPage(student, uploadedFilePath);
     }
 
-    public MyPageDto.Response getMyPage(String email) {
+    public MyPageDto.Rsp getMyPage(String email) {
         Student student = EntityUtil.mustNotNull(studentRepository.findByEmailFetchMajors(email), ErrorCode.STUDENT_NOT_FOUND);
-        return MyPageDto.Response.of(student);
+        return MyPageDto.Rsp.of(student);
     }
 
     public PublicMyPageDto.Res getPublicMyPage(Long id, Pageable pageable) {

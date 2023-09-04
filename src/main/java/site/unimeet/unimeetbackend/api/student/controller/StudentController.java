@@ -42,7 +42,7 @@ public class StudentController {
 
     // 마이페이지 수정
     @PostMapping("/my-page")
-    public ResponseEntity<?> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
+    public ResponseEntity<Void> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
         String uploadedFileUrl = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
         studentService.editMyPage(editMyPageRequest, uploadedFileUrl, email);
@@ -52,11 +52,10 @@ public class StudentController {
 
     // 마이페이지 수정창 조회
     @GetMapping("/my-page")
-    public ResTemplate<MyPageDto.Response> handleGetPrivateMyPage(@StudentEmail String email) {
-        MyPageDto.Response rspsDto = studentService.getMyPage(email);
+    public ResTemplate<MyPageDto.Rsp> handleGetPrivateMyPage(@StudentEmail String email) {
+        MyPageDto.Rsp rspDto = studentService.getMyPage(email);
 
-        ResTemplate<MyPageDto.Response> resTemplate = new ResTemplate<>(HttpStatus.OK, rspsDto);
-        return resTemplate;
+        return new ResTemplate<>(HttpStatus.OK, rspDto);
     }
 
      // 공개 마이페이지 조회
