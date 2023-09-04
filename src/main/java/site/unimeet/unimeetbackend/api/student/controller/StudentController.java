@@ -33,7 +33,7 @@ public class StudentController {
     // 회원가입
     @PostMapping("/sign-up")
     public ResponseEntity<ResTemplate<String>> handleSignUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
-        Student student = studentService.signUp(signUpRequest.toEntity(passwordEncoder), signUpRequest.getEmailVrfCode());
+        Student student = studentService.signUp(signUpRequest.toEntity(passwordEncoder));
 
         ResTemplate<String> resTemplate = new ResTemplate<>(HttpStatus.CREATED,
                 student.getNickname() + " is created");

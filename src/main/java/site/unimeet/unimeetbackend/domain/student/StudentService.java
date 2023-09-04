@@ -45,18 +45,18 @@ public class StudentService {
     }
 
     @Transactional
-    public Student signUp(Student student, String emailVrfCode) {
-        // Cache 에서 Email로 검증코드를 가져온다.
-        String cacheVrfCode = emailVerificationService.getCodeExpirationCache()
-                .getIfPresent(student.getEmail());
-        // 검증코드 만료 시 cacheVrfCode 는 null이다.
-        if (cacheVrfCode == null) {
-            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
-        }
-        // 캐시의 검증코드가 not null 이므로, 입력된 검증코드와 일치하는지 확인
-        if (! cacheVrfCode.equals(emailVrfCode)){
-            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
-        }
+    public Student signUp(Student student) {
+//        // Cache 에서 Email로 검증코드를 가져온다.
+//        String cacheVrfCode = emailVerificationService.getCodeExpirationCache()
+//                .getIfPresent(student.getEmail());
+//        // 검증코드 만료 시 cacheVrfCode 는 null이다.
+//        if (cacheVrfCode == null) {
+//            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
+//        }
+//        // 캐시의 검증코드가 not null 이므로, 입력된 검증코드와 일치하는지 확인
+//        if (! cacheVrfCode.equals(emailVrfCode)){
+//            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
+//        }
 
         if (studentRepository.existsByKakaoId(student.getKakaoId())) {
             throw new BusinessException(ErrorCode.KAKAO_ID_ALREADY_REGISTERED);
