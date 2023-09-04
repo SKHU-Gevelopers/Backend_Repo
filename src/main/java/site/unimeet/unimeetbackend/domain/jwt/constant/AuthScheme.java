@@ -2,12 +2,13 @@ package site.unimeet.unimeetbackend.domain.jwt.constant;
 
 import lombok.Getter;
 
+// Http Auth 헤더에 사용될 인증 방식
 @Getter
-public enum GrantType {
+public enum AuthScheme {
 
     BEARER("Bearer");
 
-    GrantType(String type) {
+    AuthScheme(String type) {
         this.type = type;
     }
 

@@ -26,13 +26,11 @@ public class UserSignUpDto {
         private String email;
         @Length(min = 4, max = 20, message = "비밀번호는 4~20자 사이여야 합니다")
         private String password;
-        @NotBlank(message = "이메일 인증 코드는 비어있을 수 없습니다")
-        private String emailVrfCode;
         @NotNull(message = "성별을 선택해주세요")
         private Gender gender;
         @NotNull(message = "MBTI를 선택해주세요")
         private Mbti mbti;
-        @NotNull(message = "kakaoId를 입력해주세요.")
+        @NotBlank(message = "kakaoId를 입력해주세요.")
         @Length(min = 1, max = 20, message = "카카오 아이디는 1~20자 사이여야 합니다")
         private String kakaoId;
         @NotNull(message = "학과를 선택해주세요")

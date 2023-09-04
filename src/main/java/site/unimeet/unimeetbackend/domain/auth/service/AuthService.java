@@ -1,25 +1,109 @@
 package site.unimeet.unimeetbackend.domain.auth.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
+import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
+import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 
+import java.util.Date;
+
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class AuthService {
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
     private final TokenManager tokenManager;
+    private final PasswordEncoder passwordEncoder;
+    private final StudentService studentService;
 
-    // todo 재발급 토큰 관리
+    // email이 문제인지 pwd가 문제인지 알려주면 안됨
+    @Transactional
     public TokenDto signIn(String email, String password) { //로그인
         // 1. email, password로 검증
-        studentService.validatePassword(email, password);
+        Student student = studentRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("로그인 시도, email: {}, 이메일이 일치하지 않습니다.", email);
+                    return new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+                });
 
-        // 2. 토큰 생성
-        return tokenManager.createTokenDto(email);
+        if (!passwordEncoder.matches(password, student.getPassword())) {
+            log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
+            throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+        }
+        TokenDto tokenDto = tokenManager.createTokenDto(email);
+
+        // refresh token은 관리를 위해 user DB에 저장.
+        student.updateRefreshTokenAndExp(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
+
+        tokenDto.setUsername(student.getName());
+        return tokenDto;
+    }
+
+    @Transactional
+    public TokenDto signInTemp(String email, String password) {
+        // 1. email, password로 검증
+        Student student = studentRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.error("로그인 시도, email: {}, 이메일이 일치하지 않습니다.", email);
+                    return new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+                });
+
+        if (!passwordEncoder.matches(password, student.getPassword())) {
+            log.error("로그인 시도, email: {}, pwd: {}, 비밀번호가 일치하지 않습니다.", email, password);
+            throw new AuthenticationException(ErrorCode.MISMATCHED_SIGNIN_INFO);
+        }
+        TokenDto tokenDto = tokenManager.createTokenDtoTemp(email, new Date(System.currentTimeMillis() + 1210500000L));
+
+        // refresh token은 관리를 위해 user DB에 저장.
+        student.updateRefreshTokenAndExp(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
+
+        tokenDto.setUsername(student.getName());
+        return tokenDto;
+    }
+
+    @Transactional
+    public TokenDto reassureByRefreshToken(String refreshToken) {
+        // Member 객체를 찾아온 후 토큰 검증
+        Student student = studentService.findByRefreshToken(refreshToken); // 여기서 토큰 유효성과 토큰타입(refresh) 가 검증된다.
+        student.validateRefreshTokenExp();
+
+        TokenDto tokenDto = tokenManager.createTokenDto(student.getEmail());
+        student.updateRefreshTokenAndExp(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
+
+        tokenDto.setUsername(student.getName());
+        return tokenDto;
+    }
+
+    @Transactional
+    public void logout(String email) {
+        Student student = studentService.findByEmail(email);
+        student.logout();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

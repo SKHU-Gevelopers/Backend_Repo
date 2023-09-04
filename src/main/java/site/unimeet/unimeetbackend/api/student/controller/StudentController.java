@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import site.unimeet.unimeetbackend.api.common.RspsTemplate;
+import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.api.student.dto.EditMyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.MyPageDto;
 import site.unimeet.unimeetbackend.api.student.dto.PublicMyPageDto;
@@ -32,17 +32,17 @@ public class StudentController {
 
     // 회원가입
     @PostMapping("/sign-up")
-    public ResponseEntity<RspsTemplate<String>> handleSignUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
-        Student student = studentService.signUp(signUpRequest.toEntity(passwordEncoder), signUpRequest.getEmailVrfCode());
+    public ResponseEntity<ResTemplate<String>> handleSignUp(@RequestBody @Valid UserSignUpDto.Request signUpRequest){
+        Student student = studentService.signUp(signUpRequest.toEntity(passwordEncoder));
 
-        RspsTemplate<String> rspsTemplate = new RspsTemplate<>(HttpStatus.CREATED,
+        ResTemplate<String> resTemplate = new ResTemplate<>(HttpStatus.CREATED,
                 student.getNickname() + " is created");
-        return ResponseEntity.status(HttpStatus.CREATED).body(rspsTemplate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resTemplate);
     }
 
     // 마이페이지 수정
     @PostMapping("/my-page")
-    public ResponseEntity<?> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
+    public ResponseEntity<Void> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
                                 , @StudentEmail String email) {
         String uploadedFileUrl = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
         studentService.editMyPage(editMyPageRequest, uploadedFileUrl, email);
@@ -52,23 +52,22 @@ public class StudentController {
 
     // 마이페이지 수정창 조회
     @GetMapping("/my-page")
-    public RspsTemplate<MyPageDto.Response> handleGetPrivateMyPage(@StudentEmail String email) {
-        MyPageDto.Response rspsDto = studentService.getMyPage(email);
+    public ResTemplate<MyPageDto.Rsp> handleGetPrivateMyPage(@StudentEmail String email) {
+        MyPageDto.Rsp rspDto = studentService.getMyPage(email);
 
-        RspsTemplate<MyPageDto.Response> rspsTemplate = new RspsTemplate<>(HttpStatus.OK, rspsDto);
-        return rspsTemplate;
+        return new ResTemplate<>(HttpStatus.OK, rspDto);
     }
 
      // 공개 마이페이지 조회
     @GetMapping("/{userId}/my-page")
-    public RspsTemplate<PublicMyPageDto.Res> handleGetMyPage(@PathVariable Long userId,
-                                                             @RequestParam(defaultValue = "1") final int page) {
+    public ResTemplate<PublicMyPageDto.Res> handleGetMyPage(@PathVariable Long userId,
+                                                            @RequestParam(defaultValue = "1") final int page) {
         final int GUESTBOOK_PAGE_SIZE = 6;
         Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE);
 
         PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(userId, pageable);
 
-        return new RspsTemplate<>(HttpStatus.OK, rspsDto);
+        return new ResTemplate<>(HttpStatus.OK, rspsDto);
     }
 }
 

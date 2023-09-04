@@ -30,11 +30,11 @@ public class PostService {
     private final StudentService studentService;
 
     public Post findById(Long id){
-        return EntityUtil.checkNotFound(postRepository.findById(id), ErrorCode.POST_NOT_FOUND);
+        return EntityUtil.mustNotNull(postRepository.findById(id), ErrorCode.POST_NOT_FOUND);
     }
 
     public Post findByIdFetchImageUrls(Long id){
-        return EntityUtil.checkNotFound(postRepository.findByIdFetchImageUrls(id), ErrorCode.POST_NOT_FOUND);
+        return EntityUtil.mustNotNull(postRepository.findByIdFetchImageUrls(id), ErrorCode.POST_NOT_FOUND);
     }
 
     @Transactional
@@ -57,7 +57,7 @@ public class PostService {
     }
 
     public Post findByIdFetchWriter(Long id) {
-        return EntityUtil.checkNotFound(postRepository.findByIdFetchWriter(id), ErrorCode.POST_NOT_FOUND);
+        return EntityUtil.mustNotNull(postRepository.findByIdFetchWriter(id), ErrorCode.POST_NOT_FOUND);
     }
 
     @Transactional

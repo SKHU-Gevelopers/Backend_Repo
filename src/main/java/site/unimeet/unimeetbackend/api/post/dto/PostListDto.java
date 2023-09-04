@@ -17,8 +17,8 @@ public class PostListDto {
     public static class Res{
         List<PostDto> posts;
         SliceInfoDto page;
-        public static PostListDto.Res from(Slice<Post> postList){
-            return new PostListDto.Res(PostDto.from(postList), SliceInfoDto.from(postList));
+        public static Res from(Slice<Post> postList){
+            return new Res(PostDto.from(postList), SliceInfoDto.from(postList));
         }
 
         public Res(List<PostDto> posts, SliceInfoDto page) {

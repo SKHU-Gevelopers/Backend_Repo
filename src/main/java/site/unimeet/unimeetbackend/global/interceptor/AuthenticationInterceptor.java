@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import site.unimeet.unimeetbackend.domain.jwt.constant.GrantType;
+import site.unimeet.unimeetbackend.domain.jwt.constant.AuthScheme;
 import site.unimeet.unimeetbackend.domain.jwt.constant.TokenType;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
@@ -40,14 +40,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         //  토큰 유무 확인
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(!StringUtils.hasText(authorizationHeader)){
-            throw new AuthenticationException(ErrorCode.NOT_EXISTS_AUTHORIZATION);
+            throw new AuthenticationException(ErrorCode.NOT_EXISTS_AUTH_HEADER);
         }
 
         //  2. authorization Bearer 체크
         String[] authorizations = authorizationHeader.split(" ");
-        // GrantType.BEARER.getType() 은 "Bearer"문자열 반환
-        if(authorizations.length < 2 || (!GrantType.BEARER.getType().equals(authorizations[0]))){
-            throw new AuthenticationException(ErrorCode.NOT_VALID_BEARER_GRANT_TYPE);
+        // AuthScheme.BEARER.getType() 은 "Bearer"문자열 반환
+        if(authorizations.length < 2 || (!AuthScheme.BEARER.getType().equals(authorizations[0]))){
+            throw new AuthenticationException(ErrorCode.NOT_VALID_BEARER_TYPE);
         }
 
         //  3. 토큰 검증

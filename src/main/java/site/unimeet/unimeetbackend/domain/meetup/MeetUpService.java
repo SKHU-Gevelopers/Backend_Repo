@@ -103,16 +103,16 @@ public class MeetUpService {
     }
 
     public MeetUp findById(Long meetUpId) {
-        return EntityUtil.checkNotFound(meetUpRepository.findById(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+        return EntityUtil.mustNotNull(meetUpRepository.findById(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
     // Receiver와 TargetPost를 Fetch Join으로 가져온다.
     public MeetUp findByIdFetchAll(Long meetUpId) {
-        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchAll(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+        return EntityUtil.mustNotNull(meetUpRepository.findByIdFetchAll(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
     public MeetUp findByIdFetchReceiverAndSenderAndPost(Long meetUpId) {
-        return EntityUtil.checkNotFound(meetUpRepository.findByIdFetchReceiverAndSenderAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
+        return EntityUtil.mustNotNull(meetUpRepository.findByIdFetchReceiverAndSenderAndPost(meetUpId), ErrorCode.MEETUP_NOT_FOUND);
     }
 
 

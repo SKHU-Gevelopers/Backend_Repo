@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentDto;
-import site.unimeet.unimeetbackend.api.comment.dto.CommentReadDto;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentRequestDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostRepository;
@@ -26,22 +25,17 @@ public class CommentService {
     private final PostRepository postRepository;
     private final StudentRepository studentRepository;
 
-    @Transactional
-    public List<CommentDto> findAllComments(CommentReadDto commentReadDto) {
-        return commentRepository.findByPostId(commentReadDto.getPostId()).stream()
+    public List<CommentDto> findAllComments(Long postId) {
+        return commentRepository.findByPostId(postId).stream()
                 .map(CommentDto::toDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-<<<<<<< Updated upstream
-    public CommentDto createComment(CommentRequestDto requestDto, Student student) {
-        Post post = postRepository.findById(requestDto.getPostId())
-=======
     public CommentDto createComment(Long postId, CommentRequestDto requestDto, String email) {
         Post post = postRepository.findById(postId)
->>>>>>> Stashed changes
                 .orElseThrow(()-> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
+      
         Student student = studentRepository.findByEmail(email)
                 .orElseThrow(()-> new EntityNotFoundException(ErrorCode.STUDENT_NOT_FOUND));
 
@@ -50,7 +44,8 @@ public class CommentService {
 
         return CommentDto.toDto(comment);
     }
-
+  
+    @Transactional
     public void deleteComment(Long id, String email) {
         Comment comment = commentRepository.findById(id)
                         .orElseThrow(()-> new EntityNotFoundException(ErrorCode.NOT_EXIST_COMMENT));

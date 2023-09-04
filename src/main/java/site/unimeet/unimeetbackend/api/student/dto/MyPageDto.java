@@ -14,21 +14,23 @@ import java.util.List;
 public class MyPageDto {
     @Getter
     @Builder
-    public static class Response{
-        private String nickname;
-        private Gender gender;
-        private Mbti mbti;
-        private String introduction;
-        private String profileImageUrl;
+    public static class Rsp {
+        String nickname;
+        Gender gender;
+        Mbti mbti;
+        String introduction;
+        String profileImageUrl;
+        String kakaoId;
         private List<Major> majors;
 
-        public static Response of(Student student) {
-            return Response.builder()
+        public static Rsp of(Student student) {
+            return Rsp.builder()
                     .nickname(student.getNickname())
                     .gender(student.getGender())
                     .mbti(student.getMbti())
                     .introduction(student.getIntroduction())
                     .profileImageUrl(student.getProfileImageUrl())
+                    .kakaoId(student.getKakaoId())
                     .majors(student.getMajors())
                     .build();
         }
