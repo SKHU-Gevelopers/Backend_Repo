@@ -15,7 +15,7 @@ public class CommentDto {
     private String content;
     private StudentIdAndNickNameDto student;
 
-    public static CommentDto toDto(Comment comment){
+    public static CommentDto from(Comment comment){
         return new CommentDto(
                 comment.getId(),
                 comment.getContent(),

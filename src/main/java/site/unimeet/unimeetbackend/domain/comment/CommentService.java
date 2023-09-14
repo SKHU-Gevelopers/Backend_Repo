@@ -42,7 +42,7 @@ public class CommentService {
         Comment comment = new Comment(requestDto.getContent(), student, post);
         commentRepository.save(comment);
 
-        return CommentDto.toDto(comment);
+        return CommentDto.from(comment);
     }
   
     @Transactional
