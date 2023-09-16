@@ -69,6 +69,18 @@ public class StudentController {
 
         return new ResTemplate<>(HttpStatus.OK, rspsDto);
     }
+
+    // 나의 공개 마이페이지 조회.
+    @GetMapping("/my-page-pub")
+    public ResTemplate<PublicMyPageDto.Res> handleGetPublicMyPage(@StudentEmail String email,
+                                                            @RequestParam(defaultValue = "1") final int page) {
+        final int GUESTBOOK_PAGE_SIZE = 6;
+        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE);
+
+        PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(email, pageable);
+
+        return new ResTemplate<>(HttpStatus.OK, rspsDto);
+    }
 }
 
 

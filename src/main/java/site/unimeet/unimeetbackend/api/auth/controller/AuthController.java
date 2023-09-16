@@ -11,9 +11,7 @@ import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.domain.auth.service.AuthService;
 import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenValidator;
-import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
-import site.unimeet.unimeetbackend.util.EmailService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,8 +20,6 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
     private final AuthService authService;
-    private final StudentService studentService;
-    private final EmailService emailService;
     private final TokenValidator tokenValidator;
 
     // 인증 테스트

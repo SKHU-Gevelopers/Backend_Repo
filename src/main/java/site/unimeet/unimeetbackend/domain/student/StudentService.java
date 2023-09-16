@@ -87,7 +87,15 @@ public class StudentService {
         return PublicMyPageDto.Res.from(student, guestBooks);
     }
 
+    public PublicMyPageDto.Res getPublicMyPage(String email, Pageable pageable) {
+        Student student = findByEmail(email);
+        Page<GuestBook> guestBooks = guestBookRepository.findByTargetStudent(student, pageable);
+        return PublicMyPageDto.Res.from(student, guestBooks);
+    }
+
     public Student findByRefreshToken(String refreshToken) {
         return EntityUtil.mustNotNull(studentRepository.findByRefreshToken(refreshToken), ErrorCode.REFRESH_TOKEN_NOT_FOUND);
     }
+
+
 }
