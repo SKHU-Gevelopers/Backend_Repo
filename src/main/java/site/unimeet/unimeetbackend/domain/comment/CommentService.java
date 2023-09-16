@@ -11,7 +11,6 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
-import site.unimeet.unimeetbackend.util.EntityUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +26,7 @@ public class CommentService {
 
     public List<CommentDto> findAllComments(Long postId) {
         return commentRepository.findByPostId(postId).stream()
-                .map(CommentDto::toDto)
+                .map(CommentDto::from)
                 .collect(Collectors.toList());
     }
 
