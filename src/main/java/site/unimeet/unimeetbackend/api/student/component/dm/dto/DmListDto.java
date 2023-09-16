@@ -26,6 +26,7 @@ public class DmListDto {
         @Getter
         @Builder
         private static class DmDto {
+            long id;
             private String title;
             private StudentIdAndNickNameDto sender;
             @JsonFormat(pattern = "yy-MM-dd HH:mm")
@@ -35,6 +36,7 @@ public class DmListDto {
                 StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(dm.getSender());
 
                 DmDto dmDto = DmDto.builder()
+                        .id(dm.getId())
                         .title(dm.getTitle())
                         .sender(sender)
                         .sentAt(dm.getCreateTime())
