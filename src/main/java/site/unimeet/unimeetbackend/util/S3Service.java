@@ -57,6 +57,7 @@ public class S3Service {
         String storedFilePath = createStoredFilePath(storedFileName, bucketNameSuffix); // upload 메서드의 반환값
 
         ObjectMetadata metadata = new ObjectMetadata();
+
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
@@ -64,6 +65,10 @@ public class S3Service {
         try (InputStream inputStream = multipartFile.getInputStream()){
             putObjectRequest = new PutObjectRequest(bucketName + bucketNameSuffix , storedFileName,
                     inputStream, metadata);
+
+            log.error("bucketName : {}, bucketNameSuffix : {}, storedFileName : {}", bucketName, bucketNameSuffix, storedFileName);
+            log.error("metadata : {}", metadata.getContentType() + ", " + metadata.getContentLength() + ", " + metadata.getContentEncoding() +". " + metadata.getVersionId());
+
             // Upload the file to the specified bucket
             s3Client.putObject(putObjectRequest);
         } catch (IOException e) {
