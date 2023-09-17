@@ -1,8 +1,5 @@
 package site.unimeet.unimeetbackend.util;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.file.FileIOException;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ public class S3Service {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    private final AmazonS3Client s3Client;
+    private final S3Client s3Client;
 
     // return fullFilePath
     public List<String> upload(List<MultipartFile> multipartFiles, String bucketNameSuffix){
@@ -55,22 +55,22 @@ public class S3Service {
         String originalFileName = multipartFile.getOriginalFilename();
         String storedFileName = createStoredFileName(originalFileName);
         String storedFilePath = createStoredFilePath(storedFileName, bucketNameSuffix); // upload 메서드의 반환값
+        // dir  + / + filenanme
 
-        ObjectMetadata metadata = new ObjectMetadata();
-
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
-
-        PutObjectRequest putObjectRequest;
         try (InputStream inputStream = multipartFile.getInputStream()){
-            putObjectRequest = new PutObjectRequest(bucketName + bucketNameSuffix , storedFileName,
-                    inputStream, metadata);
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .contentType(multipartFile.getContentType())
+                    .bucket(bucketName)
+                    .key(bucketNameSuffix + "/" + storedFileName)
+                    .build();
 
             log.error("bucketName : {}, bucketNameSuffix : {}, storedFileName : {}", bucketName, bucketNameSuffix, storedFileName);
-            log.error("metadata : {}", metadata.getContentType() + ", " + metadata.getContentLength() + ", " + metadata.getContentEncoding() +". " + metadata.getVersionId());
 
+            RequestBody requestBody = RequestBody.fromInputStream(inputStream, multipartFile.getSize());
+            log.error("contentType = {} ", requestBody.contentType());
+            log.error("contentLength = {}", requestBody.optionalContentLength().orElse(0L));
             // Upload the file to the specified bucket
-            s3Client.putObject(putObjectRequest);
+            s3Client.putObject(putObjectRequest, requestBody);
         } catch (IOException e) {
             // FileIOException 발생시키기 전에, IOEXCEPTION 에 대한 로그를 남긴다.
             log.error("IOEXCEPTION: " + "originalFileName: " + originalFileName +
