@@ -33,6 +33,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         log.info("AuthenticationInterceptor preHandle");
 
+        if (request.getRequestURI().equals("/token/reissue")) {
+            log.warn("요청 url: {}, 니가여기왜옴???", request.getRequestURI());
+        }
+
         // prefilght 요청은 모두 허용
         if (HttpMethod.OPTIONS.name().equals(request.getMethod())){
             log.info("요청 url: {}, OPTIONS 요청 허용", request.getRequestURI());
