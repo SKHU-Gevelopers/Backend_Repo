@@ -1,6 +1,7 @@
 package site.unimeet.unimeetbackend.api.auth.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class AuthController {
@@ -56,7 +58,7 @@ public class AuthController {
      */
     @PostMapping(value = "/token/reissue")
     public ResTemplate<TokenDto> accessToken(HttpServletRequest httpServletRequest){
-
+        log.info("토큰 재발급 요청");
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         tokenValidator.validateBearer(authorizationHeader);
 
