@@ -27,7 +27,7 @@ public class CommentService {
 
     public List<CommentDto> findAllComments(Long postId) {
         return commentRepository.findByPostId(postId).stream()
-                .map(CommentDto::toDto)
+                .map(CommentDto::from)
                 .collect(Collectors.toList());
     }
 
