@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -30,11 +31,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
-        log.info("AuthenticationInterceptor preHandler");
+        log.info("AuthenticationInterceptor preHandle");
 
         // prefilght 요청은 모두 허용
-        if ("OPTIONS".equals(request.getMethod()))
+        if (HttpMethod.OPTIONS.name().equals(request.getMethod())){
+            log.info("요청 url: {}, OPTIONS 요청 허용", request.getRequestURI());
             return true;
+        }
+
 
         //  1. authorization 필수 체크. 헤더 부분에 Authorization 이 없으면 지정한 예외를 발생시킴
         //  토큰 유무 확인

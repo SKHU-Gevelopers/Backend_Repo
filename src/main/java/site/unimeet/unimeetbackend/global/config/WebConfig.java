@@ -3,7 +3,6 @@ package site.unimeet.unimeetbackend.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -42,17 +41,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 // Todo Origin 웹서버 도메인으로
                 .allowedOriginPatterns("*") // Request Header의 Origin을, Response Header의 Access-Control-Allow-Origin에 그대로 넣어준다.
-                .allowedMethods(HttpMethod.GET.name()
-                        ,HttpMethod.POST.name()
-                        ,HttpMethod.PATCH.name()
-                        ,HttpMethod.PUT.name()
-                        ,HttpMethod.DELETE.name()
-                        , HttpMethod.OPTIONS.name()
-                )
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("*")
                 .allowCredentials(true)
-                .maxAge(1800)
+                .maxAge(3600)
         // maxage 만큼 preflight 캐싱은 기본값이 1800sec(30m), 즉 Access-Control-Max-Age=1800
         ;
     }
