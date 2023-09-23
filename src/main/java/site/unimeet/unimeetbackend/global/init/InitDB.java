@@ -18,10 +18,10 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookRepository;
-import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -50,7 +50,7 @@ public class InitDB {
                 .gender(Gender.FEMALE)
                 .mbti(Mbti.ESTP)
                 .kakaoId("jeongkite927")
-                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/madman.jpg")
                 .majors(majors)
                 .department(Department.IT)
                 .build();
@@ -63,7 +63,7 @@ public class InitDB {
                 .gender(Gender.MALE)
                 .mbti(Mbti.ISTP)
                 .kakaoId("hugme123")
-                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/Quokka.jfif")
                 .majors(majors)
                 .department(Department.IT)
                 .build();
@@ -76,7 +76,7 @@ public class InitDB {
                 .gender(Gender.FEMALE)
                 .mbti(Mbti.ISTJ)
                 .kakaoId("eslint456")
-                .profileImageUrl(S3Config.DEFAULT_PROFILE_IMAGE_URL)
+                .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/memoji.jpg")
                 .majors(majors)
                 .department(Department.HUMANITIES)
                 .build();
@@ -130,7 +130,7 @@ public class InitDB {
         Post post = Post.builder()
                 .title("카페 투어해요!")
                 .content("우리랑 오늘 핫한 카페 같이 갈 사람~")
-                .imageUrls(null)
+                .imageUrls(List.of("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/post_img/post1.jpg"))
                 .maxPeople(2)
                 .gender(Gender.MALE)
                 .writer(student1)
@@ -140,7 +140,7 @@ public class InitDB {
         Post post2 = Post.builder()
                 .title("LP 바 좋아하시는 분?")
                 .content("정말 가고싶은 LP바가 있는데 함께 갈 사람 구해요! 위치는 이태원~")
-                .imageUrls(null)
+                .imageUrls(List.of("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/post_img/post2.png"))
                 .maxPeople(1)
                 .gender(Gender.FEMALE)
                 .writer(student2)
@@ -150,7 +150,7 @@ public class InitDB {
         Post post3 = Post.builder()
                 .title("강아지 보러 와")
                 .content("애견카페에서 일 하는데 오늘 우리집 멍멍이도 온다! 귀여운 울 아가 보고싶으면 쪽지하자")
-                .imageUrls(null)
+                .imageUrls(List.of("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/post_img/post3.jpg"))
                 .maxPeople(5)
                 .gender(Gender.NONE)
                 .writer(student3)
@@ -160,7 +160,7 @@ public class InitDB {
         Post post4 = Post.builder()
                 .title("산산기어 팝업가자")
                 .content("이번에 23FW 팝업 같이 갈 사람? 더현대에서 한대! 같이 갈 사람이 없어서 구해봐")
-                .imageUrls(null)
+                .imageUrls(List.of("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/post_img/post4.jpg"))
                 .maxPeople(2)
                 .gender(Gender.NONE)
                 .writer(student1)
@@ -170,7 +170,7 @@ public class InitDB {
         Post post5 = Post.builder()
                 .title("4대4 미팅")
                 .content("9월 30일, 위치는 아직 안 정했어 우리 같이 단톡 파서 정해보자! 난 회대생이고 나머진 다른 학교야. 쪽지 줘")
-                .imageUrls(null)
+                .imageUrls(List.of("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/post_img/post5.jpg"))
                 .maxPeople(4)
                 .gender(Gender.FEMALE)
                 .writer(student2)
