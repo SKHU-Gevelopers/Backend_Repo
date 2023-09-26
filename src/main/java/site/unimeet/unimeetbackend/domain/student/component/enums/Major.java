@@ -11,15 +11,15 @@ import lombok.Getter;
 @Getter
 public enum Major {
     // IT학부
-    SOFTWARE("소프트웨어전공"),  COMPUTER("컴퓨터공학전공"),
-    INFORMATION("정보통신전공"),  AI("인공지능전공"), DPT_IT("IT융합자율학부"),
+    SOFTWARE("소프트웨어"),  COMPUTER("컴퓨터공학"),
+    INFORMATION("정보통신"),  AI("인공지능"), DPT_IT("IT융합자율학부"),
 
     // 인문학부
-    ENGLISH("영어학전공"), JAPANESE("일어일본학"), CHINESE("중어중국학"),
+    ENGLISH("영어학"), JAPANESE("일어일본학"), CHINESE("중어중국학"),
     DPT_HUMANITIES("인문융합자율학부"),
 
     // 사회학부
-    ECONOMICS("경제학전공"), BUSINESS("경영학전공"), POLITICAL("정치학전공"),
+    ECONOMICS("경제학"), BUSINESS("경영학"), POLITICAL("정치학"),
     SOCIOLOGY("사회학"), SOCIAL_WELFARE("사회복지학"),
     DPT_SOCIAL("사회융합자율학부"),
 
