@@ -25,7 +25,7 @@ public class PostDetailDto {
 
         private String profileImageUrl; //작성자 프로필 사진
         private String nickname; //작성자 닉네임
-        private boolean isPostOwner; //게시글 작성자인지 여부
+        private boolean postOwner; //게시글 작성자인지 여부
 
         public static PostDetailDto.Res from(Post post, String requesterEmail) {
             Student writer = post.getWriter();
@@ -39,7 +39,7 @@ public class PostDetailDto {
                     .likes(post.getLikes())
                     .profileImageUrl(writer.getProfileImageUrl())
                     .nickname(writer.getNickname())
-                    .isPostOwner(writer.getEmail().equals(requesterEmail))
+                    .postOwner(writer.getEmail().equals(requesterEmail))
                     .build();
         }
     }
