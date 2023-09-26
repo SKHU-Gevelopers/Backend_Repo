@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import site.unimeet.unimeetbackend.domain.auth.service.EmailVerificationService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
+import site.unimeet.unimeetbackend.global.exception.auth.AuthException;
 
 @RequiredArgsConstructor
 @Service
@@ -26,7 +26,7 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         } catch (MailException e){
-            throw new AuthenticationException(ErrorCode.EMAIL_CANNOT_BE_SENT);
+            throw new AuthException(ErrorCode.EMAIL_CANNOT_BE_SENT);
         }
     }
 
@@ -38,7 +38,7 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         } catch (MailException e){
-            throw new AuthenticationException(ErrorCode.EMAIL_CANNOT_BE_SENT);
+            throw new AuthException(ErrorCode.EMAIL_CANNOT_BE_SENT);
         }
     }
 }

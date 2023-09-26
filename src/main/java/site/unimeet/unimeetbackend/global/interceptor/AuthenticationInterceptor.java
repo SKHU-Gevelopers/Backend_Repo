@@ -13,7 +13,7 @@ import site.unimeet.unimeetbackend.domain.jwt.constant.AuthScheme;
 import site.unimeet.unimeetbackend.domain.jwt.constant.TokenType;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
+import site.unimeet.unimeetbackend.global.exception.auth.AuthException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,27 +48,27 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         //  토큰 유무 확인
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(!StringUtils.hasText(authorizationHeader)){
-            throw new AuthenticationException(ErrorCode.NOT_EXISTS_AUTH_HEADER);
+            throw new AuthException(ErrorCode.NOT_EXISTS_AUTH_HEADER);
         }
 
         //  2. authorization Bearer 체크
         String[] authorizations = authorizationHeader.split(" ");
         // AuthScheme.BEARER.getType() 은 "Bearer"문자열 반환
         if(authorizations.length < 2 || (!AuthScheme.BEARER.getType().equals(authorizations[0]))){
-            throw new AuthenticationException(ErrorCode.NOT_VALID_BEARER_TYPE);
+            throw new AuthException(ErrorCode.NOT_VALID_BEARER_TYPE);
         }
 
         //  3. 토큰 검증
         String token = authorizations[1]; // Bearer 뒤의 토큰 몸통 부분
         if(!tokenManager.validateToken(token)){
-            throw new AuthenticationException(ErrorCode.NOT_VALID_TOKEN);
+            throw new AuthException(ErrorCode.NOT_VALID_TOKEN);
         }
 
         //  4. 토큰 타입 검증
         String tokenType = tokenManager.getTokenType(token);
         // tokenType.equals(TokenType.ACCESS.name()); 해당 코드는 NPE 발생 가능성이 있음. NULL을 피하는 코드 작성하자
         if(!TokenType.ACCESS.name().equals(tokenType)) { // ACCESS 토큰이 아니면
-            throw new AuthenticationException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
+            throw new AuthException(ErrorCode.NOT_ACCESS_TOKEN_TYPE);
         }
 
         //  5. 액세스 토큰 만료 시작 검증
@@ -77,7 +77,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Date expiration = tokenClaims.getExpiration();
 
         if(tokenManager.isTokenExpired(expiration)) {
-            throw new AuthenticationException(ErrorCode.ACCESS_TOKEN_EXPIRED);
+            throw new AuthException(ErrorCode.ACCESS_TOKEN_EXPIRED);
         }
 
         return true; // 정상 처리
