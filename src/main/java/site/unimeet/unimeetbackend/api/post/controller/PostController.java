@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.api.post.dto.*;
 import site.unimeet.unimeetbackend.domain.meetup.MeetUpService;
+import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
@@ -36,9 +37,11 @@ public class PostController {
 
     // 게시글 단건 조회
     @GetMapping("/posts/{id}")
-    public ResTemplate<PostDetailDto.Res> handleGetPost(@PathVariable Long id){
-        PostDetailDto.Res postList = postService.getPostDetail(id);
-        return new ResTemplate<>(HttpStatus.OK, postList);
+    public ResTemplate<PostDetailDto.Res> handleGetPost(@PathVariable Long id, @StudentEmail String email){
+        Post post = postService.getPostDetail(id);
+        PostDetailDto.Res resDto = PostDetailDto.Res.from(post, email);
+        return new ResTemplate<>(HttpStatus.OK, resDto);
+
     }
 
     //게시글 생성

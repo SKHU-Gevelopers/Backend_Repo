@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import site.unimeet.unimeetbackend.api.post.dto.PostDetailDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
@@ -33,8 +32,8 @@ public class PostService {
         return EntityUtil.mustNotNull(postRepository.findById(id), ErrorCode.POST_NOT_FOUND);
     }
 
-    public Post findByIdFetchImageUrls(Long id){
-        return EntityUtil.mustNotNull(postRepository.findByIdFetchImageUrls(id), ErrorCode.POST_NOT_FOUND);
+    public Post findByIdFetchWriterAndImageUrls(Long id){
+        return EntityUtil.mustNotNull(postRepository.findByIdFetchWriterAndImageUrls(id), ErrorCode.POST_NOT_FOUND);
     }
 
     @Transactional
@@ -51,9 +50,8 @@ public class PostService {
         return PostListDto.Res.from(posts);
     }
 
-    public PostDetailDto.Res getPostDetail(Long id) {
-        Post post = findByIdFetchImageUrls(id);
-        return PostDetailDto.Res.from(post);
+    public Post getPostDetail(Long id) {
+        return findByIdFetchWriterAndImageUrls(id);
     }
 
     public Post findByIdFetchWriter(Long id) {
