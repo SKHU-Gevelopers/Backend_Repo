@@ -8,7 +8,6 @@ import site.unimeet.unimeetbackend.api.comment.dto.CommentDto;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentRequestDto;
 import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.domain.comment.CommentService;
-import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
 
 import javax.validation.Valid;

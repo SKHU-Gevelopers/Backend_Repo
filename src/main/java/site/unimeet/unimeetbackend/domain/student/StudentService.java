@@ -14,8 +14,10 @@ import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookRepository;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
+import site.unimeet.unimeetbackend.global.exception.auth.AuthException;
 import site.unimeet.unimeetbackend.util.EntityUtil;
+
+import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class StudentService {
 
     public void checkEmailDuplicated(String email) {
         studentRepository.findByEmail(email)
-                .ifPresent(user -> {throw new AuthenticationException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
+                .ifPresent(user -> {throw new AuthException(ErrorCode.EMAIL_ALREADY_REGISTERED);}
                 ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
     }
 
@@ -47,11 +49,11 @@ public class StudentService {
 //                .getIfPresent(student.getEmail());
 //        // 검증코드 만료 시 cacheVrfCode 는 null이다.
 //        if (cacheVrfCode == null) {
-//            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
+//            throw new AuthException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
 //        }
 //        // 캐시의 검증코드가 not null 이므로, 입력된 검증코드와 일치하는지 확인
 //        if (! cacheVrfCode.equals(emailVrfCode)){
-//            throw new AuthenticationException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
+//            throw new AuthException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
 //        }
 
         if (studentRepository.existsByKakaoId(student.getKakaoId())) {
@@ -93,9 +95,32 @@ public class StudentService {
         return PublicMyPageDto.Res.from(student, guestBooks);
     }
 
-    public Student findByRefreshToken(String refreshToken) {
-        return EntityUtil.mustNotNull(studentRepository.findByRefreshToken(refreshToken), ErrorCode.REFRESH_TOKEN_NOT_FOUND);
+    // refresh token으로 객체를 찾을 수 없으면 refresh token을 잊고 null을 반환한다.
+    // 만료시간은 tokenManager.getMemberEmail(refresh)에서 검증했기 때문에, 추가 검증할 필요 없다.
+    @Transactional
+    public Student isValidRefreshToken(String refreshToken, String email) {
+        Student student = studentRepository.findByRefreshToken(refreshToken);
+        // refresh token으로 찾을 수 없다면, email로 찾아서 토큰을 잊는다.
+        if (student == null) {
+            student = findByEmail(email);
+            student.logout();
+            return null;
+        }
+        return student;
     }
 
-
+    @Transactional
+    public void updateRefreshTokenAndExp(Student student, String refreshToken, Date refreshTokenExp) {
+        Student savedStudent = studentRepository.save(student);// 영속화 후 update
+        savedStudent.updateRefreshTokenAndExp(refreshToken, refreshTokenExp);
+    }
 }
+
+
+
+
+
+
+
+
+

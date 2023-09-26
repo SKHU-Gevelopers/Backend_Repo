@@ -5,8 +5,6 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Department;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Major;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
-import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.global.exception.auth.AuthenticationException;
 import site.unimeet.unimeetbackend.util.DateTimeUtils;
 
 import javax.persistence.*;
@@ -55,7 +53,7 @@ public class Student {
 
     private String refreshToken;
 
-    private LocalDateTime tokenExp;
+    private LocalDateTime refreshTokenExp;
 
 
     @Builder
@@ -85,17 +83,16 @@ public class Student {
 
     public void updateRefreshTokenAndExp(String refreshToken, Date refreshTokenExp) {
         this.refreshToken = refreshToken;
-        this.tokenExp = DateTimeUtils.convertToLocalDateTime(refreshTokenExp);
+        this.refreshTokenExp = DateTimeUtils.convertToLocalDateTime(refreshTokenExp);
     }
 
+    // 로그아웃 혹은 리프레시 토큰 정보를 무효화할 때 사용.
     public void logout(){
         this.refreshToken = "";
-        this.tokenExp = LocalDateTime.now();
+        this.refreshTokenExp = LocalDateTime.now();
     }
 
-    public void validateRefreshTokenExp() {
-        if(tokenExp.isBefore(LocalDateTime.now())){
-            throw new AuthenticationException(ErrorCode.REFRESH_TOKEN_EXPIRED);
-        }
+    public boolean isRfTokenExpired() {
+        return refreshTokenExp.isBefore(LocalDateTime.now());
     }
 }

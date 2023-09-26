@@ -52,19 +52,6 @@ public class TokenManager {
                 .build();
     }
 
-    // 테스트용. tokenExp만큼 유효한 토큰 쌍 생성
-    public TokenDto createTokenDtoTemp(String email, Date tokenExp) {
-        String accessToken = createAccessToken(email, tokenExp);
-        String refreshToken = createRefreshToken(email, tokenExp);
-        return TokenDto.builder()
-                .authScheme(AuthScheme.BEARER.getType())
-                .accessToken(accessToken)
-                .accessTokenExp(tokenExp)
-                .refreshToken(refreshToken)
-                .refreshTokenExp(tokenExp)
-                .build();
-    }
-
     private Date createAccessTokenExpireTime() {
         return new Date(System.currentTimeMillis() + accessTokenExpMillis);
     }
@@ -110,8 +97,8 @@ public class TokenManager {
         }
     }
 
-    public String getMemberEmail(String accessToken) {
-        return getTokenClaims(accessToken).getAudience(); // aud == email
+    public String getMemberEmail(String jws) {
+        return getTokenClaims(jws).getAudience(); // aud == email
     }
 
     public boolean validateToken(String token) {
