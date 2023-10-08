@@ -83,4 +83,12 @@ public class DmService {
     public List<Dm> findAllByReceiverFetchSender(Student receiver) {
         return dmRepository.findAllByReceiverFetchSender(receiver);
     }
+
+    public void deleteDm (Long dmId, String email){
+        Dm dm = dmRepository.findById(dmId)
+                .orElseThrow(()-> new BusinessException(ErrorCode.DM_NOT_FOUND));
+        dm.checkReceiverDm(email); //받은 사람이 맞는지 확인
+        dmRepository.deleteById(dmId);
+        
+    }
 }
