@@ -2,22 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>정말반가워요</title>
 </head>
 <body>
-<script>
-    fetch('https://localhost:8443/users/my-page', {
-        headers: {
-            'Authorization': `Bearer `
-        }
-    })
-        .then(response => response.json())
-        .then(data => console.log(data));
-
-
-
-
-
-</script>
+안녕
 </body>
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.4.0/kakao.min.js"
+            integrity="sha384-mXVrIX2T/Kszp6Z0aEWaA8Nm7J6/ZeWXbL8UpGRjKwWe56Srd/iyNmWMBhcItAjH"
+            crossOrigin="anonymous">
+</script>
+<script>
+    alert("카카오 로그인을 시작합니다.");
+    // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해야 합니다.
+    Kakao.init('34defb948b2a4f4e9827e18b1c7240d7');
+
+    // SDK 초기화 여부를 판단합니다.
+    alert(Kakao.isInitialized());
+
+    // 카카오 인증서버에 보낼 요청 쿼리 파라미터는 client_id, redirect_uri, response_type(이놈은 code로 고정), scope 등이 있음.
+    Kakao.Auth.authorize({
+        redirectUri: "https://unimeet.duckdns.org/auth/kakao/callback"
+        , scope: "profile_nickname, account_email, profile_image, gender, age_range, openid"
+    });
+</script>
 </html>
