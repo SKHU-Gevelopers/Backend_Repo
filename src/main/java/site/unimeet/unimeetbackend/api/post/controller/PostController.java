@@ -113,6 +113,13 @@ public class PostController {
         meetUpService.accept(meetUpId, email);
         return ResponseEntity.noContent().build();
     }
+    
+    //보낸 만남신청 목록
+    @GetMapping("/meet-ups/sent")
+    public ResTemplate<MeetUpListDto.Res> handleSentMeetUpList(@StudentEmail String email){
+        MeetUpListDto.Res sentMeetUp = meetUpService.getSendList(email);
+        return new ResTemplate<>(HttpStatus.OK, sentMeetUp);
+    }
 
 
 

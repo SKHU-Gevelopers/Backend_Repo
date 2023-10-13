@@ -50,7 +50,9 @@ public class PostService {
         return PostListDto.Res.from(posts);
     }
 
+    //게시글 단건 조회
     public Post getPostDetail(Long id) {
+
         return findByIdFetchWriterAndImageUrls(id);
     }
 
@@ -78,7 +80,7 @@ public class PostService {
         return id;
     }
 
-    //게시글 좋아요 기능
+    //게시글 즐겨찾기 기능
     @Transactional
     public String updateLikePost(Long id, String email) {
         Post post = postRepository.findById(id)
@@ -102,13 +104,13 @@ public class PostService {
 
         postLikeRepository.delete(postLike);
 
-        return "게시글 좋아요 삭제";
+        return "즐겨찾기 삭제";
     }
 
     public String createLikePost(Post post , Student student) {
         PostLike postLike = new PostLike(post, student);
         postLikeRepository.save(postLike);
-        return "게시글 좋아요";
+        return "게시글 즐겨찾기";
     }
 
     public boolean hasLikePost(Post post, Student student) {

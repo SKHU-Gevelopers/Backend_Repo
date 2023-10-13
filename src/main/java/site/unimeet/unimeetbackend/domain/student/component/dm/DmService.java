@@ -80,6 +80,8 @@ public class DmService {
 
     }
 
+    //쪽지 보낸 목록 조회 (sendDMList)
+
     public List<Dm> findAllByReceiverFetchSender(Student receiver) {
         return dmRepository.findAllByReceiverFetchSender(receiver);
     }

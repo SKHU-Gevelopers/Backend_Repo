@@ -44,7 +44,7 @@ public class PostListDto {
                 List<String> imageUrls = post.getImageUrls();
                 String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : "";
 
-                return PostListDto.Res.PostDto.builder()
+                return PostDto.builder()
                         .id(post.getId())
                         .title(post.getTitle())
                         .content(post.getContent())

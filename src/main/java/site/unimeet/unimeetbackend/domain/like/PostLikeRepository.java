@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByPostAndStudent(@Param("post")Post post, Student student);
+
+    //findAllIdFetchPostandEmail
 }
