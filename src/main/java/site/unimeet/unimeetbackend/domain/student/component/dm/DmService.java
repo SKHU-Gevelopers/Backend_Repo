@@ -75,14 +75,23 @@ public class DmService {
 
     public DmListDto.Res readDMList(String email) {
         Student student = studentService.findByEmail(email);
-        List<Dm> dmList = findAllByReceiverFetchSender(student);
+        List<Dm> dmList = findAllBySenderFetchReceiver(student);
         return new DmListDto.Res(dmList);
 
     }
 
-    //쪽지 보낸 목록 조회 (sendDMList)
+    //쪽지 보낸 목록조회
+    public DmListDto.Res sentDMList(String email){
+        Student student = studentService.findByEmail(email);
+        List<Dm> dmList = findAllByReceiverFetchSender(student);
+        return new DmListDto.Res(dmList);
+    }
 
     public List<Dm> findAllByReceiverFetchSender(Student receiver) {
         return dmRepository.findAllByReceiverFetchSender(receiver);
+    }
+
+    public List<Dm> findAllBySenderFetchReceiver(Student sender){
+        return dmRepository.findAllBySenderFetchReceiver(sender);
     }
 }

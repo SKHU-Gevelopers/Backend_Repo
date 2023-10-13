@@ -13,4 +13,7 @@ public interface DmRepository extends JpaRepository<Dm, Long> {
 
     @Query("Select dm From Dm dm Join Fetch dm.sender where dm.receiver = :receiver")
     List<Dm> findAllByReceiverFetchSender(Student receiver);
+
+    @Query("Select dm From Dm dm Join Fetch dm.receiver where dm.sender = :sender")
+    List<Dm> findAllBySenderFetchReceiver(Student sender);
 }
