@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface MeetUpRepository extends JpaRepository<MeetUp, Long> {
     List<MeetUp> findAllByReceiver(Student receiver);
+    List<MeetUp> findAllBySender(Student sender);
 
     // receiver, sender, targetPost, imageUrls 모두 Fetch Join 한다. 쿼리 수정시 메서드명 변경 고려해야 함
     @Query("Select m From MeetUp m" +

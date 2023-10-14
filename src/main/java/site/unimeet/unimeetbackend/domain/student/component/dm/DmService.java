@@ -75,13 +75,24 @@ public class DmService {
 
     public DmListDto.Res readDMList(String email) {
         Student student = studentService.findByEmail(email);
-        List<Dm> dmList = findAllByReceiverFetchSender(student);
+        List<Dm> dmList = findAllBySenderFetchReceiver(student);
         return new DmListDto.Res(dmList);
 
     }
 
+    //쪽지 보낸 목록조회
+    public DmListDto.Res sentDMList(String email){
+        Student student = studentService.findByEmail(email);
+        List<Dm> dmList = findAllByReceiverFetchSender(student);
+        return new DmListDto.Res(dmList);
+    }
+
     public List<Dm> findAllByReceiverFetchSender(Student receiver) {
         return dmRepository.findAllByReceiverFetchSender(receiver);
+    }
+
+    public List<Dm> findAllBySenderFetchReceiver(Student sender){
+        return dmRepository.findAllBySenderFetchReceiver(sender);
     }
 
     public void deleteDm (Long dmId, String email){
@@ -89,6 +100,5 @@ public class DmService {
                 .orElseThrow(()-> new BusinessException(ErrorCode.DM_NOT_FOUND));
         dm.checkReceiverDm(email); //받은 사람이 맞는지 확인
         dmRepository.deleteById(dmId);
-        
     }
 }

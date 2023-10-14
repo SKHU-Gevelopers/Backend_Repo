@@ -1,5 +1,6 @@
 package site.unimeet.unimeetbackend.api.student.component.dm.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,14 @@ public class DmController {
         return new ResTemplate<>(HttpStatus.OK, res);
     }
 
+
+    //보낸 DM 목록조회
+    @GetMapping("/dm/sent")
+    public ResTemplate<DmListDto.Res> handleSetDMList(@StudentEmail String email){
+        DmListDto.Res sentRes = dmService.sentDMList(email);
+        return new ResTemplate<>(HttpStatus.OK, sentRes);
+    }
+
     //DM 삭제
     @DeleteMapping("/dm/{dmId}")
     public ResponseEntity<ResTemplate<?>> deleteDM (@PathVariable Long dmId, @StudentEmail String email){
@@ -53,6 +62,7 @@ public class DmController {
         return ResponseEntity.ok(resTemplate);
 
     }
+
 
 
 }

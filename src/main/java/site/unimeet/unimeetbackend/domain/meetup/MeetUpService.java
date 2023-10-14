@@ -89,6 +89,15 @@ public class MeetUpService {
         List<MeetUp> meetUps = meetUpRepository.findAllByReceiver(receiver);
         return MeetUpListDto.Res.from(meetUps);
     }
+    
+    //보낸 만남 신청 리스트
+    public MeetUpListDto.Res getSendList(String senderEmail){
+        //sender 조회
+        Student sender = studentService.findByEmail(senderEmail);
+
+        List<MeetUp> sendMeetUps = meetUpRepository.findAllBySender(sender);
+        return MeetUpListDto.Res.from(sendMeetUps);
+    }
 
     /**
      * meetUp 상세정보를 조회한다.

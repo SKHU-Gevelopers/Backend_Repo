@@ -4,13 +4,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
+import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
-import site.unimeet.unimeetbackend.domain.student.Student;
-import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 
@@ -21,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +27,6 @@ public class Post extends BaseTimeEntity {
     private String title;
     @Lob
     private String content;
-
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> imageUrls;
     @Enumerated(EnumType.STRING)
@@ -58,6 +56,7 @@ public class Post extends BaseTimeEntity {
             throw new BusinessException(ErrorCode.POST_WRITER_NOT_MATCHED);
         }
     }
+
 
 
     @Builder
