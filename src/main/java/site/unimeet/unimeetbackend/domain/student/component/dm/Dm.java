@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.unimeet.unimeetbackend.domain.common.BaseTimeEntity;
 import site.unimeet.unimeetbackend.domain.student.Student;
+import site.unimeet.unimeetbackend.global.exception.BusinessException;
+import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 
 import javax.persistence.*;
 
@@ -34,6 +36,15 @@ public class Dm extends BaseTimeEntity {
         this.content = content;
         this.sender = sender;
         this.receiver = receiver;
+    }
+
+    public void checkReceiverDm(String email) {
+        String receiverEmail = receiver.getEmail();
+
+        // receiver와 id가 같지 않다면 예외발생
+        if (! email.equals(receiverEmail)) {
+            throw new BusinessException(ErrorCode.DM_RECEIVER_NOT_MATCHED);
+        }
     }
 }
 
