@@ -29,17 +29,22 @@ public class DmListDto {
             long id;
             private String title;
             private StudentIdAndNickNameDto sender;
+            private StudentIdAndNickNameDto receiver;
+            private String senderProfileImageUrl;
             @JsonFormat(pattern = "yy-MM-dd HH:mm")
             private LocalDateTime sentAt;
 
             private static DmDto from(Dm dm) {
                 StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(dm.getSender());
+                StudentIdAndNickNameDto receiver = StudentIdAndNickNameDto.from(dm.getReceiver());
 
                 DmDto dmDto = DmDto.builder()
                         .id(dm.getId())
                         .title(dm.getTitle())
                         .sender(sender)
+                        .receiver(receiver)
                         .sentAt(dm.getCreateTime())
+                        .senderProfileImageUrl(dm.getSender().getProfileImageUrl())
                         .build();
                 return dmDto;
             }
