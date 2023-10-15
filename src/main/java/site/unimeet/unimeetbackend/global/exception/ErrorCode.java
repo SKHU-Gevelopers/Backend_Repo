@@ -47,7 +47,7 @@ public enum ErrorCode {
 
     // 만남(MeetUp)
     MEETUP_NOT_FOUND(404, "해당 만남을 찾을 수 없습니다."),
-    MEETUP_RECEIVER_NOT_MATCHED(403, "해당 만남의 피신청자가 아닙니다"),
+    MEETUP_NOT_RECEIVER_OR_SENDER(403, "해당 만남을 조회할 권한이 없습니다"),
     MEETUP_CANNOT_BE_MADE_WITH_SAME_STUDENT(400, "신청자와 피신청자가 같습니다."),
     MEETUP_SENDER_DUPLICATED(409, "한 게시글에 중복 신청할 수 없습니다."),
 

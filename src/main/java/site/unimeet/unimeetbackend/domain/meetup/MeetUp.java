@@ -56,12 +56,15 @@ public class MeetUp extends BaseTimeEntity {
         }
     }
 
-    public void checkReceiverEmail(String httpRequesterEmail) {
+    public void checkAuthority(String httpRequesterEmail) {
         String receiverEmail = receiver.getEmail();
+        String senderEmail = sender.getEmail();
 
-        // receiver와 httpRequester가 같지 않다면 예외발생
-        if (! receiverEmail.equals(httpRequesterEmail)) {
-            throw new BusinessException(ErrorCode.MEETUP_RECEIVER_NOT_MATCHED);
+        // sender도 receiver도 아니라면 예외 발생
+        if (!
+                (receiverEmail.equals(httpRequesterEmail) || senderEmail.equals(httpRequesterEmail))
+        ) {
+            throw new BusinessException(ErrorCode.MEETUP_NOT_RECEIVER_OR_SENDER);
         }
     }
 }
