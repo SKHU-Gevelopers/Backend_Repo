@@ -56,18 +56,13 @@ public class DmService {
         dmRepository.save(dm);
     }
 
-    // DM 객체를 가져오고, email을 토대로 receiver가 같은지 확인한다.
+    // DM 객체를 가져오고, email을 토대로 receiver 혹은 sender 인지 확인한다.
     // DM ID를 랜덤으로 지정하고, 본인 email을 입력했을 수도 있음.
-    public ReadDMDto.Res readDM(Long dmId, String email) {
+    public ReadDMDto.Res readDM(Long dmId, String requesterEmail) {
         Dm dm = dmRepository.findByIdFetchSenderReceiver(dmId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.DM_NOT_FOUND));
 
-        String receiverEmail = dm.getReceiver().getEmail();
-
-        // 토큰 email과 receiverEmail이 같은지 검증
-        if (! receiverEmail.equals(email)) {
-            throw new BusinessException(ErrorCode.FORBIDDEN);
-        }
+        dm.checkReadAuthority(requesterEmail);
 
         return ReadDMDto.Res.from(dm);
     }

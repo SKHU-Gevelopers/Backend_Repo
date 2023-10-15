@@ -34,7 +34,8 @@ public enum ErrorCode {
 
     // 쪽지
     DM_NOT_FOUND(404, "해당 쪽지를 찾을 수 없습니다."),
-    DM_RECEIVER_NOT_MATCHED(404,"해당 쪽지를 받는 이가 없습니다."),
+    DM_RECEIVER_NOT_MATCHED(403,"해당 쪽지의 수신자가 아닙니다."),
+    DM_NOT_RECEIVER_OR_SENDER(403, "해당 쪽지를 조회할 권한이 없습니다"),
 
     // 게시글
     POST_NOT_FOUND(404, "해당 게시글을 찾을 수 없습니다."),
