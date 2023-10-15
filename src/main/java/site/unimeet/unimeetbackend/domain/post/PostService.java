@@ -82,7 +82,7 @@ public class PostService {
 
     //게시글 즐겨찾기 기능
     @Transactional
-    public String updateLikePost(Long id, String email) {
+    public void updateLikePost(Long id, String email) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
 
@@ -91,26 +91,24 @@ public class PostService {
 
         if (!hasLikePost(post,student)) {
             post.increaseLikeCount();
-            return createLikePost(post, student);
+            createLikePost(post, student);
+            return;
         }
 
         post.decreaseLikeCount();
-        return removeLikePost(post, student);
+        removeLikePost(post, student);
     }
 
-    private String removeLikePost(Post post , Student student) {
+    private void removeLikePost(Post post , Student student) {
         PostLike postLike = postLikeRepository.findByPostAndStudent(post,student)
                 .orElseThrow();
 
         postLikeRepository.delete(postLike);
-
-        return "즐겨찾기 삭제";
     }
 
-    public String createLikePost(Post post , Student student) {
+    public void createLikePost(Post post , Student student) {
         PostLike postLike = new PostLike(post, student);
         postLikeRepository.save(postLike);
-        return "게시글 즐겨찾기";
     }
 
     public boolean hasLikePost(Post post, Student student) {
