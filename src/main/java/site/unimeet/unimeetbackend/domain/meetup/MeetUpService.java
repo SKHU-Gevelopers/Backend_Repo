@@ -107,7 +107,7 @@ public class MeetUpService {
         MeetUp meetUp = findByIdFetchAll(meetUpId);
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
-        meetUp.checkAuthority(httpRequesterEmail);
+        meetUp.checkReadAuthority(httpRequesterEmail);
         return MeetUpDetailDto.Res.from(meetUp);
     }
 

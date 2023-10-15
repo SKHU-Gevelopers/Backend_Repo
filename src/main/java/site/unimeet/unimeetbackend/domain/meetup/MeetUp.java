@@ -56,7 +56,7 @@ public class MeetUp extends BaseTimeEntity {
         }
     }
 
-    public void checkAuthority(String httpRequesterEmail) {
+    public void checkReadAuthority(String httpRequesterEmail) {
         String receiverEmail = receiver.getEmail();
         String senderEmail = sender.getEmail();
 
