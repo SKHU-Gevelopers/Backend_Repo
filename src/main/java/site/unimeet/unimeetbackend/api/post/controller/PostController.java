@@ -92,7 +92,7 @@ public class PostController {
     }
 
      //받은 만남신청 목록
-    @GetMapping("/meet-ups")
+    @GetMapping("/meet-ups/received")
     public ResTemplate<MeetUpListDto.Res> handleGetMeetUpList(@StudentEmail String email){
         MeetUpListDto.Res meetUpRequests = meetUpService.getMeetUpList(email);
         return new ResTemplate<>(HttpStatus.OK, meetUpRequests);
