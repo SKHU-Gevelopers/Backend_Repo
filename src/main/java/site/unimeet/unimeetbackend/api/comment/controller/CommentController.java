@@ -42,11 +42,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<ResTemplate<?>> deleteComment(@PathVariable Long id, @StudentEmail String email){
+    public ResponseEntity<ResTemplate<Void>> deleteComment(@PathVariable Long id, @StudentEmail String email){
 
         commentService.deleteComment(id, email);
 
-        ResTemplate<?> resTemplate = new ResTemplate<>(HttpStatus.OK, id + "번 댓글 삭제 완료");
+        ResTemplate<Void> resTemplate = new ResTemplate<>(HttpStatus.OK, id + "번 댓글 삭제 완료");
         return ResponseEntity.ok(resTemplate);
     }
 }
