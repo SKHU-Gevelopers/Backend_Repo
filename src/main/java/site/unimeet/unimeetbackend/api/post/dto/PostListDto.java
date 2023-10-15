@@ -6,6 +6,7 @@ import org.springframework.data.domain.Slice;
 import site.unimeet.unimeetbackend.api.common.SliceInfoDto;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.enums.State;
+import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.component.enums.Gender;
 
 import java.util.List;
@@ -38,11 +39,13 @@ public class PostListDto {
             Gender gender;
             String profileImageUrl;
             String nickname;
+            long writerId;
             int likes;
 
             static PostListDto.Res.PostDto from(Post post){
                 List<String> imageUrls = post.getImageUrls();
                 String imageUrl = imageUrls.size() > 0 ? imageUrls.get(0) : "";
+                Student writer = post.getWriter();
 
                 return PostDto.builder()
                         .id(post.getId())
@@ -52,8 +55,9 @@ public class PostListDto {
                         .state(post.getState())
                         .maxPeople(post.getMaxPeople())
                         .gender(post.getGender())
-                        .profileImageUrl(post.getWriter().getProfileImageUrl())
-                        .nickname(post.getWriter().getNickname())
+                        .profileImageUrl(writer.getProfileImageUrl())
+                        .nickname(writer.getNickname())
+                        .writerId(writer.getId())
                         .likes(post.getLikes())
                         .build();
             }
