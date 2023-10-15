@@ -2,7 +2,7 @@ package site.unimeet.unimeetbackend.api.post.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import site.unimeet.unimeetbackend.api.student.dto.StudentIdAndNickNameDto;
+import site.unimeet.unimeetbackend.api.student.dto.StudentProfileDto;
 import site.unimeet.unimeetbackend.domain.meetup.MeetUp;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class MeetUpDetailDto {
         MeetUpDto meetUp;
 
         public static Res from(MeetUp meetUp) {
-            StudentIdAndNickNameDto sender = StudentIdAndNickNameDto.from(meetUp.getSender());
+            StudentProfileDto sender = StudentProfileDto.from(meetUp.getSender());
             MeetUpDto meetUpDto = MeetUpDto.builder()
                     .title(meetUp.getTitle())
                     .content(meetUp.getContent())
@@ -24,8 +24,8 @@ public class MeetUpDetailDto {
             return new Res(meetUpDto);
         }
 
-        private Res(MeetUpDto MeetUpDto) {
-            this.meetUp = MeetUpDto;
+        private Res(MeetUpDto meetUpDto) {
+            this.meetUp = meetUpDto;
         }
 
         @Getter
@@ -34,7 +34,7 @@ public class MeetUpDetailDto {
             String title;
             String content;
             List<String> meetUpImages;
-            StudentIdAndNickNameDto sender;
+            StudentProfileDto sender;
             Long targetPostId;
         }
     }

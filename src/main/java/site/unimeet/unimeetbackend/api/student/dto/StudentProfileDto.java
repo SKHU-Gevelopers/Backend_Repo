@@ -5,17 +5,19 @@ import lombok.Builder;
 import lombok.Getter;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
-// 사용자 식별자와 이름을 포함함.
+// 사용자 식별자, 이름, 프로필 사진 url을 포함.
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class StudentIdAndNickNameDto {
+public class StudentProfileDto {
     private Long id;
     private String nickname;
+    private String profileImageUrl;
 
-    public static StudentIdAndNickNameDto from(Student student) {
-        return StudentIdAndNickNameDto.builder()
+    public static StudentProfileDto from(Student student) {
+        return StudentProfileDto.builder()
                 .id(student.getId())
                 .nickname(student.getNickname())
+                .profileImageUrl(student.getProfileImageUrl())
                 .build();
     }
 }
