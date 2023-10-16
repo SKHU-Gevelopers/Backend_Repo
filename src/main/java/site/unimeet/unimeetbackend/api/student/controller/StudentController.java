@@ -2,6 +2,7 @@ package site.unimeet.unimeetbackend.api.student.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,7 +64,7 @@ public class StudentController {
     public ResTemplate<PublicMyPageDto.Res> handleGetMyPage(@PathVariable Long userId,
                                                             @RequestParam(defaultValue = "1") final int page) {
         final int GUESTBOOK_PAGE_SIZE = 6;
-        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE);
+        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "id"));
 
         PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(userId, pageable);
 
@@ -75,7 +76,7 @@ public class StudentController {
     public ResTemplate<PublicMyPageDto.Res> handleGetPublicMyPage(@StudentEmail String email,
                                                             @RequestParam(defaultValue = "1") final int page) {
         final int GUESTBOOK_PAGE_SIZE = 6;
-        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE);
+        Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "id"));
 
         PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(email, pageable);
 
