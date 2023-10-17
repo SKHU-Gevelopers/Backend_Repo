@@ -32,7 +32,7 @@ public class MeetUpService {
 
     // 만남 신청
     @Transactional
-    public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, String requesterEmail){
+    public void createMeetUpRequest(Long targetPostId, MeetUpRequestDto.Req req, long studentId){
         // post, sender, receiver와 본문 내용으로 MeetUp 객체를 생성해야 한다.
         // post 조회
         Post targetPost = postService.findByIdFetchWriter(targetPostId);
@@ -41,7 +41,7 @@ public class MeetUpService {
         Student receiver = targetPost.getWriter();
 
         // sender 조회
-        Student sender = studentService.findByEmail(requesterEmail);
+        Student sender = studentService.findById(studentId);
 
         // 같은 게시글에 대해서 신청자 중복 체크
         EntityUtil.mustNull(meetUpRepository.findByTargetPostAndSender(targetPost, sender),
@@ -56,14 +56,14 @@ public class MeetUpService {
     }
 
     @Transactional
-    public void accept(Long meetUpId, String httpRequesterEmail) {
+    public void accept(Long meetUpId, long studentId) {
         MeetUp meetUp = findByIdFetchReceiverAndSenderAndPost(meetUpId);
         Student meetUpSender = meetUp.getSender();
         Student meetUpReceiver = meetUp.getReceiver();
         Post post = meetUp.getTargetPost();
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
-        post.checkWriterEmail(httpRequesterEmail);
+        post.checkWriterId(studentId);
 
         // 게시글의 상태를 DONE으로 변경한다.
         post.setStateDone();
@@ -81,9 +81,9 @@ public class MeetUpService {
         emailService.sendEmail(meetUpSender.getEmail(), title, content);
     }
 
-    public MeetUpListDto.Res getMeetUpList(String receiverEmail) {
+    public MeetUpListDto.Res getMeetUpList(long receiverId) {
         // receiver 조회
-        Student receiver = studentService.findByEmail(receiverEmail);
+        Student receiver = studentService.findById(receiverId);
 
         // receiver가 피신청자인 meetUp 목록 조회
         List<MeetUp> meetUps = meetUpRepository.findAllByReceiver(receiver);
@@ -91,9 +91,9 @@ public class MeetUpService {
     }
     
     //보낸 만남 신청 리스트
-    public MeetUpListDto.Res getSendList(String senderEmail){
+    public MeetUpListDto.Res getSendList(long senderId){
         //sender 조회
-        Student sender = studentService.findByEmail(senderEmail);
+        Student sender = studentService.findById(senderId);
 
         List<MeetUp> sendMeetUps = meetUpRepository.findAllBySender(sender);
         return MeetUpListDto.Res.from(sendMeetUps);
@@ -103,11 +103,11 @@ public class MeetUpService {
      * meetUp 상세정보를 조회한다.
      * meetUp의 receiver가 파라미터의 receiver(email)과 같아야 한다.
      */
-    public MeetUpDetailDto.Res getMeetUpDetail(Long meetUpId, String httpRequesterEmail) {
+    public MeetUpDetailDto.Res getMeetUpDetail(Long meetUpId, long studentId) {
         MeetUp meetUp = findByIdFetchAll(meetUpId);
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
-        meetUp.checkReadAuthority(httpRequesterEmail);
+        meetUp.checkReadAuthority(studentId);
         return MeetUpDetailDto.Res.from(meetUp);
     }
 

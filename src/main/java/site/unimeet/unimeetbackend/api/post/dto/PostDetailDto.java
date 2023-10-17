@@ -28,7 +28,7 @@ public class PostDetailDto {
         private long writerId; //작성자 식별자
         private boolean postOwner; //게시글 작성자인지 여부
 
-        public static PostDetailDto.Res from(Post post, String requesterEmail) {
+        public static PostDetailDto.Res from(Post post, long studentId) {
             Student writer = post.getWriter();
             return Res.builder()
                     .title(post.getTitle())
@@ -41,7 +41,7 @@ public class PostDetailDto {
                     .profileImageUrl(writer.getProfileImageUrl())
                     .nickname(writer.getNickname())
                     .writerId(writer.getId())
-                    .postOwner(writer.getEmail().equals(requesterEmail))
+                    .postOwner(writer.getId() == studentId)
                     .build();
         }
     }

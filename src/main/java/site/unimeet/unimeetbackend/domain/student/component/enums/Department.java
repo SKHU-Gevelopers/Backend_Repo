@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Department {
     IT("IT융합자율학부"), HUMANITIES("인문융합자율학부"),
-    SOCIAL("사회융합자율학부"), MEDIA("미디어콘텐츠학부");
+    SOCIAL("사회융합자율학부"), MEDIA("미디어콘텐츠학부"),
+    NONE("비공개")
+
+    ;
 
     @JsonValue
     private final String desc;

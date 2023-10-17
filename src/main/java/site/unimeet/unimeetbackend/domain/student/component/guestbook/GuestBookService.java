@@ -14,9 +14,9 @@ public class GuestBookService {
     private final StudentService studentService;
 
     @Transactional
-    public GuestBook write(Long targetUserId, String content, String writerEmail) {
+    public GuestBook write(Long targetUserId, String content, long writerId) {
 
-        Student writerStudent = studentService.findByEmail(writerEmail);// 작성자
+        Student writerStudent = studentService.findById(writerId);// 작성자
         Student targetStudent = studentService.findById(targetUserId);// 방명록을 남기려는 대상
 
         GuestBook guestBook = GuestBook.builder()

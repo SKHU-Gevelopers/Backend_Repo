@@ -38,23 +38,21 @@ public class Dm extends BaseTimeEntity {
         this.receiver = receiver;
     }
 
-    public void checkReceiverDm(String email) {
-        String receiverEmail = receiver.getEmail();
+    public void checkReceiverDm(long studentId) {
+        Long receiverId = receiver.getId();
 
         // receiver와 id가 같지 않다면 예외발생
-        if (! email.equals(receiverEmail)) {
+        if ( receiverId != studentId ) {
             throw new BusinessException(ErrorCode.DM_RECEIVER_NOT_MATCHED);
         }
     }
 
-    public void checkReadAuthority(String httpRequesterEmail) {
-        String receiverEmail = receiver.getEmail();
-        String senderEmail = sender.getEmail();
+    public void checkReadAuthority(long studentId) {
+        long receiverId = receiver.getId();
+        long senderId = sender.getId();
 
         // sender도 receiver도 아니라면 예외 발생
-        if (!
-                (receiverEmail.equals(httpRequesterEmail) || senderEmail.equals(httpRequesterEmail))
-        ) {
+        if ( (studentId != receiverId) || (studentId != senderId) ) {
             throw new BusinessException(ErrorCode.DM_NOT_RECEIVER_OR_SENDER);
         }
     }

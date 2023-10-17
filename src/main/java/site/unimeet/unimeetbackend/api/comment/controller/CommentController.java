@@ -8,7 +8,7 @@ import site.unimeet.unimeetbackend.api.comment.dto.CommentDto;
 import site.unimeet.unimeetbackend.api.comment.dto.CommentRequestDto;
 import site.unimeet.unimeetbackend.api.common.ResTemplate;
 import site.unimeet.unimeetbackend.domain.comment.CommentService;
-import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
+import site.unimeet.unimeetbackend.global.resolver.StudentId;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,18 +33,18 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<ResTemplate<CommentDto>> writeComment(@PathVariable Long postId
                                                                 , @Valid @RequestBody final CommentRequestDto requestDto
-                                                                , @StudentEmail String email){
+                                                                , @StudentId long loggedInId){
 
-        CommentDto commentDto = commentService.createComment(postId, requestDto, email);
+        CommentDto commentDto = commentService.createComment(postId, requestDto, loggedInId);
 
         ResTemplate<CommentDto> resTemplate = new ResTemplate<>(HttpStatus.CREATED, "댓글 작성 완료", commentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(resTemplate);
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<ResTemplate<Void>> deleteComment(@PathVariable Long id, @StudentEmail String email){
+    public ResponseEntity<ResTemplate<Void>> deleteComment(@PathVariable Long id, @StudentId long loggedInId){
 
-        commentService.deleteComment(id, email);
+        commentService.deleteComment(id, loggedInId);
 
         ResTemplate<Void> resTemplate = new ResTemplate<>(HttpStatus.OK, id + "번 댓글 삭제 완료");
         return ResponseEntity.ok(resTemplate);

@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 
 import javax.validation.constraints.*;
 import java.util.List;
+import java.util.UUID;
 
 // 회원가입
 public class UserSignUpDto {
@@ -42,7 +43,7 @@ public class UserSignUpDto {
             String encodedPassword = passwordEncoder.encode(this.password);
             return Student.builder()
                     .name(name)
-                    .nickname(nickname)
+                    .nickname("깨깨오 가입하세요! - " + UUID.randomUUID().toString().substring(0, 10))
                     .email(email)
                     .password(encodedPassword)
                     .gender(gender)
@@ -51,6 +52,7 @@ public class UserSignUpDto {
                     .profileImageUrl(defaultProfileImageUrl)
                     .majors(majors)
                     .department(department)
+                    .kakaoIdTokenSub(UUID.randomUUID().toString().substring(0, 10))
                     .build();
         }
     }

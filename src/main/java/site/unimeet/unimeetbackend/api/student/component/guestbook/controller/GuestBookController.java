@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookService;
-import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
+import site.unimeet.unimeetbackend.global.resolver.StudentId;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -22,9 +22,9 @@ public class GuestBookController {
 
     // 방명록 작성
     @PostMapping("/users/{userId}/guestbooks")
-    public ResponseEntity<?> handleWriteGuestbook(@StudentEmail String writerEmail,
+    public ResponseEntity<?> handleWriteGuestbook(@StudentId long loggedInId,
                                                   @PathVariable("userId") Long targetUserId, @RequestBody @Valid WriteGuestBookDto reqDto) {
-        guestBookService.write(targetUserId, reqDto.getContent(), writerEmail);
+        guestBookService.write(targetUserId, reqDto.getContent(), loggedInId);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

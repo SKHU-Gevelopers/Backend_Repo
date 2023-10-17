@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 @RequiredArgsConstructor
-public class StudentEmailArgResolver implements HandlerMethodArgumentResolver {
+public class StudentIdArgResolver implements HandlerMethodArgumentResolver {
     private final TokenManager tokenManager;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
 
-        boolean hasEmailAnnotation = parameter.hasParameterAnnotation(StudentEmail.class);
+        boolean hasEmailAnnotation = parameter.hasParameterAnnotation(StudentId.class);
         boolean hasString = String.class.isAssignableFrom(parameter.getParameterType());
 
         // 파라미터를 분석해 조건이 맞으면 아래 resolveArgument 를 실행시킴.
@@ -34,6 +34,6 @@ public class StudentEmailArgResolver implements HandlerMethodArgumentResolver {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         // "Bearer " 제거. "Bearer " 가 있다는 것은 Interceptor 에서 검증함.
         token = token.substring(7);
-        return tokenManager.getMemberEmail(token);
+        return tokenManager.getStudentId(token);
     }
 }

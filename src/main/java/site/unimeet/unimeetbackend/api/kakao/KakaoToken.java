@@ -3,7 +3,6 @@ package site.unimeet.unimeetbackend.api.kakao;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -29,11 +28,4 @@ public class KakaoToken {
     //인증된 사용자의 정보 조회 권한 범위 (필수 X)
     @JsonProperty("scope")
     private String scope;
-
-    @Setter
-    private String idTokenHeader;
-    @Setter
-    private String idTokenPayload;
-    @Setter
-    private String idTokenSignature;
 }

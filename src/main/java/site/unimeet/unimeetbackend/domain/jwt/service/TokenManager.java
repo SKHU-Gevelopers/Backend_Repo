@@ -37,12 +37,12 @@ public class TokenManager {
         this.refreshTokenExpMillis = refreshTokenExpMillis;
     }
 
-    public TokenDto createTokenDto(String email) {
+    public TokenDto createTokenDto(long studentId) {
         Date accessTokenExpireTime = createAccessTokenExpireTime();
         Date refreshTokenExpireTime = createRefreshTokenExpireTime();
 
-        String accessToken = createAccessToken(email, accessTokenExpireTime);
-        String refreshToken = createRefreshToken(email, refreshTokenExpireTime);
+        String accessToken = createAccessToken(studentId, accessTokenExpireTime);
+        String refreshToken = createRefreshToken(studentId, refreshTokenExpireTime);
         return TokenDto.builder()
                 .authScheme(AuthScheme.BEARER.getType())
                 .accessToken(accessToken)
@@ -60,10 +60,10 @@ public class TokenManager {
         return new Date(System.currentTimeMillis() + refreshTokenExpMillis);
     }
 
-    private String createAccessToken(String email, Date expirationTime) {
+    private String createAccessToken(long studentId, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(TokenType.ACCESS.name())                // 토큰 제목
-                .setAudience(email)                                 // 토큰 대상자
+                .setAudience(String.valueOf(studentId))                                 // 토큰 대상자
                 .setIssuedAt(new Date())                         // 토큰 발급 시간
                 .setExpiration(expirationTime)                // 토큰 만료 시간
                 /**
@@ -75,10 +75,10 @@ public class TokenManager {
                 .compact();
     }
 
-    private String createRefreshToken(String email, Date expirationTime) {
+    private String createRefreshToken(long studentId, Date expirationTime) {
         return Jwts.builder()
                 .setSubject(TokenType.REFRESH.name())               // 토큰 제목
-                .setAudience(email)                                 // 토큰 대상자
+                .setAudience(String.valueOf(studentId))                                 // 토큰 대상자
                 .setIssuedAt(new Date())                            // 토큰 발급 시간
                 .setExpiration(expirationTime)                      // 토큰 만료 시간
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -97,8 +97,8 @@ public class TokenManager {
         }
     }
 
-    public String getMemberEmail(String jws) {
-        return getTokenClaims(jws).getAudience(); // aud == email
+    public long getStudentId(String jws) {
+        return Long.parseLong(getTokenClaims(jws).getAudience()) ; // aud == student ID(PK)
     }
 
     public boolean validateToken(String token) {
