@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.unimeet.unimeetbackend.global.interceptor.AuthenticationInterceptor;
-import site.unimeet.unimeetbackend.global.resolver.StudentEmailArgResolver;
+import site.unimeet.unimeetbackend.global.resolver.StudentIdArgResolver;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     // Resolvers
-    private final StudentEmailArgResolver studentEmailArgResolver;
+    private final StudentIdArgResolver studentIdArgResolver;
 
     private final AuthenticationInterceptor authenticationInterceptor;
 
@@ -32,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(studentEmailArgResolver);
+        resolvers.add(studentIdArgResolver);
     }
 
 

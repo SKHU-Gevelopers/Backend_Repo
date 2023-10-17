@@ -38,14 +38,11 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
     }
 
-
-
-    public void checkWriterEmail(String httpRequesterEmail) {
-        String writerEmail = student.getEmail();
+    public void checkWriterId(long requesterId) {
+        long writerId = student.getId();
         // receiver와 httpRequester가 같지 않다면 예외발생
-        if (! writerEmail.equals(httpRequesterEmail)) {
+        if (writerId != requesterId) {
             throw new BusinessException(ErrorCode.COMMENT_WRITER_NOT_MATCHED);
         }
     }
-
 }

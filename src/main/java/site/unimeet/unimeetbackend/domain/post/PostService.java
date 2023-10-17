@@ -11,7 +11,6 @@ import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
 import site.unimeet.unimeetbackend.domain.like.PostLike;
 import site.unimeet.unimeetbackend.domain.like.PostLikeRepository;
 import site.unimeet.unimeetbackend.domain.student.Student;
-import site.unimeet.unimeetbackend.domain.student.StudentRepository;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundException;
@@ -24,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final StudentRepository studentRepository;
     private final PostLikeRepository postLikeRepository;
     private final StudentService studentService;
 
@@ -38,10 +36,10 @@ public class PostService {
 
     @Transactional
     //게시글 삭제
-    public void deletePost(Long id, String requesterEmail) {
+    public void deletePost(Long id, long studentId) {
         Post post = findByIdFetchWriter(id);
 
-        post.checkWriterEmail(requesterEmail); // 게시글 작성자와 요청자가 같은지 확인
+        post.checkWriterId(studentId); // 게시글 작성자와 요청자가 같은지 확인
         postRepository.delete(post); // 삭제
     }
 
@@ -61,8 +59,8 @@ public class PostService {
     }
 
     @Transactional
-    public void writePost(PostUploadDto postUploadDto, List<String> uploadedFileUrls, String email) {
-        Student writer = studentService.findByEmail(email);
+    public void writePost(PostUploadDto postUploadDto, List<String> uploadedFileUrls, long studentId) {
+        Student writer = studentService.findById(studentId);
         Post post = postUploadDto.toEntity(uploadedFileUrls, writer);
         // PostUploadDto 에서 입력값을 검증하므로, ConstraintViolationException 체크하지 않음
         postRepository.save(post);
@@ -73,21 +71,20 @@ public class PostService {
 
     @Transactional
     //게시글 수정
-    public Long editPost(Long id, PostUpdateDto postUpdateDto, String email, List<String> uploadedFileUrls) {
+    public Long editPost(Long id, PostUpdateDto postUpdateDto, long studentId, List<String> uploadedFileUrls) {
         Post post = findByIdFetchWriter(id);
-        post.checkWriterEmail(email); // 게시글 작성자와 요청자가 같은지 권한 확인
+        post.checkWriterId(studentId); // 게시글 작성자와 요청자가 같은지 권한 확인
         post.update(postUpdateDto.getTitle(), postUpdateDto.getContent(),postUpdateDto.getMaxPeople(), postUpdateDto.getGender(),uploadedFileUrls);
         return id;
     }
 
     //게시글 즐겨찾기 기능
     @Transactional
-    public void updateLikePost(Long id, String email) {
+    public void updateLikePost(Long id, long studentId) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.POST_NOT_FOUND));
 
-        Student student = studentRepository.findByEmail(email)
-                .orElseThrow(()-> new EntityNotFoundException(ErrorCode.STUDENT_NOT_FOUND));
+        Student student = studentService.findById(studentId);
 
         if (!hasLikePost(post,student)) {
             post.increaseLikeCount();

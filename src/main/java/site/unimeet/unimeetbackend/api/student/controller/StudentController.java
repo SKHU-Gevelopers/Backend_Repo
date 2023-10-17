@@ -15,7 +15,7 @@ import site.unimeet.unimeetbackend.api.student.dto.UserSignUpDto;
 import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
-import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
+import site.unimeet.unimeetbackend.global.resolver.StudentId;
 import site.unimeet.unimeetbackend.util.PageableUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
 
@@ -44,17 +44,17 @@ public class StudentController {
     // 마이페이지 수정
     @PostMapping("/my-page")
     public ResponseEntity<Void> handleEditMyPage(@ModelAttribute @Valid EditMyPageDto.Request editMyPageRequest
-                                , @StudentEmail String email) {
+                                , @StudentId long loggedInId) {
         String uploadedFileUrl = s3Service.upload(editMyPageRequest.getProfileImg(), S3Config.BUCKETNAME_SUFFIX_PROFILE_IMG);
-        studentService.editMyPage(editMyPageRequest, uploadedFileUrl, email);
+        studentService.editMyPage(editMyPageRequest, uploadedFileUrl, loggedInId);
 
         return ResponseEntity.noContent().build();
     }
 
     // 마이페이지 수정창 조회
     @GetMapping("/my-page")
-    public ResTemplate<MyPageDto.Rsp> handleGetPrivateMyPage(@StudentEmail String email) {
-        MyPageDto.Rsp rspDto = studentService.getMyPage(email);
+    public ResTemplate<MyPageDto.Rsp> handleGetPrivateMyPage(@StudentId long loggedInId) {
+        MyPageDto.Rsp rspDto = studentService.getMyPage(loggedInId);
 
         return new ResTemplate<>(HttpStatus.OK, rspDto);
     }
@@ -73,12 +73,12 @@ public class StudentController {
 
     // 나의 공개 마이페이지 조회.
     @GetMapping("/my-page-pub")
-    public ResTemplate<PublicMyPageDto.Res> handleGetPublicMyPage(@StudentEmail String email,
+    public ResTemplate<PublicMyPageDto.Res> handleGetPublicMyPage(@StudentId long loggedInId,
                                                             @RequestParam(defaultValue = "1") final int page) {
         final int GUESTBOOK_PAGE_SIZE = 6;
         Pageable pageable = PageableUtil.of(page, GUESTBOOK_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "id"));
 
-        PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(email, pageable);
+        PublicMyPageDto.Res rspsDto = studentService.getPublicMyPage(loggedInId, pageable);
 
         return new ResTemplate<>(HttpStatus.OK, rspsDto);
     }

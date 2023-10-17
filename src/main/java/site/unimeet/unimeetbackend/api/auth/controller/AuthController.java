@@ -15,7 +15,7 @@ import site.unimeet.unimeetbackend.domain.jwt.dto.TokenDto;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenManager;
 import site.unimeet.unimeetbackend.domain.jwt.service.TokenValidator;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
-import site.unimeet.unimeetbackend.global.resolver.StudentEmail;
+import site.unimeet.unimeetbackend.global.resolver.StudentId;
 import site.unimeet.unimeetbackend.util.EmailService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,9 +42,9 @@ public class AuthController {
 
     // 로그아웃
     @PostMapping("/sign-out")
-    public ResTemplate<Void> logout(@StudentEmail String email) {
+    public ResTemplate<Void> logout(@StudentId long loggedInId) {
         // 액세스 토큰 검증은 필터에서 거치므로 바로 로그아웃 처리
-        authService.logout(email);
+        authService.logout(loggedInId);
 
         return new ResTemplate<>(HttpStatus.OK, "로그아웃 성공");
     }
@@ -59,9 +59,9 @@ public class AuthController {
         tokenValidator.validateBearer(authorizationHeader);
 
         String refreshToken = authorizationHeader.split(" ")[1];
-        String email = tokenManager.getMemberEmail(refreshToken);
+        long studentId = tokenManager.getStudentId(refreshToken);
 
-        TokenDto tokenDto = authService.reissueByRefreshToken(refreshToken, email);
+        TokenDto tokenDto = authService.reissueByRefreshToken(refreshToken, studentId);
 
         return new ResTemplate<>(HttpStatus.OK, "토큰 재발급", tokenDto);
     }

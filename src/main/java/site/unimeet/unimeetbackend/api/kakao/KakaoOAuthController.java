@@ -43,7 +43,7 @@ public class KakaoOAuthController {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
-        body.add("redirect_uri", "https://unimeet.duckdns.org/auth/kakao/callback");
+        body.add("redirect_uri", "https://localhost:8443/auth/kakao/callback");
         body.add("code", code);
 
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
@@ -52,33 +52,25 @@ public class KakaoOAuthController {
         KakaoToken response = restTemplate.postForObject(url, request, KakaoToken.class);
 
         String[] splitedIdToken = response.getIdToken().split("\\.");
-        String idTokenHeader = splitedIdToken[0];
+
         String idTokenPayload = splitedIdToken[1];
-        String idTokenSignature = splitedIdToken[2];
 
-        log.info("idTokenHeader = {}", idTokenHeader);
         log.info("idTokenPayload = {}", idTokenPayload);
-        log.info("idTokenSignature = {}", idTokenSignature);
 
-        byte[] headerBytes = Base64Utils.decodeFromUrlSafeString(idTokenHeader);
         byte[] payloadBytes = Base64Utils.decodeFromUrlSafeString(idTokenPayload);
-        byte[] signatureBytes = Base64Utils.decodeFromUrlSafeString(idTokenSignature);
 
-        String header = new String(headerBytes);
         String payload = new String(payloadBytes);
-        String signature = new String(signatureBytes);
 
         ObjectMapper objMapper = new ObjectMapper();
         Map<String, String> map = objMapper.readValue(payload, Map.class);
         String email = map.get("email");
         String sub = map.get("sub");
         String iss = map.get("iss");
-        log.warn("email = {}, sub = {}, iss = {} ", email, sub, iss);
+        String no = map.get("no");
+        log.warn("email = {}, sub = {}, iss = {}, no = {} ", email, sub, iss, no);
 
-
-        response.setIdTokenHeader(header);
         response.setIdTokenPayload(payload);
-        response.setIdTokenSignature(signature);
+
         return response;
     }
 }

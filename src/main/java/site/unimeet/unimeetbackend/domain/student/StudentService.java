@@ -73,13 +73,13 @@ public class StudentService {
     }
 
     @Transactional
-    public void editMyPage(EditMyPageDto.Request editMyPageRequest, String uploadedFilePath ,String email) {
-        Student student = findByEmail(email);
+    public void editMyPage(EditMyPageDto.Request editMyPageRequest, String uploadedFilePath , long id) {
+        Student student = findById(id);
         editMyPageRequest.editMyPage(student, uploadedFilePath);
     }
 
-    public MyPageDto.Rsp getMyPage(String email) {
-        Student student = EntityUtil.mustNotNull(studentRepository.findByEmailFetchMajors(email), ErrorCode.STUDENT_NOT_FOUND);
+    public MyPageDto.Rsp getMyPage(long id) {
+        Student student = EntityUtil.mustNotNull(studentRepository.findByIdFetchMajors(id), ErrorCode.STUDENT_NOT_FOUND);
         return MyPageDto.Rsp.of(student);
     }
 
@@ -98,11 +98,11 @@ public class StudentService {
     // refresh token으로 객체를 찾을 수 없으면 refresh token을 잊고 null을 반환한다.
     // 만료시간은 tokenManager.getMemberEmail(refresh)에서 검증했기 때문에, 추가 검증할 필요 없다.
     @Transactional
-    public Student isValidRefreshToken(String refreshToken, String email) {
+    public Student isValidRefreshToken(String refreshToken, long id) {
         Student student = studentRepository.findByRefreshToken(refreshToken);
         // refresh token으로 찾을 수 없다면, email로 찾아서 토큰을 잊는다.
         if (student == null) {
-            student = findByEmail(email);
+            student = findById(id);
             student.logout();
             return null;
         }

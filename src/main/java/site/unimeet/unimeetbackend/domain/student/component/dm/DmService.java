@@ -20,8 +20,8 @@ public class DmService {
     private final StudentService studentService;
 
     @Transactional
-    public void sendDm(Long receiverId, String senderEmail, String title, String content) {
-        Student sender = studentService.findByEmail(senderEmail);
+    public void sendDm(Long receiverId, long studentId, String title, String content) {
+        Student sender = studentService.findById(studentId);
         Student receiver = studentService.findById(receiverId);
 
         Dm dm = Dm.builder()
@@ -58,26 +58,26 @@ public class DmService {
 
     // DM 객체를 가져오고, email을 토대로 receiver 혹은 sender 인지 확인한다.
     // DM ID를 랜덤으로 지정하고, 본인 email을 입력했을 수도 있음.
-    public ReadDMDto.Res readDM(Long dmId, String requesterEmail) {
+    public ReadDMDto.Res readDM(Long dmId, long studentId) {
         Dm dm = dmRepository.findByIdFetchSenderReceiver(dmId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.DM_NOT_FOUND));
 
-        dm.checkReadAuthority(requesterEmail);
+        dm.checkReadAuthority(studentId);
 
         return ReadDMDto.Res.from(dm);
     }
 
 
-    public DmListDto.Res readDMList(String email) {
-        Student student = studentService.findByEmail(email);
+    public DmListDto.Res readDMList(long studentId) {
+        Student student = studentService.findById(studentId);
         List<Dm> dmList = findAllBySenderFetchReceiver(student);
         return new DmListDto.Res(dmList);
 
     }
 
     //쪽지 보낸 목록조회
-    public DmListDto.Res sentDMList(String email){
-        Student student = studentService.findByEmail(email);
+    public DmListDto.Res sentDMList(long studentId){
+        Student student = studentService.findById(studentId);
         List<Dm> dmList = findAllByReceiverFetchSender(student);
         return new DmListDto.Res(dmList);
     }
@@ -90,10 +90,10 @@ public class DmService {
         return dmRepository.findAllBySenderFetchReceiver(sender);
     }
 
-    public void deleteDm (Long dmId, String email){
+    public void deleteDm (Long dmId, long studentId){
         Dm dm = dmRepository.findById(dmId)
                 .orElseThrow(()-> new BusinessException(ErrorCode.DM_NOT_FOUND));
-        dm.checkReceiverDm(email); //받은 사람이 맞는지 확인
+        dm.checkReceiverDm(studentId); //받은 사람이 맞는지 확인
         dmRepository.deleteById(dmId);
     }
 }
