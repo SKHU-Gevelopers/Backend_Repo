@@ -20,4 +20,5 @@ public class TokenDto {
     private Date refreshTokenExp;
 
     private String username;
+    private boolean firstSignIn;
 }

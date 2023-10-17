@@ -22,6 +22,7 @@ import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookR
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -53,6 +54,7 @@ public class InitDB {
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/madman.jpg")
                 .majors(majors)
                 .department(Department.IT)
+                .kakaoIdTokenSub(UUID.randomUUID().toString().substring(0, 10))
                 .build();
 
         Student student2 = Student.builder()
@@ -66,6 +68,7 @@ public class InitDB {
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/Quokka.jfif")
                 .majors(majors)
                 .department(Department.IT)
+                .kakaoIdTokenSub(UUID.randomUUID().toString().substring(0, 10))
                 .build();
 
         Student student3 = Student.builder()
@@ -79,6 +82,7 @@ public class InitDB {
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/memoji.jpg")
                 .majors(majors)
                 .department(Department.HUMANITIES)
+                .kakaoIdTokenSub(UUID.randomUUID().toString().substring(0, 10))
                 .build();
 
         studentRepository.save(student1);

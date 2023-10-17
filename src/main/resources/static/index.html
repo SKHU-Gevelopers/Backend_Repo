@@ -22,7 +22,7 @@
 
     // 카카오 인증서버에 보낼 요청 쿼리 파라미터는 client_id, redirect_uri, response_type(이놈은 code로 고정), scope 등이 있음.
     Kakao.Auth.authorize({
-        redirectUri: "https://localhost:8443/auth/kakao/callback"
+        redirectUri: "https://unimeet.duckdns.org/auth/kakao/callback"
         , scope: "profile_nickname, account_email, profile_image, gender, age_range, openid"
     });
 </script>

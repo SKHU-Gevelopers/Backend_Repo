@@ -51,13 +51,15 @@ public class Student {
     @Enumerated(EnumType.STRING)
     private List<Major> majors;
 
+    @Column(unique = true)
     private String refreshToken;
-
+    @Column(nullable = false, unique = true)
+    private String kakaoIdTokenSub;
     private LocalDateTime refreshTokenExp;
 
-
     @Builder
-    private Student(String name, String nickname, String email, String password, Gender gender, Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department) {
+    private Student(String name, String nickname, String email, String password, Gender gender
+            , Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department, String kakaoIdTokenSub) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
@@ -68,6 +70,7 @@ public class Student {
         this.profileImageUrl = profileImageUrl;
         this.majors = majors;
         this.department = department;
+        this.kakaoIdTokenSub = kakaoIdTokenSub;
     }
 
     public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, String kakaoId,List<Major> majors){

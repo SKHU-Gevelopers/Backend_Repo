@@ -16,4 +16,8 @@ public interface StudentRepository extends JpaRepository <Student,Long> {
     boolean existsByEmail(String email);
 
     Student findByRefreshToken(String refreshToken);
+
+    boolean existsByKakaoIdTokenSub(String kakaoIdTokenSub);
+
+    Student findByKakaoIdTokenSub(String kakaoIdTokenSub);
 }
