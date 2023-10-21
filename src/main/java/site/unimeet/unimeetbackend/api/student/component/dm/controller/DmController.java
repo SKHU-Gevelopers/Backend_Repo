@@ -43,7 +43,6 @@ public class DmController {
         return new ResTemplate<>(HttpStatus.OK, res);
     }
 
-
     //보낸 DM 목록조회
     @GetMapping("/dm/sent")
     public ResTemplate<DmListDto.Res> handleSetDMList(@StudentId long loggedInId){

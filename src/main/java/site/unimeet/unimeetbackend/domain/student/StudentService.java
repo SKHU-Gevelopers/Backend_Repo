@@ -125,11 +125,14 @@ public class StudentService {
 
     @Transactional
     public TokenDto oAuthSignIn(String kakaoIdTokenSub) {
+        log.info("kakaoIdTokenSub: {}", kakaoIdTokenSub);
         Student student;
         boolean firstSignIn = false;
         if (studentRepository.existsByKakaoIdTokenSub(kakaoIdTokenSub)) {
+            log.info("findByKakaoIdTokenSub called");
             student = studentRepository.findByKakaoIdTokenSub(kakaoIdTokenSub);
         } else {
+            log.info("newStudent() called");
             student = newStudent(kakaoIdTokenSub);
             firstSignIn = true;
         }
