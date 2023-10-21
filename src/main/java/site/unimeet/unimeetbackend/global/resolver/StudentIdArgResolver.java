@@ -20,7 +20,7 @@ public class StudentIdArgResolver implements HandlerMethodArgumentResolver {
     public boolean supportsParameter(MethodParameter parameter) {
 
         boolean hasEmailAnnotation = parameter.hasParameterAnnotation(StudentId.class);
-        boolean hasString = String.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasString = long.class.isAssignableFrom(parameter.getParameterType());
 
         // 파라미터를 분석해 조건이 맞으면 아래 resolveArgument 를 실행시킴.
         return hasEmailAnnotation && hasString;
