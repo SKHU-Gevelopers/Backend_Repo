@@ -62,7 +62,7 @@ public class MeetUp extends BaseTimeEntity {
 
         // sender도 receiver도 아니라면 예외 발생
         if (
-                (receiverId != senderId || senderId != studentId)
+                (receiverId != studentId || senderId != studentId)
         ) {
             throw new BusinessException(ErrorCode.MEETUP_NOT_RECEIVER_OR_SENDER);
         }
