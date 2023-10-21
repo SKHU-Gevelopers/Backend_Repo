@@ -10,3 +10,7 @@ server:
 logging:
   level:
     org.hibernate.type: debug # trace debug info warn error
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
