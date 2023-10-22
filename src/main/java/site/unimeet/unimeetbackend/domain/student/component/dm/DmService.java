@@ -62,7 +62,9 @@ public class DmService {
         Dm dm = dmRepository.findByIdFetchSenderReceiver(dmId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.DM_NOT_FOUND));
 
-        dm.checkReadAuthority(studentId);
+        if (! dm.isSenderOrReceiver(studentId)) {
+            throw new BusinessException(ErrorCode.DM_NOT_RECEIVER_OR_SENDER);
+        }
 
         return ReadDMDto.Res.from(dm);
     }

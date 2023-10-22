@@ -38,6 +38,7 @@ public class Dm extends BaseTimeEntity {
         this.receiver = receiver;
     }
 
+
     public void checkReceiverDm(long studentId) {
         Long receiverId = receiver.getId();
 
@@ -46,15 +47,16 @@ public class Dm extends BaseTimeEntity {
             throw new BusinessException(ErrorCode.DM_RECEIVER_NOT_MATCHED);
         }
     }
+    // studentId가 sender 혹은 receiver 인지
+    // 1 to 2
+    public boolean isSenderOrReceiver(long studentId) { // 2
+        long receiverId = receiver.getId();  // 2
+        long senderId = sender.getId(); // 1
 
-    public void checkReadAuthority(long studentId) {
-        long receiverId = receiver.getId();
-        long senderId = sender.getId();
-
-        // sender도 receiver도 아니라면 예외 발생
-        if ( (studentId != receiverId) || (studentId != senderId) ) {
-            throw new BusinessException(ErrorCode.DM_NOT_RECEIVER_OR_SENDER);
+        if (receiverId == studentId || senderId == studentId) {
+            return false;
         }
+        return true;
     }
 }
 
