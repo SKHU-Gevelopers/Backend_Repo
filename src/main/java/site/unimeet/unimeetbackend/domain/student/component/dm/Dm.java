@@ -48,15 +48,14 @@ public class Dm extends BaseTimeEntity {
         }
     }
     // studentId가 sender 혹은 receiver 인지
-    // 1 to 2
-    public boolean isSenderOrReceiver(long studentId) { // 2
-        long receiverId = receiver.getId();  // 2
-        long senderId = sender.getId(); // 1
+    public boolean isSenderOrReceiver(long studentId) {
+        long receiverId = receiver.getId();
+        long senderId = sender.getId();
 
         if (receiverId == studentId || senderId == studentId) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
 

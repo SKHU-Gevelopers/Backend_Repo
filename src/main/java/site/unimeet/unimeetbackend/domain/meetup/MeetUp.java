@@ -63,9 +63,9 @@ public class MeetUp extends BaseTimeEntity {
         long senderId = sender.getId(); // 1
 
         if (receiverId == studentId || senderId == studentId) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }
 

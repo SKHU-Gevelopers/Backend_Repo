@@ -102,7 +102,7 @@ public class MeetUpService {
 
     /**
      * meetUp 상세정보를 조회한다.
-     * meetUp의 receiver가 파라미터의 receiver(email)과 같아야 한다.
+     * meetUp의 receiver or sender 가 파라미터의 사용자 id와 같아야 한다.
      */
     public MeetUpDetailDto.Res getMeetUpDetail(Long meetUpId, long studentId) {
         MeetUp meetUp = findByIdFetchAll(meetUpId);
