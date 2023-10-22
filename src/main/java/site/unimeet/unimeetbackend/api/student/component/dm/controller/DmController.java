@@ -36,10 +36,10 @@ public class DmController {
         return new ResTemplate<>(HttpStatus.OK, res);
     }
 
-    // DM 목록조회
+    // DM 받은 목록조회
     @GetMapping("/dm/received")
     public ResTemplate<DmListDto.Res> handleGetDMList(@StudentId long loggedInId) {
-        DmListDto.Res res = dmService.readDMList(loggedInId);
+        DmListDto.Res res = dmService.receivedDMList(loggedInId);
         return new ResTemplate<>(HttpStatus.OK, res);
     }
 
