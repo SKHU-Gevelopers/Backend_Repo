@@ -70,9 +70,9 @@ public class DmService {
     }
 
 
-    public DmListDto.Res readDMList(long studentId) {
+    public DmListDto.Res receivedDMList(long studentId) {
         Student student = studentService.findById(studentId);
-        List<Dm> dmList = findAllBySenderFetchReceiver(student);
+        List<Dm> dmList = findAllByReceiverFetchSender(student);
         return new DmListDto.Res(dmList);
 
     }
@@ -80,7 +80,7 @@ public class DmService {
     //쪽지 보낸 목록조회
     public DmListDto.Res sentDMList(long studentId){
         Student student = studentService.findById(studentId);
-        List<Dm> dmList = findAllByReceiverFetchSender(student);
+        List<Dm> dmList = findAllBySenderFetchReceiver(student);
         return new DmListDto.Res(dmList);
     }
 
