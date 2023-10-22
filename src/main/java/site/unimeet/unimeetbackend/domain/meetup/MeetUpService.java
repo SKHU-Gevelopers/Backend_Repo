@@ -12,6 +12,7 @@ import site.unimeet.unimeetbackend.domain.student.Student;
 import site.unimeet.unimeetbackend.domain.student.StudentService;
 import site.unimeet.unimeetbackend.domain.student.component.dm.DmService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
+import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.util.EmailService;
 import site.unimeet.unimeetbackend.util.EntityUtil;
@@ -107,7 +108,10 @@ public class MeetUpService {
         MeetUp meetUp = findByIdFetchAll(meetUpId);
 
         // MeetUp receiver와 HttpRequester가 같지 않다면 예외발생
-        meetUp.checkReadAuthority(studentId);
+        if (! meetUp.isSenderOrReceiver(studentId)) {
+            throw new BusinessException(ErrorCode.MEETUP_NOT_RECEIVER_OR_SENDER);
+        }
+
         return MeetUpDetailDto.Res.from(meetUp);
     }
 
