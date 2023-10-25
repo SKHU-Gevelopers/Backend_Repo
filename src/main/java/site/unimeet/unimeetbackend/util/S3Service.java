@@ -64,11 +64,7 @@ public class S3Service {
                     .key(bucketNameSuffix + "/" + storedFileName)
                     .build();
 
-            log.error("bucketName : {}, bucketNameSuffix : {}, storedFileName : {}", bucketName, bucketNameSuffix, storedFileName);
-
             RequestBody requestBody = RequestBody.fromInputStream(inputStream, multipartFile.getSize());
-            log.error("contentType = {} ", requestBody.contentType());
-            log.error("contentLength = {}", requestBody.optionalContentLength().orElse(0L));
             // Upload the file to the specified bucket
             s3Client.putObject(putObjectRequest, requestBody);
         } catch (IOException e) {
