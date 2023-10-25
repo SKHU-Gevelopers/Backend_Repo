@@ -83,7 +83,7 @@ public class S3Service {
     }
 
     private String createStoredFilePath(String storedFileName, String bucketSuffix) {
-        return "https://" + bucketName + ".s3." + region + ".amazonaws.com" + bucketSuffix + "/" + storedFileName;
+        return "https://" + bucketName + ".s3." + region + ".amazonaws.com" + "/" + bucketSuffix + "/" + storedFileName;
     }
 
     private String createStoredFileName(String originalFileName) {
