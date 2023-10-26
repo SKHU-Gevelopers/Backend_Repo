@@ -79,4 +79,52 @@ public class KakaoOAuthController {
             return ResponseEntity.status(HttpStatus.OK).body(resTemplate);
         }
     }
+
+    @GetMapping("/auth/kakao/callback-prod")
+    public ResponseEntity<ResTemplate<TokenDto>> kakaoCallbackProd(
+            @RequestParam("code") String code
+    ) throws JsonProcessingException {
+        // code 발급 시 https://kauth.kakao.com/oauth/authorize 여기로
+        // code, clinetId, response_type, scope 등을 보내야 하는데, 이를 JS SDK에서 보내주는 듯 함. Rdir URI는 Code밖에 없음.
+        String url = "https://kauth.kakao.com/oauth/token";
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", GRANT_TYPE);
+        body.add("client_id", clientId);
+        body.add("redirect_uri", "https://skhu-unimeet.site/auth/kakao/callback");
+        body.add("code", code);
+
+        HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        KakaoToken response = restTemplate.postForObject(url, request, KakaoToken.class);
+
+        String[] splitedIdToken = response.getIdToken().split("\\.");
+
+        String idTokenPayload = splitedIdToken[1];
+
+        byte[] payloadBytes = Base64Utils.decodeFromUrlSafeString(idTokenPayload);
+
+        String payload = new String(payloadBytes);
+
+        ObjectMapper objMapper = new ObjectMapper();
+        Map<String, String> map = objMapper.readValue(payload, Map.class);
+        String email = map.get("email");
+        String sub = map.get("sub");
+        String iss = map.get("iss");
+        log.warn("email = {}, sub = {}, iss = {}", email, sub, iss);
+
+        TokenDto tokenDto = studentService.oAuthSignIn(sub);
+
+        if (tokenDto.isFirstSignIn()) {
+            ResTemplate<TokenDto> resTemplate = new ResTemplate<>(HttpStatus.CREATED, "첫 로그인, 사용자 회원가입 후 로그인 처리", tokenDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resTemplate);
+        } else {
+            ResTemplate<TokenDto> resTemplate = new ResTemplate<>(HttpStatus.OK, "기존 회원, 로그인 성공", tokenDto);
+            return ResponseEntity.status(HttpStatus.OK).body(resTemplate);
+        }
+    }
 }
