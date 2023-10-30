@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.unimeet.unimeetbackend.global.interceptor.AuthenticationInterceptor;
 import site.unimeet.unimeetbackend.global.resolver.StudentIdArgResolver;
@@ -21,14 +20,14 @@ public class WebConfig implements WebMvcConfigurer {
     private final AuthenticationInterceptor authenticationInterceptor;
 
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authenticationInterceptor)
-                .order(1)   // 인증 인터셉터를 첫 번째로 수행
-                .addPathPatterns("/**")     // 이 경로를 대상으로 동작
-                .excludePathPatterns("/auth/**", "/users/sign-up", "/token/reissue", "/auth/kakao/callback", "/index.html")  // 이 경로는 검사 제외
-        ;
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(authenticationInterceptor)
+//                .order(1)   // 인증 인터셉터를 첫 번째로 수행
+//                .addPathPatterns("/**")     // 이 경로를 대상으로 동작
+//                .excludePathPatterns("/**, /auth/**", "/users/sign-up", "/token/reissue", "/auth/kakao/callback", "/index.html", "/push")  // 이 경로는 검사 제외
+//        ;
+//    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {

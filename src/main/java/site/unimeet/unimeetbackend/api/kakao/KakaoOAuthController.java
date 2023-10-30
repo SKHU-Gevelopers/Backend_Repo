@@ -46,7 +46,7 @@ public class KakaoOAuthController {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", GRANT_TYPE);
         body.add("client_id", clientId);
-        body.add("redirect_uri", "https://skhu-unimeet.site/auth/kakao/callback");
+        body.add("redirect_uri", "http://skhu-unimeet.site/auth/kakao/callback");
         body.add("code", code);
 
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);

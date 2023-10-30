@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import site.unimeet.unimeetbackend.global.exception.AppServiceException;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.dto.ErrorResponseDto;
 import site.unimeet.unimeetbackend.util.LoggingUtil;
@@ -68,6 +69,13 @@ public class GlobalExceptionHandler {
     // BusinessException 을 상속한 다른 Custom Exception 에도 적용된다.
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<ErrorResponseDto<String>> handleBusinessException(BusinessException e, HttpServletRequest request){
+        printLog(e, request);
+        return createErrorResponse(e.getStatusCode(), e.getHttpStatus(), e.getMessage());
+    }
+
+    // 비즈니스 로직이 아닌 애플리케이션 서비스 로직상 예외
+    @ExceptionHandler({AppServiceException.class})
+    public ResponseEntity<ErrorResponseDto<String>> handleAppServiceException(AppServiceException e, HttpServletRequest request){
         printLog(e, request);
         return createErrorResponse(e.getStatusCode(), e.getHttpStatus(), e.getMessage());
     }
