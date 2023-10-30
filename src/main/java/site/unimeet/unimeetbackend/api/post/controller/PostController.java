@@ -85,9 +85,9 @@ public class PostController {
 
     //즐겨찾기한 게시글 모아보기
     @GetMapping("/posts/like")
-    public ResTemplate<List<Long>> handleGetLikedPostIds( @StudentId long loggedInId){
-        List<Long> likedPostIds = postService.getLikedPost(loggedInId);
-        return new ResTemplate<>(HttpStatus.OK, likedPostIds);
+    public ResTemplate<PostListDto.Res> handleGetLikedPosts( @StudentId long loggedInId){
+        PostListDto.Res likedPosts = postService.getLikedPosts(loggedInId);
+        return new ResTemplate<>(HttpStatus.OK, likedPosts);
     }
 
 

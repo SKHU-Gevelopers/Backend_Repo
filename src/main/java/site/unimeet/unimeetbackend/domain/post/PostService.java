@@ -121,7 +121,7 @@ public class PostService {
     }
 
 
-    public List<Long> getLikedPost(long studentId){
+    public List<Long> getLikedPostIds(long studentId){
       Student student = studentService.findById(studentId);
       List<PostLike> likedPostLikes = postLikeRepository.findByStudent(student);
 
@@ -130,6 +130,12 @@ public class PostService {
               .collect(Collectors.toList());
     }
 
+    @Transactional
+    public PostListDto.Res getLikedPosts(long studentId) {
+        List<Long> likedPostIds = getLikedPostIds(studentId);
+        List<Post> likedPosts = postRepository.findAllById(likedPostIds);
+        return PostListDto.Res.from(likedPosts);
+    }
 
 }
 
