@@ -5,10 +5,12 @@ import org.springframework.data.repository.query.Param;
 import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.student.Student;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
     Optional<PostLike> findByPostAndStudent(@Param("post")Post post, Student student);
 
-    //findAllIdFetchPostandEmail
+    List<PostLike> findByStudent(Student student);
+
 }

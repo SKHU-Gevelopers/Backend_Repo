@@ -45,6 +45,7 @@ public class PostListDto {
             String nickname;
             long writerId;
             int likes;
+            boolean isLiked;
 
             static PostListDto.Res.PostDto from(Post post){
                 List<String> imageUrls = post.getImageUrls();
@@ -63,6 +64,7 @@ public class PostListDto {
                         .nickname(writer.getNickname())
                         .writerId(writer.getId())
                         .likes(post.getLikes())
+                        .isLiked(post.isLiked())
                         .build();
             }
             static List<PostListDto.Res.PostDto> from (Slice<Post> postList){

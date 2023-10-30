@@ -23,9 +23,15 @@ public interface PostRepository  extends JpaRepository<Post, Long>{
             , countQuery = "SELECT count(p) FROM Post p")
     Slice<Post> findAllFetchWriter(Pageable pageable);
 
+<<<<<<< Updated upstream
     // 페이지네이션 임시로 해제
     @Query(value = "SELECT p FROM Post p" +
             " JOIN FETCH p.writer" +
             " ORDER BY p.id DESC")
     List<Post> findAllFetchWriter();
+
+=======
+    @Query("Select p From Post p JOIN FETCH p.isLiked where p.id = :id")
+    Post findAllFetchLikedStatus(Long id);
+>>>>>>> Stashed changes
 }
