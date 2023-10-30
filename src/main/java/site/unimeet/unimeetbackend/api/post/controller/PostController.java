@@ -1,7 +1,6 @@
 package site.unimeet.unimeetbackend.api.post.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,6 @@ import site.unimeet.unimeetbackend.domain.post.Post;
 import site.unimeet.unimeetbackend.domain.post.PostService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.resolver.StudentId;
-import site.unimeet.unimeetbackend.util.PageableUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
 
 import javax.validation.Valid;
@@ -27,11 +25,13 @@ public class PostController {
 
     //게시글 목록 조회
     @GetMapping("/posts")
-    public ResTemplate<PostListDto.Res> handleGetPosts(@RequestParam(defaultValue = "1") final int page){
-        final int POST_PAGE_SIZE = 8;
-        Pageable pageable = PageableUtil.of(page, POST_PAGE_SIZE);
-
-        PostListDto.Res postList = postService.getPosts(pageable);
+    public ResTemplate<PostListDto.Res> handleGetPosts(
+//            @RequestParam(defaultValue = "1") final int page
+    ){
+//        final int POST_PAGE_SIZE = 8;
+//        Pageable pageable = PageableUtil.of(page, POST_PAGE_SIZE);
+        // 페이지네이션 임시로 해제
+        PostListDto.Res postList = postService.getPosts();
         return new ResTemplate<>(HttpStatus.OK, postList);
     }
 

@@ -48,6 +48,11 @@ public class PostService {
         return PostListDto.Res.from(posts);
     }
 
+    public PostListDto.Res getPosts() {
+        List<Post> posts = postRepository.findAllFetchWriter();
+        return PostListDto.Res.from(posts);
+    }
+
     //게시글 단건 조회
     public Post getPostDetail(Long id) {
 
