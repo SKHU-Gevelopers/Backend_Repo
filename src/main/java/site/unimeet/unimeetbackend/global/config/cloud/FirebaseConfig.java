@@ -22,8 +22,8 @@ public class FirebaseConfig {
 
     @Autowired
     public FirebaseConfig(
-            @Value("firebase.admin-sdk.config")String adminJsonPath,
-            @Value("firebase.admin-sdk.project-id")String projectId
+            @Value("${firebase.admin-sdk.config}")String adminJsonPath,
+            @Value("${firebase.admin-sdk.project-id}")String projectId
     ) {
         this.FIREBASE_ADMIN_SDK_PATH = adminJsonPath;
         this.FIREBASE_PROJECT_ID = projectId;
