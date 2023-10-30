@@ -19,12 +19,8 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private String name;
     @Column(unique = true, nullable = false)
     private String nickname;
-    @Column(unique = true, nullable = false)
-    private String kakaoId;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -58,22 +54,20 @@ public class Student {
     private LocalDateTime refreshTokenExp;
 
     @Builder
-    private Student(String name, String nickname, String email, String password, Gender gender
-            , Mbti mbti, String kakaoId, String profileImageUrl,List<Major> majors, Department department, String kakaoIdTokenSub) {
-        this.name = name;
+    private Student(String nickname, String email, String password, Gender gender
+            , Mbti mbti, String profileImageUrl,List<Major> majors, Department department, String kakaoIdTokenSub) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.mbti = mbti;
-        this.kakaoId = kakaoId;
         this.profileImageUrl = profileImageUrl;
         this.majors = majors;
         this.department = department;
         this.kakaoIdTokenSub = kakaoIdTokenSub;
     }
 
-    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, String kakaoId,List<Major> majors){
+    public void editMyPage(String nickname, Mbti mbti, String introduction, String profileImageUrl, List<Major> majors){
         this.nickname = nickname;
         this.mbti = mbti;
         this.introduction = introduction;
@@ -81,7 +75,6 @@ public class Student {
         if (profileImageUrl != null) {
             this.profileImageUrl = profileImageUrl;
         }
-        this.kakaoId = kakaoId;
     }
 
     public void updateRefreshTokenAndExp(String refreshToken, Date refreshTokenExp) {
@@ -93,9 +86,5 @@ public class Student {
     public void logout(){
         this.refreshToken = "";
         this.refreshTokenExp = LocalDateTime.now();
-    }
-
-    public boolean isRfTokenExpired() {
-        return refreshTokenExp.isBefore(LocalDateTime.now());
     }
 }

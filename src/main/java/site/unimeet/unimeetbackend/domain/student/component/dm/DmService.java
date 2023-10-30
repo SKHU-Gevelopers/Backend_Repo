@@ -42,7 +42,6 @@ public class DmService {
 
         String title = sender.getNickname() + "님이 만남 신청을 수락했습니다";
         String content = sender.getNickname() + "님이 만남 신청을 수락했습니다.\n"
-                    + "수락한놈 카카오톡 ID : " + sender.getKakaoId() + "\n\n\n"
                     + "이 메시지는 시스템에 의해 자동으로 발송되었습니다."
                 ;
 

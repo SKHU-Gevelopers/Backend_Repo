@@ -14,7 +14,6 @@ import site.unimeet.unimeetbackend.domain.student.component.dm.DmService;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
 import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
-import site.unimeet.unimeetbackend.util.EmailService;
 import site.unimeet.unimeetbackend.util.EntityUtil;
 import site.unimeet.unimeetbackend.util.S3Service;
 
@@ -29,7 +28,6 @@ public class MeetUpService {
     private final PostService postService;
     private final StudentService studentService;
     private final DmService dmService;
-    private final EmailService emailService;
 
     // 만남 신청
     @Transactional
@@ -69,17 +67,8 @@ public class MeetUpService {
         // 게시글의 상태를 DONE으로 변경한다.
         post.setStateDone();
 
-        // todo 쪽지와 이메일로 수락알림 + 톡디보내기
         // (meetUp의) receiver가 sender에게 쪽지를 보낸다.
         dmService.sendDmOnMeetUpAcceptance(meetUpSender.getId(), meetUpReceiver.getId());
-
-        // system에서 meetUp sender에게 이메일 전송
-        String title = "Unimeet - 만남 수락 알림";
-        String content = meetUpSender.getNickname() + "님이 만남 신청을 수락했습니다.\n"
-                + "수락한놈 카카오톡 ID : " + meetUpSender.getKakaoId() + "\n\n\n"
-                + "이 메시지는 시스템에 의해 자동으로 발송되었습니다."
-                ;
-        emailService.sendEmail(meetUpSender.getEmail(), title, content);
     }
 
     public MeetUpListDto.Res getMeetUpList(long receiverId) {

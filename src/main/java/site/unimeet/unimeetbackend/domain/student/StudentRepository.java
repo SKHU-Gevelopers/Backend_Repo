@@ -13,10 +13,6 @@ public interface StudentRepository extends JpaRepository <Student,Long> {
             " Where s.id = :id")
     Student findByIdFetchMajors(long id);
 
-    boolean existsByKakaoId(String kakaoId);
-
-    boolean existsByEmail(String email);
-
     Student findByRefreshToken(String refreshToken);
 
     boolean existsByKakaoIdTokenSub(String kakaoIdTokenSub);

@@ -41,7 +41,7 @@ public class AuthService {
         // refresh token은 관리를 위해 user DB에 저장.
         student.updateRefreshTokenAndExp(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
 
-        tokenDto.setUsername(student.getName());
+        tokenDto.setUsername(student.getNickname());
         return tokenDto;
     }
 
@@ -56,7 +56,7 @@ public class AuthService {
         TokenDto tokenDto = tokenManager.createTokenDto(studentId);
         studentService.updateRefreshTokenAndExp(student, tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
 
-        tokenDto.setUsername(student.getName());
+        tokenDto.setUsername(student.getNickname());
         return tokenDto;
     }
 

@@ -44,13 +44,11 @@ public class InitDB {
 
         // convert to constructor to builder
         Student student1 = Student.builder()
-                .name("임정연")
                 .nickname("찡스")
                 .email("eeee@email.com")
                 .password(passwordEncoder.encode("pppp"))
                 .gender(Gender.FEMALE)
                 .mbti(Mbti.ESTP)
-                .kakaoId("jeongkite927")
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/madman.jpg")
                 .majors(majors)
                 .department(Department.IT)
@@ -58,13 +56,11 @@ public class InitDB {
                 .build();
 
         Student student2 = Student.builder()
-                .name("조성우")
                 .nickname("안아줘요")
                 .email("eeee1@email.com")
                 .password(passwordEncoder.encode("pppp"))
                 .gender(Gender.MALE)
                 .mbti(Mbti.ISTP)
-                .kakaoId("hugme123")
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/Quokka.jfif")
                 .majors(majors)
                 .department(Department.IT)
@@ -72,13 +68,11 @@ public class InitDB {
                 .build();
 
         Student student3 = Student.builder()
-                .name("이예슬")
                 .nickname("콩이언니")
                 .email("eeee2@email.com")
                 .password(passwordEncoder.encode("pppp"))
                 .gender(Gender.FEMALE)
                 .mbti(Mbti.ISTJ)
-                .kakaoId("eslint456")
                 .profileImageUrl("https://unimeet-bucket.s3.ap-northeast-2.amazonaws.com/user_profile_img/memoji.jpg")
                 .majors(majors)
                 .department(Department.HUMANITIES)

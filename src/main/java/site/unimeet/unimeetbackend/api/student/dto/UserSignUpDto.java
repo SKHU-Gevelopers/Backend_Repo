@@ -20,8 +20,6 @@ public class UserSignUpDto {
     @NoArgsConstructor
     public static class Request {
         @Length(min = 2, max = 10, message = "이름은 2~10자 사이여야 합니다")
-        private String name;
-        @Length(min = 2, max = 10, message = "이름은 2~10자 사이여야 합니다")
         private String nickname;
         @Email(message = "Email 형식이어야 합니다")
         private String email;
@@ -42,13 +40,11 @@ public class UserSignUpDto {
         public Student toEntity(PasswordEncoder passwordEncoder){
             String encodedPassword = passwordEncoder.encode(this.password);
             return Student.builder()
-                    .name(name)
                     .nickname("깨깨오 가입하세요! - " + UUID.randomUUID().toString().substring(0, 10))
                     .email(email)
                     .password(encodedPassword)
                     .gender(gender)
                     .mbti(mbti)
-                    .kakaoId(kakaoId)
                     .profileImageUrl(defaultProfileImageUrl)
                     .majors(majors)
                     .department(department)

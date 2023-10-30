@@ -2,7 +2,6 @@ package site.unimeet.unimeetbackend.domain.student;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import site.unimeet.unimeetbackend.domain.student.component.enums.Mbti;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBook;
 import site.unimeet.unimeetbackend.domain.student.component.guestbook.GuestBookRepository;
 import site.unimeet.unimeetbackend.global.config.cloud.S3Config;
-import site.unimeet.unimeetbackend.global.exception.BusinessException;
 import site.unimeet.unimeetbackend.global.exception.ErrorCode;
 import site.unimeet.unimeetbackend.global.exception.auth.AuthException;
 import site.unimeet.unimeetbackend.util.EntityUtil;
@@ -46,40 +44,6 @@ public class StudentService {
                 ); // throw는 statement lambda이며, expression lambda가 아니므로 중괄호 필요
     }
 
-    public Student findByEmail(String email) {
-        return EntityUtil.mustNotNull(studentRepository.findByEmail(email), ErrorCode.STUDENT_NOT_FOUND);
-    }
-
-    @Transactional
-    public Student signUp(Student student) {
-//        // Cache 에서 Email로 검증코드를 가져온다.
-//        String cacheVrfCode = emailVerificationService.getCodeExpirationCache()
-//                .getIfPresent(student.getEmail());
-//        // 검증코드 만료 시 cacheVrfCode 는 null이다.
-//        if (cacheVrfCode == null) {
-//            throw new AuthException(ErrorCode.EMAIL_VERIFICATION_CODE_NOT_FOUND);
-//        }
-//        // 캐시의 검증코드가 not null 이므로, 입력된 검증코드와 일치하는지 확인
-//        if (! cacheVrfCode.equals(emailVrfCode)){
-//            throw new AuthException(ErrorCode.EMAIL_VERIFICATION_CODE_MISMATCHED);
-//        }
-
-        if (studentRepository.existsByKakaoId(student.getKakaoId())) {
-            throw new BusinessException(ErrorCode.KAKAO_ID_ALREADY_REGISTERED);
-        }
-
-        if (studentRepository.existsByEmail(student.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_ALREADY_REGISTERED);
-        }
-
-        // 회원가입
-        try {
-            return studentRepository.saveAndFlush(student);
-        } catch (DataIntegrityViolationException e) { // email unique 제약조건 위반 시
-            throw new BusinessException(ErrorCode.STUDENT_CONSTRAINT_ERROR);
-        }
-    }
-
     @Transactional
     public void editMyPage(EditMyPageDto.Request editMyPageRequest, String uploadedFilePath , long id) {
         Student student = findById(id);
@@ -93,12 +57,6 @@ public class StudentService {
 
     public PublicMyPageDto.Res getPublicMyPage(Long id, Pageable pageable) {
         Student student = findById(id);
-        Page<GuestBook> guestBooks = guestBookRepository.findByTargetStudent(student, pageable);
-        return PublicMyPageDto.Res.from(student, guestBooks);
-    }
-
-    public PublicMyPageDto.Res getPublicMyPage(String email, Pageable pageable) {
-        Student student = findByEmail(email);
         Page<GuestBook> guestBooks = guestBookRepository.findByTargetStudent(student, pageable);
         return PublicMyPageDto.Res.from(student, guestBooks);
     }
@@ -142,7 +100,7 @@ public class StudentService {
         // refresh token은 관리를 위해 user DB에 저장.
         student.updateRefreshTokenAndExp(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExp());
 
-        tokenDto.setUsername(student.getName());
+        tokenDto.setUsername(student.getNickname());
         tokenDto.setFirstSignIn(firstSignIn);
         return tokenDto;
     }
@@ -157,11 +115,8 @@ public class StudentService {
                 .gender(Gender.NONE)
                 .kakaoIdTokenSub(kakaoIdTokenSub)
 
-
-                .name(UUID.randomUUID().toString().substring(0, 10))
                 .email(UUID.randomUUID().toString().substring(0, 10))
                 .password(UUID.randomUUID().toString().substring(0, 10))
-                .kakaoId(UUID.randomUUID().toString().substring(0, 10))
                 .department(Department.NONE)
                 .build();
 

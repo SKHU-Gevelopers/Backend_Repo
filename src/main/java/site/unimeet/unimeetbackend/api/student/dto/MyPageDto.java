@@ -30,7 +30,6 @@ public class MyPageDto {
                     .mbti(student.getMbti())
                     .introduction(student.getIntroduction())
                     .profileImageUrl(student.getProfileImageUrl())
-                    .kakaoId(student.getKakaoId())
                     .majors(student.getMajors())
                     .build();
         }
