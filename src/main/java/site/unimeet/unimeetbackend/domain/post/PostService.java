@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.unimeet.unimeetbackend.api.post.dto.PostLikeDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostListDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUpdateDto;
 import site.unimeet.unimeetbackend.api.post.dto.PostUploadDto;
@@ -17,6 +18,7 @@ import site.unimeet.unimeetbackend.global.exception.domain.EntityNotFoundExcepti
 import site.unimeet.unimeetbackend.util.EntityUtil;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -119,7 +121,21 @@ public class PostService {
     }
 
 
-    
+    public List<Long> getLikedPostIds(long studentId){
+      Student student = studentService.findById(studentId);
+      List<PostLike> likedPostLikes = postLikeRepository.findByStudent(student);
+
+      return likedPostLikes.stream()
+              .map(postLike -> postLike.getPost().getId())
+              .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PostListDto.Res getLikedPosts(long studentId) {
+        List<Long> likedPostIds = getLikedPostIds(studentId);
+        List<Post> likedPosts = postRepository.findAllById(likedPostIds);
+        return PostListDto.Res.from(likedPosts);
+    }
 
 }
 

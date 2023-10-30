@@ -35,7 +35,8 @@ public class Post extends BaseTimeEntity {
     @Column(nullable = false)
     private Gender gender; // 희망 성별
     private Integer likes; // 좋아요 수
-
+    
+    private boolean isLiked; //좋아요 판별
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id", nullable = false)
     private Student writer; // 작성자
@@ -68,6 +69,7 @@ public class Post extends BaseTimeEntity {
         this.gender = gender;
         this.writer = writer;
         this.likes = 0;
+        this.isLiked = false;
     }
 
     public void update(String title, String content, int maxPeople, Gender gender, List<String> imageUrls){

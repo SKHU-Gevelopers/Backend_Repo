@@ -76,12 +76,20 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    //게시글 좋아요
+    //게시글 즐겨찾기
     @PutMapping("/posts/{postId}/like")
     public ResponseEntity<String> likePost(@PathVariable Long postId, @StudentId long loggedInId){
         postService.updateLikePost(postId, loggedInId);
         return ResponseEntity.ok("게시글 좋아요");
     }
+
+    //즐겨찾기한 게시글 모아보기
+    @GetMapping("/posts/like")
+    public ResTemplate<PostListDto.Res> handleGetLikedPosts( @StudentId long loggedInId){
+        PostListDto.Res likedPosts = postService.getLikedPosts(loggedInId);
+        return new ResTemplate<>(HttpStatus.OK, likedPosts);
+    }
+
 
     // 만남 신청
     @PostMapping("/posts/{postId}/meet-ups")

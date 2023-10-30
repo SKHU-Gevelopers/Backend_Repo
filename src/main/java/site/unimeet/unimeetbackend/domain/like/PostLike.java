@@ -34,7 +34,7 @@ public class PostLike extends BaseTimeEntity {
     private Post post;
 
     @Column(nullable = false)
-    private boolean status;
+    private boolean status; //true = 좋아요, false = 좋아요 취소
 
     @Builder
     public PostLike(Post post, Student student) {
@@ -42,7 +42,6 @@ public class PostLike extends BaseTimeEntity {
         this.post = post;
         this.status = true;
     }
-
 
 
 }
