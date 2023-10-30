@@ -13,7 +13,9 @@ public class Push {
     @GetMapping("/push")
     public String push(
             @RequestParam("registrationToken") String registrationToken
-    ) throws FirebaseMessagingException {
+            , @RequestParam(value = "sleep", defaultValue = "0") long sleep
+    ) throws FirebaseMessagingException, InterruptedException {
+        Thread.sleep(sleep);
         // This registration token comes from the client FCM SDKs.
 
         // See documentation on defining a message payload.
