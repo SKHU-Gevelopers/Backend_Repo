@@ -21,6 +21,10 @@ public class PostListDto {
         public static Res from(Slice<Post> postList){
             return new Res(PostDto.from(postList), SliceInfoDto.from(postList));
         }
+        // 페이지네이션 임시로 해제
+        public static Res from(List<Post> postList){
+            return new Res(PostDto.from(postList), null);
+        }
 
         public Res(List<PostDto> posts, SliceInfoDto page) {
             this.posts = posts;
@@ -62,6 +66,11 @@ public class PostListDto {
                         .build();
             }
             static List<PostListDto.Res.PostDto> from (Slice<Post> postList){
+                return postList.stream()
+                        .map(PostListDto.Res.PostDto::from)
+                        .collect(Collectors.toList());
+            }
+            static List<PostListDto.Res.PostDto> from (List<Post> postList){
                 return postList.stream()
                         .map(PostListDto.Res.PostDto::from)
                         .collect(Collectors.toList());
